@@ -1,0 +1,3 @@
+[submodule "packages/hykord/src/dependencies/spitroast"]
+	path = packages/hykord/src/dependencies/spitroast
+	url = https://github.com/Cumcord/spitroast

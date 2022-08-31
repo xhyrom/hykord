@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "allowJs": true,
+        "target": "ES2020",
+        "lib": ["ESNext", "DOM"],
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "skipLibCheck": true,
+        "baseUrl": "./src",
+        "jsx": "react",
+        "removeComments": true,
+        "paths": {
+            "@hykord/*": ["hykord/*"],
+            "@dependency/*": ["dependencies/*"],
+            "@module/*": ["hykord/api/modules/*"]
+        },
+        "typeRoots": ["src/types", "node_modules/@types"]
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@cumjar/websmack",
+  "version": "1.2.0",
+  "description": "web bundlers' hard work undone.",
+  "main": "dist/cjs.js",
+  "module": "dist/cjs.js",
+  "scripts": {
+    "prepublish": "esbuild --bundle src/index.js --outfile=dist/cjs.js --format=cjs"
+  },
+  "repository": "github:Cumcord/websmack",
+  "author": "Cumcord team",
+  "license": "Unlicense",
+  "devDependencies": {
+    "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
+    "chai": "^4.3.6",
+    "esbuild": "^0.14.36",
+    "mocha": "^9.2.2",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.6.3"
+  }
+}
