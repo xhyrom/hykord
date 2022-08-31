@@ -58,8 +58,8 @@ export class SettingsManager {
         return this;
     }
 
-    public getSetting(name: HykordSettings): HykordSetting {
-        return this.settings.get(name);
+    public getSetting(name: HykordSettings, defaultValue?: any): HykordSetting {
+        return this.settings.get(name) || defaultValue;
     }
 
     public getSettingValue(name: HykordSettings): string | boolean {
