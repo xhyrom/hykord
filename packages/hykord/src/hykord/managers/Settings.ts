@@ -6,6 +6,7 @@ type HykordSettings =
     'discord.allow_nsfw';
 
 interface HykordSetting {
+    title?: string;
     type: 'bool' | 'string';
     value: boolean | string;
     description: string;
@@ -40,6 +41,7 @@ export class SettingsManager {
                         description: 'Enable discord experiments',
                     },
                     allow_nsfw: {
+                        title: 'Allow Not safe for work (NSFW)',
                         type: 'bool',
                         value: false,
                         description: 'Allow nsfw channels (also bypass age requirement)',
@@ -66,11 +68,12 @@ export class SettingsManager {
 
     public toggleSetting(name: HykordSettings): boolean {
         const old = this.getSetting(name);
-        return this.setSetting(name, !old.value, old.description, old.type) as boolean;
+        return this.setSetting(name, !old.value, old.description, old.title, old.type) as boolean;
     }
 
-    public setSetting(name: HykordSettings, value: string | boolean, description: string, type?: any): string | boolean {
+    public setSetting(name: HykordSettings, value: string | boolean, description: string, title?: any, type?: any): string | boolean {
         this.settings.set(name, {
+            title,
             value,
             type: type || typeof value === 'boolean' ? 'bool' : 'string',
             description,

@@ -5,7 +5,7 @@
   "scripts": {
     "prebuild": "rm -rf dist/",
     "build": "tsc -p .",
-    "postbuild": "rm -rf dist/dependencies && cp -r ./src/dependencies/ ./dist/dependencies && rm -rf ./dist/dependencies/**/node_modules/ && minimize-js ./dist/ -w -i -s -d"
+    "postbuild": "rm -rf dist/dependencies && cp -r ./src/dependencies/ ./dist/dependencies && rm ./dist/dependencies/**/node_modules/ -rf && minimize-js ./dist/ -w -i -s -d"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",

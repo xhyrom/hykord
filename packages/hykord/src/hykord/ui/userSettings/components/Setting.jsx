@@ -6,9 +6,9 @@ import { titleCase } from '@dependency/titlecase';
 export default (props) => {
     const settings = window.hykord.settings;
     const settingKey = props.settingKey;
-    const label = titleCase(settingKey.replaceAll('.', ' ').replaceAll('_', ' '));
 
     const setting = settings.getSetting(settingKey);
+    const label = setting.title || titleCase(settingKey.replaceAll('.', ' ').replaceAll('_', ' '));
 
     return (
         <Boolean settingName={settingKey} setting={setting} label={label} />
