@@ -1,6 +1,12 @@
 import { Hykord } from "@hykord/index";
+import { HykordSettings } from "@hykord/managers/Settings";
 
 export {};
+
+interface HykordNative {
+    loadExtension: (path: string) => {},
+    removeExtension: (path: string) => {},
+}
 
 declare global {
     interface Window {
@@ -11,5 +17,6 @@ declare global {
         platform: any,
         webpackChunkdiscord_app: any;
         hykord: Hykord;
+        HykordNative: HykordNative;
     }
 }

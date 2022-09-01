@@ -3,6 +3,8 @@ import { ipcRenderer, webFrame } from 'electron';
 import { join } from 'path';
 import Logger from '@module/logger';
 
+import '../hykord/ipc/renderer';
+
 Logger.info('Loading Hykord');
 
 Object.defineProperty(window, "webpackChunkdiscord_app", {

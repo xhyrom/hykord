@@ -1,7 +1,7 @@
 import { readAndIfNotExistsCreate } from '@module/fs/promises';
 import { writeFile } from 'fs/promises';
 
-type HykordSettings =
+export type HykordSettings =
     'discord.experiments' |
     'discord.allow_nsfw_and_bypass_age_requirement';
 
@@ -58,7 +58,7 @@ export class SettingsManager {
     }
 
     public postHandle(name: HykordSettings, first?: boolean): void {
-        const setting = this.getSetting(name, false);
+        const value = this.getSetting(name, false);
 
         switch(name) {
             case 'discord.allow_nsfw_and_bypass_age_requirement': {
@@ -66,7 +66,7 @@ export class SettingsManager {
                     this.modules.patcher.findAndPatch(
                         () => this.modules.webpack.findByProps('getUsers'),
                         (User) => this.modules.patcher.after("getCurrentUser", User, (_, user) => {
-                            user.nsfwAllowed = setting;
+                            user.nsfwAllowed = value;
                             return user;
                         })
                     )
@@ -101,14 +101,14 @@ export class SettingsManager {
                     usermod.getCurrentUser = oldUser;
                 }
 
-                if (first && setting) {
+                if (first && value) {
                     const method = () => {
                         patch();
                         this.modules.webpack.FluxDispatcher.unsubscribe('CONNECTION_OPEN', method);
                     };
 
                     this.modules.webpack.FluxDispatcher.subscribe('CONNECTION_OPEN', method);
-                } else if (setting) {
+                } else if (value) {
                     patch();
                 }
                 break;

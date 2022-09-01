@@ -1,5 +1,5 @@
 import { Plugin } from "structures";
-import { registerSection } from "register";
+import { registerSection } from "utilties";
 import Logger from "logger";
 import Test from "./components/Test";
 
