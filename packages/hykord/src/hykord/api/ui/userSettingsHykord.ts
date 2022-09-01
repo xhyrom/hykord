@@ -1,15 +1,26 @@
 import { findAndPatch, after } from "@module/patcher";
 import { findByDisplayName } from "@module/webpack";
 
-const sections = [];
+const hykordSections = [];
+const hykordPluginsSections = [];
 
 export function registerSection(id, name, component) {
   const section = { section: id, label: name, element: component };
-  sections.push(section);
+  hykordSections.push(section);
 
   return () => {
-    const i = sections.indexOf(section);
-    if (i !== -1) sections.splice(i, 1);
+    const i = hykordSections.indexOf(section);
+    if (i !== -1) hykordSections.splice(i, 1);
+  };
+}
+
+export function registerPluginSection(id, name, component) {
+  const section = { section: id, label: name, element: component };
+  hykordPluginsSections.push(section);
+
+  return () => {
+    const i = hykordPluginsSections.indexOf(section);
+    if (i !== -1) hykordPluginsSections.splice(i, 1);
   };
 }
 
@@ -28,7 +39,10 @@ export const initUserSettings = () =>
           0,
           { section: "DIVIDER" },
           { section: "HEADER", label: "Hykord" },
-          ...sections,
+          ...hykordSections,
+          { section: "DIVIDER" },
+          { section: "HEADER", label: "Hykord Plugins" },
+          ...hykordPluginsSections,
         );
 
         return sects;
