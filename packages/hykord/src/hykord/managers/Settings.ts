@@ -3,18 +3,11 @@ import { writeFile } from 'fs/promises';
 
 type HykordSettings =
     'discord.experiments' |
-    'discord.allow_nsfw';
-
-interface HykordSetting {
-    title?: string;
-    type: 'bool' | 'string';
-    value: boolean | string;
-    description: string;
-}
+    'discord.allow_nsfw_and_bypass_age_requirement';
 
 export class SettingsManager {
     private location: string;
-    private settings: Map<HykordSettings, HykordSetting>;
+    private settings: Map<HykordSettings, boolean | string>;
     private modules: {
         patcher: any;
         webpack: any;
@@ -33,21 +26,7 @@ export class SettingsManager {
 
         const config = await readAndIfNotExistsCreate(
             this.location,
-            JSON.stringify({
-                discord: {
-                    experiments: {
-                        type: 'bool',
-                        value: false,
-                        description: 'Enable discord experiments',
-                    },
-                    allow_nsfw: {
-                        title: 'Allow Not safe for work (NSFW)',
-                        type: 'bool',
-                        value: false,
-                        description: 'Allow nsfw channels (also bypass age requirement)',
-                    },
-                }
-            })
+            JSON.stringify({})
         )
 
         this.settings = this.convertToMap(JSON.parse(config));
@@ -58,45 +37,36 @@ export class SettingsManager {
         return this;
     }
 
-    public getSetting(name: HykordSettings, defaultValue?: any): HykordSetting {
+    public getSetting(name: HykordSettings, defaultValue?: any): boolean | string {
         return this.settings.get(name) || defaultValue;
-    }
-
-    public getSettingValue(name: HykordSettings): string | boolean {
-        return this.settings.get(name).value;
     }
 
     public toggleSetting(name: HykordSettings): boolean {
         const old = this.getSetting(name);
-        return this.setSetting(name, !old.value, old.description, old.title, old.type) as boolean;
+        return this.setSetting(name, !old) as boolean;
     }
 
-    public setSetting(name: HykordSettings, value: string | boolean, description: string, title?: any, type?: any): string | boolean {
-        this.settings.set(name, {
-            title,
-            value,
-            type: type || typeof value === 'boolean' ? 'bool' : 'string',
-            description,
-        });
+    public setSetting(name: HykordSettings, value: string | boolean): string | boolean {
+        this.settings.set(name, value);
 
         writeFile(this.location, JSON.stringify(this.deepen(this.settings)));
         return value;
     }
 
-    public getAllSettings(): Map<HykordSettings, HykordSetting> {
+    public getAllSettings(): Map<HykordSettings, string | boolean> {
         return this.settings;
     }
 
     public postHandle(name: HykordSettings, first?: boolean): void {
-        const setting = this.getSetting(name);
+        const setting = this.getSetting(name, false);
 
         switch(name) {
-            case 'discord.allow_nsfw': {
+            case 'discord.allow_nsfw_and_bypass_age_requirement': {
                 const patch = () => {
                     this.modules.patcher.findAndPatch(
                         () => this.modules.webpack.findByProps('getUsers'),
                         (User) => this.modules.patcher.after("getCurrentUser", User, (_, user) => {
-                            user.nsfwAllowed = setting.value;
+                            user.nsfwAllowed = setting;
                             return user;
                         })
                     )
@@ -131,14 +101,14 @@ export class SettingsManager {
                     usermod.getCurrentUser = oldUser;
                 }
 
-                if (first && setting.value) {
+                if (first && setting) {
                     const method = () => {
                         patch();
                         this.modules.webpack.FluxDispatcher.unsubscribe('CONNECTION_OPEN', method);
                     };
 
                     this.modules.webpack.FluxDispatcher.subscribe('CONNECTION_OPEN', method);
-                } else if (setting.value) {
+                } else if (setting) {
                     patch();
                 }
                 break;
@@ -149,17 +119,14 @@ export class SettingsManager {
         }
     }
 
-    private convertToMap(object: any, key?: string, map?: Map<HykordSettings, HykordSetting>) {
+    private convertToMap(object: any, key?: string, map?: Map<HykordSettings, string | boolean>) {
         map = map || new Map();
     
         for (const [name, v] of Object.entries(object)) {
-            const value = v as HykordSetting;
+            const value = v as string | boolean;
 
             if (typeof value !== 'object') map.set(key + name as HykordSettings, value);
-            else {
-                if (value.type !== undefined && value.value !== undefined && value.description !== undefined) map.set(key + name as HykordSettings, value);
-                else this.convertToMap(value, `${key ? `${key}` : ''}${name}.`, map);
-            }
+            else this.convertToMap(value, `${key ? `${key}` : ''}${name}.`, map);
         }
     
         return map;

@@ -4,26 +4,27 @@ export class Boolean extends React.Component {
     constructor (props) {
         super(props);
 
-        this.settings = window.hykord.settings;
-        this.settingName = props.settingName;
-        this.setting = props.setting;
+        this.toggle = props.toggle;
+        this.postHandle = props.postHandle;
+        this.note = props.note;
+        this.value = props.value;
         this.label = props.label;
         
         this.state = {
-            value: this.setting.value
+            value: this.value
         }
 
         this.handleChange = this.handleChange.bind(this);
     }
   
     handleChange() {
-        const value = this.settings.toggleSetting(this.settingName);
+        const value = this.toggle();
 
         this.setState({
             value: value
         });
 
-        this.settings.postHandle(this.settingName);
+        this.postHandle();
     }
   
     render () {
@@ -32,7 +33,7 @@ export class Boolean extends React.Component {
 
         return (
             <FormItem>
-                <SwitchItem note={this.setting.description} value={this.state.value} onChange={this.handleChange}>
+                <SwitchItem note={this.note} value={this.state.value} onChange={this.handleChange}>
                     {this.label}
                 </SwitchItem>
             </FormItem>
