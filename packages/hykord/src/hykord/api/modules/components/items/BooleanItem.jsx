@@ -1,14 +1,12 @@
 import { React, findByDisplayName } from "@module/webpack";
 
-export class Boolean extends React.Component {
+export class BooleanItem extends React.Component {
     constructor (props) {
         super(props);
 
         this.toggle = props.toggle;
         this.postHandle = props.postHandle;
-        this.note = props.note;
         this.value = props.value;
-        this.label = props.label;
         
         this.state = {
             value: this.value
@@ -28,14 +26,15 @@ export class Boolean extends React.Component {
     }
   
     render () {
-        const SwitchItem = findByDisplayName("SwitchItem");
+        const Switch = findByDisplayName("Switch");
         const FormItem = findByDisplayName("FormItem");
 
         return (
             <FormItem>
-                <SwitchItem note={this.note} value={this.state.value} onChange={this.handleChange}>
-                    {this.label}
-                </SwitchItem>
+                <Switch
+                    checked={this.state.value}
+                    onChange={this.handleChange}
+                />
             </FormItem>
         )
     }

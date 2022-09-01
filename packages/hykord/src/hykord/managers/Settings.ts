@@ -3,7 +3,8 @@ import { writeFile } from 'fs/promises';
 
 export type HykordSettings =
     'discord.experiments' |
-    'discord.allow_nsfw_and_bypass_age_requirement';
+    'discord.allow_nsfw_and_bypass_age_requirement' |
+    'hykord.enable_dev_experiment_mod';
 
 export class SettingsManager {
     private location: string;

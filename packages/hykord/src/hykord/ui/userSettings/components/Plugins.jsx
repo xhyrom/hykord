@@ -1,20 +1,17 @@
 import 'module-alias/register';
-import { findByDisplayName, findAsync, React } from "@module/webpack";
+import { React } from "@module/webpack";
 import PluginCard from './PluginCard';
-import { ErrorBoundary } from '@module/components/ErrorBoundary';
-
-const FormTitle = findByDisplayName("FormTitle");
+import { FormTitle, FormSection, ErrorBoundary, FormLabel } from '@module/components';
 
 export default async() => {
-    const FormSection = await findAsync(() => findByDisplayName("FormSection"));
+    const plugins = window.hykord.plugins;
 
     return () => {
-        const plugins = window.hykord.plugins;
-
         return (
             <ErrorBoundary>
                 <FormSection>
                     <FormTitle tag="h1">Plugins</FormTitle>
+                    <FormLabel>Here you can see installed plugins</FormLabel>
                     {plugins.getAllPlugins().map(plugin => (
                         <PluginCard pluginName={plugin.name} />
                     ))}

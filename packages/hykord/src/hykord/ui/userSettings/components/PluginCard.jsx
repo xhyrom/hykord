@@ -1,16 +1,32 @@
-import { findByDisplayName, React } from '@module/webpack';
+import { React } from '@module/webpack';
+import { BooleanItem } from '@module/components/items'
+import { Card, Flex, Markdown, FormText, ErrorBoundary } from '@module/components';
 
-const FormText = findByDisplayName("FormText");
+export default class extends React.Component {
+  constructor (props) {
+    super(props);
 
-export default (props) => {
-    /**
-     * @type {import('@module/structures').Plugin}
-     */
-    const plugin = window.hykord.plugins.getPlugin(props.pluginName);
+    this.plugins = window.hykord.plugins;
+    this.plugin = this.plugins.getPlugin(props.pluginName);
+  }
 
+  render() {
     return (
-        <FormText>
-            {plugin.name}
-        </FormText>
+        <ErrorBoundary>
+          <Card className="hykord-plugin-card">
+            <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
+              <FormText tag="h5">
+                <strong>{this.plugin.name}</strong>{this.plugin.author ? <> by <strong>{this.plugin.author || '-'}</strong></> : null }
+              </FormText>
+
+              <BooleanItem
+                    toggle={() => this.plugins.togglePlugin(this.plugin)}
+                    value={this.plugin.enabled}
+                />
+            </Flex>
+            <Markdown>{this.plugin.description || 'Good days, bad days.'}</Markdown>
+          </Card>
+        </ErrorBoundary>
     )
+  }
 }

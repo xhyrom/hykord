@@ -24,12 +24,26 @@ export class PluginsManager {
         await this.loadPlugins();
     }
 
+    public async togglePlugin(plugin: Plugin): Promise<boolean> {
+        if (plugin.enabled) {
+            await this.disablePlugin(plugin);
+            return false;
+        } else {
+            await this.enablePlugin(plugin);
+            return true;
+        }
+    }
+
     public async enablePlugin(plugin: Plugin) {
+        plugin.loading = true;
         await plugin.onEnable();
+        plugin.enabled = true;
+        plugin.loading = false;
     }
 
     public async disablePlugin(plugin: Plugin) {
         await plugin.onDisable();
+        plugin.enabled = false;
     }
 
     public async loadPlugins() {

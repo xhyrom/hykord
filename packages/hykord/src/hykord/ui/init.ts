@@ -1,8 +1,8 @@
-import Logger from "@module/logger";
+import Logger from '@module/logger';
 
 export default () => {
-    Logger.info("UI injected");
+    Logger.info('Injecting UI');
 
-    const userSettings = require("./userSettings/index").default;
+    const userSettings = require('./userSettings/index').default;
     userSettings();
 }

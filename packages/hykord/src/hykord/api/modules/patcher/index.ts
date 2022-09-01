@@ -17,4 +17,26 @@ export const findAndPatch = (moduleFinder, patchCallback) => {
   };
 };
 
+export const injectCss = (css: string) => {
+  const style = Object.assign(
+    document.createElement('style'),
+    {
+      className: 'HYKORD_INJECTED_CSS',
+      textContent: css,
+    }
+  );
+
+  document.head.appendChild(style);
+
+  return (newCss) => {
+    if (!newCss) style.remove();
+    else style.textContent = newCss;
+  }
+}
+
+export const unpatchCss = () => {
+  for (const css of Array.from(document.getElementsByClassName('HYKORD_INJECTED_CSS')))
+    css.remove();
+}
+
 export { instead, before, after, unpatchAll } from "@dependency/spitroast";

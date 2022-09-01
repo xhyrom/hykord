@@ -1,20 +1,16 @@
 import 'module-alias/register';
-import { findByDisplayName, findAsync, React } from "@module/webpack";
+import { React } from "@module/webpack";
 import { Boolean } from '@module/components/inputs';
-import { ErrorBoundary } from '@hykord/api/modules/components/ErrorBoundary';
-
-const FormTitle = findByDisplayName("FormTitle");
+import { FormTitle, FormSection, FormItem, ErrorBoundary } from '@module/components';
 
 export default async() => {
-    const FormSection = await findAsync(() => findByDisplayName("FormSection"));
+    const settings = window.hykord.settings;
 
     return () => {
-        const settings = window.hykord.settings;
-
         return (
             <ErrorBoundary>
-                <FormSection>
-                    <FormTitle tag="h1">Options</FormTitle>
+                <FormTitle tag="h1">Options</FormTitle>
+                <FormItem title={"Discord Options"} noteHasMargin>
                     <Boolean
                         toggle={() => settings.toggleSetting("discord.experiments")}
                         note="Enable discord experiments"
@@ -29,7 +25,16 @@ export default async() => {
                         label="Enable NSFW channels"
                         postHandle={() => settings.postHandle("discord.allow_nsfw_and_bypass_age_requirement")}
                     />
-                </FormSection>
+                </FormItem>
+                <FormItem title={"Hykord Options"} noteHasMargin>
+                    <Boolean
+                        toggle={() => settings.toggleSetting("hykord.enable_dev_experiment_mod")}
+                        note="Enable experiment hykord development mod"
+                        value={settings.getSetting("hykord.enable_dev_experiment_mod", false)}
+                        label="Hykord Dev Mod"
+                        postHandle={() => settings.postHandle("hykord.enable_dev_experiment_mod")}
+                    />
+                </FormItem>
             </ErrorBoundary>
         )
     }
