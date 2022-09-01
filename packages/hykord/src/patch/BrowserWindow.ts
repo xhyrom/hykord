@@ -29,8 +29,8 @@ export const patchBrowserWindow = () => {
   const electronPath = require.resolve('electron');
   delete require.cache[electronPath].exports;
   require.cache[electronPath].exports = { ...electron, BrowserWindow };
-}
+};
 
 export default {
-  patchBrowserWindow
+  patchBrowserWindow,
 };
