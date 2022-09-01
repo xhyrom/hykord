@@ -1,7 +1,7 @@
 import 'module-alias/register';
 import { React } from "@module/webpack";
 import { Boolean } from '@module/components/inputs';
-import { FormTitle, FormSection, FormItem, ErrorBoundary } from '@module/components';
+import { FormTitle, FormItem, ErrorBoundary } from '@module/components';
 
 export default async() => {
     const settings = window.hykord.settings;
