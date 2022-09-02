@@ -32,15 +32,46 @@ jobs:
 
       # Build
       - name: Build installer
-        run: |
-          make build-installer
-          ls packages/installer/zig-out/**/*
+        run: make build-installer
       
+      - name: Upload installer Linux/MacOS
+        uses: actions/upload-artifact@v3
+        if: matrix.os != 'windows-latest'
+        with:
+          name: installer-${{ matrix.os }}-amd64
+          path: packages/installer/zig-out/bin/installer
+
+      - name: Upload installer Windows
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'windows-latest'
+        with:
+          name: installer-${{ matrix.os }}-amd64
+          path: packages/installer/zig-out/bin/installer.exe
+
       - name: Build injector
-        run: |
-          make build-injector
-          ls packages/injector/zig-out/**/*
+        run: make build-injector
       
+      - name: Upload injector Linux/MacOS
+        uses: actions/upload-artifact@v3
+        if: matrix.os != 'windows-latest'
+        with:
+          name: injector-${{ matrix.os }}-amd64
+          path: packages/injector/zig-out/bin/injector
+
+      - name: Upload injector Windows
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'windows-latest'
+        with:
+          name: injector-${{ matrix.os }}-amd64
+          path: packages/injector/zig-out/bin/injector.exe
+
       - name: Build hykord
         if: matrix.os == 'ubuntu-latest'
         run: make build-hykord
+
+      - name: Upload hykord Linux
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: hykord-${{ matrix.os }}-amd64
+          path: packages/hykord/dist/
