@@ -16,6 +16,10 @@ fn search(array: [5][]const u8) ?utils.string {
     return null;
 }
 
+pub fn does_file_exist(file: string) bool {
+    return std.os.system.access(allocator.dupeZ(u8, file) catch unreachable, std.os.F_OK) == 0;
+}
+
 pub fn get_app_directory(platform: discord_platform) string {
     const homedir = homedir_();
     const stablePaths = [_]string{ "/usr/share/discord", "/usr/lib64/discord", "/opt/discord", "/opt/Discord", std.fmt.allocPrint(allocator, "{s}/.local/bin/Discord", .{homedir}) catch unreachable};
@@ -31,7 +35,7 @@ pub fn get_app_directory(platform: discord_platform) string {
         else => searched = search(developmentPaths),
     }
 
-    while (searched == null or std.os.system.access(allocator.dupeZ(u8, searched.?) catch unreachable, std.os.F_OK) != 0) {
+    while (searched == null or !does_file_exist(searched.?)) {
         Logger.err("Failed to locate discord {s} installation folder.", .{@tagName(platform)});
         Logger.infoNoBreak("Please, write your discord path: ", .{});
         searched = std.io.getStdIn().reader().readUntilDelimiterAlloc(allocator, '\n', 1024) catch unreachable;

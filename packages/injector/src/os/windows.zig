@@ -7,8 +7,17 @@ const discord_platform = global.discord_platform;
 const join_path = global.join_path;
 const allocator = std.heap.page_allocator;
 
+pub fn does_file_exist(path: string) bool {
+    const file = std.fs.cwd().openFile(path, .{}) catch |e| switch (e) {
+        else => return false,
+    };
+
+    defer file.close();
+    return true;
+}
+
 pub fn get_app_directory(platform: discord_platform) string {
-    const localAppData: string = std.os.getenv("LOCALAPPDATA") orelse "unknown";
+    const localAppData: string = std.os.getenvW("LOCALAPPDATA") orelse "unknown";
 
     var searched: ?string = null;
     switch(platform) {
@@ -18,7 +27,7 @@ pub fn get_app_directory(platform: discord_platform) string {
         else => searched = std.fmt.allocPrint(allocator, "{s}/DiscordDevelopment", .{localAppData}) catch unreachable,
     }
 
-    while (searched == null or std.os.system.access(allocator.dupeZ(u8, searched.?) catch unreachable, std.os.F_OK) != 0) {
+    while (searched == null or !doesFileExist(searched.?)) {
         Logger.err("Failed to locate discord {s} installation folder.", .{@tagName(platform)});
         Logger.infoNoBreak("Please, write your discord path: ", .{});
         searched = std.io.getStdIn().reader().readUntilDelimiterAlloc(allocator, '\n', 1024) catch unreachable;
@@ -26,9 +35,9 @@ pub fn get_app_directory(platform: discord_platform) string {
 
     const dir = std.fs.cwd().openDir(".", .{ .iterate = true, }) catch unreachable;
     var iter = dir.iterate();
-    var app_version_dir = "";
+    var app_version_dir: string = "";
 
-    while (try iter.next()) |app_dir| {
+    while (iter.next() catch unreachable) |app_dir| {
         if (app_dir.kind != std.fs.File.Kind.Directory or std.mem.indexOf(u8, app_dir.name, "app") == null) continue;
 
         app_version_dir = app_dir.name;

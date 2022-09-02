@@ -67,7 +67,7 @@ pub fn inject(platform_: string, main_script: string) void {
 
     const app_dir = C.get_app_directory(platform);
 
-    if (std.os.system.access(allocator.dupeZ(u8, app_dir) catch unreachable, std.os.F_OK) == 0) {
+    if (C.does_file_exist(app_dir)) {
         Logger.err("It looks like you already have injected discord client.", .{});
         return;
     }
@@ -111,7 +111,7 @@ pub fn uninject(platform_: string) void {
 
     const app_dir = C.get_app_directory(platform);
 
-    if (std.os.system.access(allocator.dupeZ(u8, app_dir) catch unreachable, std.os.F_OK) != 0) {
+    if (!C.does_file_exist(app_dir)) {
         Logger.err("It looks like you don't have injected discord client.", .{});
         return;
     }
