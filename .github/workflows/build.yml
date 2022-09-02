@@ -38,5 +38,5 @@ jobs:
         run: make build-injector
       
       - name: Build hykord
-        if: matrix.os != 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-latest'
         run: make build-hykord
