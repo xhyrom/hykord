@@ -1,5 +1,6 @@
 import { React } from '@module/webpack';
 import { Button, FormNotice, FormDivider, ErrorBoundary } from '@module/components';
+import { openConfirmationModal } from '@module/utilities/modals';
 
 export default async() => {
     return () => {
@@ -15,9 +16,40 @@ export default async() => {
                     color={Button.Colors.RED}
                     size={Button.Sizes.LARGE}
                     look={Button.Looks.OUTLINED}
-                    onClick={() => this.setState({ ...this.state, crashed: false })}
+                    onClick={() => openConfirmationModal(
+                        {
+                            header: 'This is modal test',
+                            content: 'We are wumpuses.',
+                            type: 'danger',
+                            confirmText: 'THIS IS NOT WUMPUS!!!',
+                            cancelText: 'uWUntu'
+                        },
+                        (value) => {
+                            if (!value) return;
+
+                        }
+                    )}
                 > 
-                    Retry
+                    Open Modal
+                </Button>
+                <Button
+                    color={Button.Colors.YELLOW}
+                    size={Button.Sizes.LARGE}
+                    look={Button.Looks.FILLED}
+                    onClick={() => openConfirmationModal(
+                        {
+                            content: 'Do you want to restart discord?',
+                            type: 'warn',
+                            confirmText: 'THIS IS NOT WUMPUS!!!',
+                            cancelText: 'uWUntu'
+                        },
+                        (value) => {
+                            if (!value) return;
+                            window.HykordNative.relaunchApp();
+                        }
+                    )}
+                > 
+                    Restart
                 </Button>
             </ErrorBoundary>
         )

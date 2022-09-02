@@ -2,6 +2,7 @@ import 'module-alias/register';
 import { React } from "@module/webpack";
 import { Boolean } from '@module/components/inputs';
 import { FormTitle, FormItem, ErrorBoundary } from '@module/components';
+import { openRequiredRestartModal } from '@module/utilities/modals';
 
 export default async() => {
     const settings = window.hykord.settings;
@@ -32,7 +33,7 @@ export default async() => {
                         note="Enable experiment hykord development mod"
                         value={settings.getSetting("hykord.enable_dev_experiment_mod", false)}
                         label="Hykord Dev Mod"
-                        postHandle={() => settings.postHandle("hykord.enable_dev_experiment_mod")}
+                        postHandle={() => openRequiredRestartModal()}
                     />
                 </FormItem>
             </ErrorBoundary>

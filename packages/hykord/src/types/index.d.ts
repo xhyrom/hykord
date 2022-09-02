@@ -6,6 +6,7 @@ export {};
 interface HykordNative {
   loadExtension: (path: string) => any;
   removeExtension: (path: string) => any;
+  relaunchApp: () => void;
 }
 
 declare global {

@@ -10,4 +10,8 @@ window.HykordNative = {
     removeExtension: (path: string) => {
         return ipcRenderer.invoke('HYKORD_REMOVE_EXTENSION', path);
     },
+
+    relaunchApp: () => {
+        ipcRenderer.send('HYKORD_RELAUNCH_APP');
+    }
 }

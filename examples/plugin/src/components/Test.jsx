@@ -1,6 +1,5 @@
-import { findByDisplayName, React } from "webpack";
-
-const FormTitle = findByDisplayName("FormTitle");
+import { React } from "webpack";
+import { FormTitle } from "components";
 
 export default async() => {
 	return () => {
