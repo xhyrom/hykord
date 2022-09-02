@@ -1,6 +1,7 @@
 import { readAndIfNotExistsCreate } from '@module/fs/promises';
 import { writeFile } from 'fs/promises';
 
+type stringOrBoolean = string | boolean;
 export type HykordSettings =
     'discord.experiments' |
     'discord.allow_nsfw_and_bypass_age_requirement' |
@@ -10,8 +11,8 @@ export class SettingsManager {
     private location: string;
     private settings: Map<HykordSettings, boolean | string>;
     private modules: {
-        patcher: any;
-        webpack: any;
+        webpack: typeof import('@module/webpack');
+        patcher: typeof import('@module/patcher');
     };
     
     constructor() {
@@ -38,7 +39,7 @@ export class SettingsManager {
         return this;
     }
 
-    public getSetting(name: HykordSettings, defaultValue?: any): boolean | string {
+    public getSetting(name: HykordSettings, defaultValue?: stringOrBoolean): stringOrBoolean {
         return this.settings.get(name) || defaultValue;
     }
 
@@ -47,14 +48,14 @@ export class SettingsManager {
         return this.setSetting(name, !old) as boolean;
     }
 
-    public setSetting(name: HykordSettings, value: string | boolean): string | boolean {
+    public setSetting(name: HykordSettings, value: stringOrBoolean): stringOrBoolean {
         this.settings.set(name, value);
 
         writeFile(this.location, JSON.stringify(this.deepen(this.settings)));
         return value;
     }
 
-    public getAllSettings(): Map<HykordSettings, string | boolean> {
+    public getAllSettings(): Map<HykordSettings, stringOrBoolean> {
         return this.settings;
     }
 
@@ -91,13 +92,14 @@ export class SettingsManager {
                     const nodes = Object.values(this.modules.webpack.findByProps('_dispatcher')._dispatcher._actionHandlers._dependencyGraph.nodes);
     
                     try {
-                        // @ts-ignore-expect It works
+                        // @ts-expect-error It works
                         nodes.find(x => x.name == "ExperimentStore").actionHandler["OVERLAY_INITIALIZE"]({user: {flags: 1}});
+                    // eslint-disable-next-line no-empty
                     } catch {}
     
                     const oldUser = usermod.getCurrentUser;
                     usermod.getCurrentUser = () => ({hasFlag: () => true});
-                    // @ts-ignore-expect It works
+                    // @ts-expect-error It works
                     nodes.find(x => x.name == "DeveloperExperimentStore").actionHandler["CONNECTION_OPEN"]();
                     usermod.getCurrentUser = oldUser;
                 }
@@ -114,13 +116,10 @@ export class SettingsManager {
                 }
                 break;
             }
-            default: {
-
-            }
         }
     }
 
-    private convertToMap(object: any, key?: string, map?: Map<HykordSettings, string | boolean>) {
+    private convertToMap(object: unknown, key?: string, map?: Map<HykordSettings, stringOrBoolean>) {
         map = map || new Map();
     
         for (const [name, v] of Object.entries(object)) {
@@ -133,7 +132,7 @@ export class SettingsManager {
         return map;
     }
 
-    private deepen = (map: any) => {
+    private deepen = (map: typeof this.settings) => {
         const object = Object.fromEntries(map);
         const result = {};
       

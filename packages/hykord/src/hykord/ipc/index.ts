@@ -1,5 +1,4 @@
-import { HykordSettings } from "@hykord/managers/Settings";
-import { ipcMain, session, app, type IpcMainInvokeEvent } from "electron";
+import { ipcMain, session, type IpcMainInvokeEvent } from "electron";
 
 if (!ipcMain) throw new Error('ipcMain is undefined ¯\\_(ツ)_/¯');
 

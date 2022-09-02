@@ -10,6 +10,7 @@ export default function (filter, legacycompat = true) {
       return foundModule;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return [foundModule, () => {}];
   }
 

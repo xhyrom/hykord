@@ -22,7 +22,7 @@ export default class AsyncComponent extends React.PureComponent {
     return this.props._fallback || null;
   }
 
-  static from (promise, fallback?: any) {
+  static from (promise, fallback?: () => void) {
     return React.memo(
       (props) => React.createElement(AsyncComponent, {
         _provider: () => promise,

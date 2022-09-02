@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Hykord } from '@hykord/index';
-import { HykordSettings } from '@hykord/managers/Settings';
 
 export {};
 
 interface HykordNative {
-  loadExtension: (path: string) => {};
-  removeExtension: (path: string) => {};
+  loadExtension: (path: string) => any;
+  removeExtension: (path: string) => any;
 }
 
 declare global {

@@ -2,8 +2,8 @@ interface PluginOptions {
     name: string;
     author: string;
     description: string;
-    onEnable: () => {};
-    onDisable: () => {};
+    onEnable: () => void;
+    onDisable: () => void;
 }
 
 export class Plugin {
@@ -12,8 +12,8 @@ export class Plugin {
     public description: string;
     public enabled: boolean;
     public loading: boolean;
-    public onEnable: () => {};
-    public onDisable: () => {};
+    public onEnable: () => void;
+    public onDisable: () => void;
 
     constructor(options: PluginOptions) {
         this.name = options.name;
