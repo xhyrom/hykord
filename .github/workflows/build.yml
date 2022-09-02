@@ -32,10 +32,14 @@ jobs:
 
       # Build
       - name: Build installer
-        run: make build-installer
+        run: |
+          make build-installer
+          ls packages/installer/zig-out/**/*
       
       - name: Build injector
-        run: make build-injector
+        run: |
+          make build-injector
+          ls packages/injector/zig-out/**/*
       
       - name: Build hykord
         if: matrix.os == 'ubuntu-latest'
