@@ -1,5 +1,6 @@
 import { findAndPatch, after } from "@module/patcher";
-import { findByDisplayName } from "@module/webpack";
+import { findByDisplayName, React } from "@module/webpack";
+import { FormDivider } from "@module/components";
 
 const hykordSections = [];
 let hykordPluginsSections = [];
@@ -33,21 +34,52 @@ export const initUserSettings = () =>
     () => findByDisplayName("SettingsView"),
     (SettingsView) =>
       after("getPredicateSections", SettingsView.prototype, (_, sects) => {
-        const pos = sects.findIndex((e) => e.section === "changelog") - 1;
+        const changelog = sects.find((e) => e.section === "changelog");
 
-        // if we're not in user settings, die
-        if (pos < 0) return;
+        if (changelog) {
+          sects.splice(
+            sects.indexOf(changelog) - 1,
+            0,
+            { section: "DIVIDER" },
+            { section: "HEADER", label: "Hykord" },
+            ...hykordSections,
+            { section: "DIVIDER" },
+            { section: "HEADER", label: "Hykord Plugins" },
+            ...hykordPluginsSections,
+          );
+        }
 
-        sects.splice(
-          pos,
-          0,
-          { section: "DIVIDER" },
-          { section: "HEADER", label: "Hykord" },
-          ...hykordSections,
-          { section: "DIVIDER" },
-          { section: "HEADER", label: "Hykord Plugins" },
-          ...hykordPluginsSections,
-        );
+        const debugInfo = sects[sects.findIndex(c => c.section === 'CUSTOM') + 1];
+        if (debugInfo) {
+          debugInfo.element = (element => () => {
+            const res = element();
+
+            if (res.props.children && res.props.children.length === 4) {
+              // Add divider
+              res.props.children.push(
+                Object.assign({}, res.props.children[0], {
+                  props: Object.assign({}, res.props.children[0].props, {
+                    children: [ React.createElement(FormDivider, {
+                      className: 'hykord-form-divider'
+                    })]
+                  })
+                }),
+                // eslint-disable-next-line no-useless-escape
+                ...window.navigator.userAgent.match(/[a-zA-Z\/]+\/(\d+\.)?(\d+\.)?(\*|\d+)+/gm).map((match) => {
+                  return Object.assign({}, res.props.children[0], {
+                    props: Object.assign({}, res.props.children[0].props, {
+                      children: [ match.split('/')[0], ' ', React.createElement('span', {
+                        className: res.props.children[0].props.children[4].props.className,
+                        children: [ match.split('/')[1] ]
+                      }) ]
+                    })
+                  })
+                })
+              );
+            }
+            return res;
+          })(debugInfo.element);
+        }
 
         return sects;
       }),
