@@ -14,7 +14,7 @@ export default async() => {
                 <FormDivider className="hykord-form-divider" />
                 <Button
                     color={Button.Colors.RED}
-                    size={Button.Sizes.LARGE}
+                    size={Button.Sizes.SMALL}
                     look={Button.Looks.OUTLINED}
                     onClick={() => openConfirmationModal(
                         {
@@ -34,7 +34,7 @@ export default async() => {
                 </Button>
                 <Button
                     color={Button.Colors.YELLOW}
-                    size={Button.Sizes.LARGE}
+                    size={Button.Sizes.SMALL}
                     look={Button.Looks.FILLED}
                     onClick={() => openConfirmationModal(
                         {

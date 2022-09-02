@@ -1,6 +1,6 @@
-import { React } from "@module/webpack";
-import { FormText, FormLabel, FormTitle, Divider, Button } from ".";
-import Logger from "@module/logger";
+import { React } from '@module/webpack';
+import { FormLabel, FormTitle, Button, FormDivider } from '.';
+import Logger from '@module/logger';
 
 export class ErrorBoundary extends React.Component {
     constructor (props) {
@@ -28,11 +28,11 @@ export class ErrorBoundary extends React.Component {
     render () {
       return this.state.crashed
         ? (
-          <>
-            <FormTitle tag="h1">Huh, that's odd</FormTitle>
+          <div class='hykord-errorboundary'>
+            <FormTitle tag='h1'>Huh, that's odd</FormTitle>
             <FormLabel>An error occurred while rendering panel.</FormLabel>
-            <FormText size={15}>{this.state.errorMessage}</FormText>
-            <Divider />
+            <code className='hykord-errorboundary-code'>{this.state.errorMessage}</code>
+            <FormDivider className='hykord-form-divider' />
             <Button
               color={Button.Colors.RED}
               size={Button.Sizes.MEDIUM}
@@ -41,7 +41,7 @@ export class ErrorBoundary extends React.Component {
             >
               Retry
             </Button>
-          </>
+          </div>
         )
         : this.props.children;
     }
