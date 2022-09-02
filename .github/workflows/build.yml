@@ -1,15 +1,13 @@
 name: Build
 on:
   workflow_dispatch:
-env:
-  PROFILE: /tmp/.pathsprofilebecauseeveryonelovewindows
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -22,6 +20,7 @@ jobs:
 
       - name: Setup Bun
         uses: xhyrom/setup-bun@v0.1.7
+        if: matrix.os != 'windows-latest'
         with:
           bun-version: latest
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,29 +31,12 @@ jobs:
           node-version: 18
 
       # Build
-      - name: Build
-        run: make build
-
-  build-windows:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      # For setup
-      - name: Setup Zig
-        uses: goto-bus-stop/setup-zig@v1
-        with:
-          version: 0.9.1
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      # Build
-      - name: Build
-        run: |
-          echo "alias bun=\"npm\"" >> $PROFILE
-          source $PROFILE
-          make build
+      - name: Build installer
+        run: make build-installer
+      
+      - name: Build injector
+        run: make build-injector
+      
+      - name: Build hykord
+        if: matrix.os != 'ubuntu-latest'
+        run: make build-hykord
