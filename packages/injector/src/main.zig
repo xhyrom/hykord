@@ -11,12 +11,12 @@ pub fn main() void {
     args = args[1..];
 
     if (args.len == 0) {
-        Logger.err("Please, specify what do you want, inject or uninject", .{});
+        Logger.err("Please, specify, what do you want, inject or uninject", .{});
         return;
     }
 
     if (args.len == 1) {
-        Logger.err("Please, specify what your discord platform, stable, ptb, canary, dev, development", .{});
+        Logger.err("Please, specify, what is your discord platform, stable, ptb, canary, dev, development", .{});
         return;
     }
 
@@ -24,7 +24,7 @@ pub fn main() void {
     var platform: string = args[1];
 
     if (args.len == 2 and std.mem.eql(u8, std.mem.span(action), "inject")) {
-        Logger.err("Please, specify absolute path of main script or use installer :P", .{});
+        Logger.err("Please, specify, absolute path of main script or use installer :P", .{});
         return;
     }
 
