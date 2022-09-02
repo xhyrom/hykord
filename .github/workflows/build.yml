@@ -30,6 +30,10 @@ jobs:
         with:
           node-version: 18
 
+      - name: Uname
+        if: matrix.os != 'windows-latest'
+        run: uname -a
+
       # Build
       - name: Build installer
         run: make build-installer
