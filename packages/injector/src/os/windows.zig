@@ -27,7 +27,7 @@ pub fn get_app_directory(platform: discord_platform) string {
         else => searched = std.fmt.allocPrint(allocator, "{s}/DiscordDevelopment", .{localAppData}) catch unreachable,
     }
 
-    while (searched == null or !doesFileExist(searched.?)) {
+    while (searched == null or !does_file_exist(searched.?)) {
         Logger.err("Failed to locate discord {s} installation folder.", .{@tagName(platform)});
         Logger.infoNoBreak("Please, write your discord path: ", .{});
         searched = std.io.getStdIn().reader().readUntilDelimiterAlloc(allocator, '\n', 1024) catch unreachable;
