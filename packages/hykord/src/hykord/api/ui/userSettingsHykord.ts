@@ -2,7 +2,7 @@ import { findAndPatch, after } from "@module/patcher";
 import { findByDisplayName } from "@module/webpack";
 
 const hykordSections = [];
-const hykordPluginsSections = [];
+let hykordPluginsSections = [];
 
 export function registerSection(id, name, component) {
   const section = { section: id, label: name, element: component };
@@ -14,7 +14,7 @@ export function registerSection(id, name, component) {
   };
 }
 
-export function registerPluginSection(id, name, component) {
+export function registerPluginSection(id: string, name: string, component) {
   const section = { section: id, label: name, element: component };
   hykordPluginsSections.push(section);
 
@@ -22,6 +22,10 @@ export function registerPluginSection(id, name, component) {
     const i = hykordPluginsSections.indexOf(section);
     if (i !== -1) hykordPluginsSections.splice(i, 1);
   };
+}
+
+export function unregisterPluginSection(id: string) {
+  hykordPluginsSections = hykordPluginsSections.filter(s => s.section !== id);
 }
 
 export const initUserSettings = () =>

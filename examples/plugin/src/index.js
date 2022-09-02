@@ -1,5 +1,5 @@
 import { Plugin } from "structures";
-import { registerSection } from "utilties";
+import { registerSection, unregisterPluginSection } from "utilties";
 import Logger from "logger";
 import Test from "./components/Test";
 
@@ -13,5 +13,6 @@ new Plugin({
 	},
 	onDisable: () => {
 		Logger.info("Message from example plugin, DISABLED!!");
+		unregisterPluginSection("HYKORD_EXAMPLE_PLUGIN");
 	}
 })
