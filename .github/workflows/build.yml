@@ -73,5 +73,5 @@ jobs:
         uses: actions/upload-artifact@v3
         if: matrix.os == 'ubuntu-latest'
         with:
-          name: hykord-${{ matrix.os }}-amd64
+          name: hykord
           path: packages/hykord/dist/
