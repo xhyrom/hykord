@@ -4,9 +4,9 @@ const Logger = utils.Logger;
 const string = utils.string;
 const homedir_ = utils.homedir;
 const global = @import("../global.zig");
-const discord_platform = global.discord_platform;
-const join_path = global.join_path;
-const allocator = std.heap.page_allocator;
+const discord_platform = utils.discord_platform;
+const join_path = utils.join_path;
+const allocator = utils.allocator;
 
 fn search(array: [5][]const u8) ?utils.string {
     for (array) |character| {
@@ -20,8 +20,14 @@ pub fn does_file_exist(file: string) bool {
     return std.os.system.access(allocator.dupeZ(u8, file) catch unreachable, std.os.F_OK) == 0;
 }
 
+pub fn get_hykord_default_source_folder() string {
+    const home = std.os.getenv("HOME") orelse "unknown";
+
+    return join_path(&.{home, ".hykord"});
+}
+
 pub fn get_app_directory(platform: discord_platform) string {
-    const homedir = homedir_();
+    const homedir = std.os.getenv("HOME") orelse "unknown";
     const stablePaths = [_]string{ "/usr/share/discord", "/usr/lib64/discord", "/opt/discord", "/opt/Discord", std.fmt.allocPrint(allocator, "{s}/.local/bin/Discord", .{homedir}) catch unreachable};
     const ptbPaths = [_]string{ "/usr/share/discord-ptb", "/usr/lib64/discord-ptb", "/opt/discord-ptb", "/opt/DiscordPTB", std.fmt.allocPrint(allocator, "{s}/.local/bin/DiscordPTB", .{homedir}) catch unreachable };
     const canaryPaths = [_]string{ "/usr/share/discord-canary", "/usr/lib64/discord-canary", "/opt/discord-canary", "/opt/DiscordCanary",std.fmt.allocPrint(allocator, "{s}/.local/bin/DiscordCanary", .{homedir}) catch unreachable };

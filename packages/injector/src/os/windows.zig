@@ -3,9 +3,9 @@ const utils = @import("utils");
 const Logger = utils.Logger;
 const string = utils.string;
 const global = @import("../global.zig");
-const discord_platform = global.discord_platform;
-const join_path = global.join_path;
-const allocator = std.heap.page_allocator;
+const discord_platform = utils.discord_platform;
+const join_path = utils.join_path;
+const allocator = utils.allocator;
 
 pub fn does_file_exist(path: string) bool {
     const file = std.fs.cwd().openFile(path, .{}) catch |e| switch (e) {
@@ -14,6 +14,12 @@ pub fn does_file_exist(path: string) bool {
 
     defer file.close();
     return true;
+}
+
+pub fn get_hykord_default_source_folder() string {
+    const home = std.process.getEnvVarOwned(allocator, "USERPROFILE") catch unreachable;
+
+    return join_path(&.{home, ".hykord"});
 }
 
 pub fn get_app_directory(platform: discord_platform) string {

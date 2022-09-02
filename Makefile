@@ -18,6 +18,9 @@ define success_output
 	@echo -e "${Green}info${Color_Off}:" "$1 $2 $3 $4 $5 $6 $7 $8 $9" >&2
 endef
 
+init:
+	@git submodule update --init --recursive
+
 build: build-injector build-installer build-hykord
 
 build-installer:

@@ -2,58 +2,12 @@ const std = @import("std");
 const utils = @import("utils");
 const Logger = utils.Logger;
 const string = utils.string;
-const allocator = std.heap.page_allocator;
+const discord_platform = utils.discord_platform;
+const allocator = utils.allocator;
+const join_path = utils.join_path;
+const handle_error = utils.handle_error;
 
 pub const C = @import("c.zig");
-pub const discord_platform = enum { stable, ptb, canary, dev, development };
-
-pub fn join_path(paths: []const []const u8) string {
-    return std.fs.path.join(allocator, paths) catch unreachable;
-}
-
-fn handleErr(err: anytype, inject_client: bool) void {
-    if (@TypeOf(err) == std.os.WriteError) {
-        switch(err) {
-            error.AccessDenied => {
-                if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Please re-run command with permissions.", .{})
-                else
-                    Logger.err("Hykord wasn't able to uninject. Please re-run command with permissions.", .{});
-
-                return;
-            },
-            else => {
-                if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
-                else
-                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
-                return;
-            },
-        }
-    } else {
-        switch(err) {
-            error.AccessDenied => {
-                if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Please re-run command with permissions.", .{})
-                else
-                    Logger.err("Hykord wasn't able to uninject. Please re-run command with permissions.", .{});
-
-                return;
-            },
-            error.FileNotFound => {
-                Logger.err("It looks like you don't have injected discord client.", .{});
-                return;
-            },
-            else => {
-                if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
-                else
-                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
-                return;
-            },
-        }
-    }
-}
 
 pub fn inject(platform_: string, main_script: string) void {
     const platform = if (std.mem.eql(u8, platform_, "stable"))
@@ -73,25 +27,25 @@ pub fn inject(platform_: string, main_script: string) void {
     }
 
     std.fs.makeDirAbsolute(app_dir) catch |err| {
-        return handleErr(err, true);
+        return handle_error(err, true);
     };
 
     const indexJsFile = std.fs.createFileAbsolute(join_path(&.{app_dir, "index.js"}), .{}) catch |err| {
-        return handleErr(err, true);
+        return handle_error(err, true);
     };
     defer indexJsFile.close();
 
     _ = indexJsFile.writeAll(std.fmt.allocPrint(allocator, "require(\"{s}\")", .{main_script}) catch unreachable) catch |err| {
-        return handleErr(err, true);
+        return handle_error(err, true);
     };
 
     const packageJsonFile = std.fs.createFileAbsolute(join_path(&.{app_dir, "package.json"}), .{}) catch |err| {
-        return handleErr(err, true);
+        return handle_error(err, true);
     };
     defer packageJsonFile.close();
 
     _ = packageJsonFile.writeAll("{\"name\": \"discord\", \"main\": \"index.js\"}") catch |err| {
-        return handleErr(err, true);
+        return handle_error(err, true);
     };
 
     Logger.info("Successfully injected Hykord into {s}.", .{platform_});
@@ -117,13 +71,13 @@ pub fn uninject(platform_: string) void {
     }
 
     _ = std.fs.deleteFileAbsolute(join_path(&.{app_dir, "index.js"})) catch |err| {
-        return handleErr(err, false);
+        return handle_error(err, false);
     };
     _ = std.fs.deleteFileAbsolute(join_path(&.{app_dir, "package.json"})) catch |err| {
-        return handleErr(err, false);
+        return handle_error(err, false);
     };
     std.fs.deleteDirAbsolute(app_dir) catch |err| {
-        return handleErr(err, false);
+        return handle_error(err, false);
     };
 
     Logger.info("Successfully uninjected Hykord from {s}.", .{platform_});

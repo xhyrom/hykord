@@ -10,6 +10,21 @@ const pkgs = struct {
         .name = "utils",
         .path = std.build.FileSource{ .path = "../utils/src/main.zig"}
     };
+    const inquirer = std.build.Pkg{
+        .name = "inquirer",
+        .path = std.build.FileSource{ .path = "./dependencies/zig-inquirer/src/lib.zig" },
+        .dependencies = &.{ansi, range}
+    };
+
+    // Only dependencies for inquirer
+    const ansi = std.build.Pkg{
+        .name = "ansi",
+        .path = std.build.FileSource{ .path = "./dependencies/zig-ansi/src/lib.zig" },
+    };
+    const range = std.build.Pkg{
+        .name = "range",
+        .path = std.build.FileSource{ .path = "./dependencies/zig-range/src/lib.zig" },
+    };
 };
 
 pub fn build(b: *std.build.Builder) void {
@@ -28,6 +43,7 @@ pub fn build(b: *std.build.Builder) void {
     exe.setBuildMode(mode);
     exe.addPackage(pkgs.injector);
     exe.addPackage(pkgs.utils);
+    exe.addPackage(pkgs.inquirer);
     exe.install();
 
     const run_cmd = exe.run();

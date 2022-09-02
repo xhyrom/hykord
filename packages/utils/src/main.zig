@@ -4,9 +4,55 @@ pub const Environment = @import("./environment.zig");
 pub const Logger = @import("./logger.zig");
 pub const string = []const u8;
 pub const stringM = []u8;
+pub const allocator = std.heap.page_allocator;
+pub const discord_platform = enum { stable, ptb, canary, dev, development };
 
-pub fn homedir() string {
-    if (comptime Environment.isWindows) return std.os.getenv("USERPROFILE") orelse "unknown";
+pub fn join_path(paths: []const []const u8) string {
+    return std.fs.path.join(allocator, paths) catch unreachable;
+}
 
-    return std.os.getenv("HOME") orelse "unknown";
+pub fn handle_error(err: anytype, inject_client: bool) void {
+    if (@TypeOf(err) == std.os.WriteError) {
+        switch(err) {
+            error.AccessDenied => {
+                if (inject_client)
+                    Logger.err("Hykord wasn't able to inject. Please re-run command with permissions.", .{})
+                else
+                    Logger.err("Hykord wasn't able to uninject. Please re-run command with permissions.", .{});
+
+                return;
+            },
+            else => {
+                if (inject_client)
+                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
+                else
+                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
+                return;
+            },
+        }
+    } else {
+        switch(err) {
+            error.AccessDenied => {
+                if (inject_client)
+                    Logger.err("Hykord wasn't able to inject. Please re-run command with permissions.", .{})
+                else
+                    Logger.err("Hykord wasn't able to uninject. Please re-run command with permissions.", .{});
+
+                return;
+            },
+            error.FileNotFound => {
+                Logger.err("It looks like you don't have injected discord client.", .{});
+                return;
+            },
+            else => {
+                if (inject_client and err == error.PathAlreadyExists) return;
+
+                if (inject_client)
+                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
+                else
+                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
+                return;
+            },
+        }
+    }
 }

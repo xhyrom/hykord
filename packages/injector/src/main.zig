@@ -4,7 +4,7 @@ const global = @import("global.zig");
 const utils = @import("utils");
 const Logger = utils.Logger;
 const string = utils.string;
-const allocator = std.heap.page_allocator;
+const allocator = utils.allocator;
 
 pub fn main() void {
     var args = std.process.argsAlloc(allocator) catch unreachable;
