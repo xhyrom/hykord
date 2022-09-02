@@ -5,7 +5,7 @@ const string = utils.string;
 const allocator = std.heap.page_allocator;
 
 pub const C = @import("c.zig");
-pub const discord_platform = enum { stable, ptb, canary, development };
+pub const discord_platform = enum { stable, ptb, canary, dev, development };
 
 pub fn join_path(paths: []const []const u8) string {
     return std.fs.path.join(allocator, paths) catch unreachable;

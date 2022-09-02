@@ -16,7 +16,7 @@ pub fn main() void {
     }
 
     if (args.len == 1) {
-        Logger.err("Please, specify what your discord platform, stable, ptb, canary, development", .{});
+        Logger.err("Please, specify what your discord platform, stable, ptb, canary, dev, development", .{});
         return;
     }
 
