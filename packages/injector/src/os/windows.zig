@@ -17,7 +17,7 @@ pub fn does_file_exist(path: string) bool {
 }
 
 pub fn get_app_directory(platform: discord_platform) string {
-    const localAppData: string = std.os.getenvW("LOCALAPPDATA") orelse "unknown";
+    const localAppData: string = std.process.getEnvVarOwned(allocator, "LOCALAPPDATA") catch unreachable;
 
     var searched: ?string = null;
     switch(platform) {
