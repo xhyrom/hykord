@@ -15,7 +15,7 @@ pub fn get_app_directory(platform: discord_platform) string {
         .stable => searched = std.fmt.allocPrint(allocator, "{s}/Discord", .{localAppData}) catch unreachable,
         .ptb => searched = std.fmt.allocPrint(allocator, "{s}/DiscordPTB", .{localAppData}) catch unreachable,
         .canary => searched = std.fmt.allocPrint(allocator, "{s}/DiscordCanary", .{localAppData}) catch unreachable,
-        .development => searched = std.fmt.allocPrint(allocator, "{s}/DiscordDevelopment", .{localAppData}) catch unreachable,
+        else => searched = std.fmt.allocPrint(allocator, "{s}/DiscordDevelopment", .{localAppData}) catch unreachable,
     }
 
     if (searched != null) return searched.?;

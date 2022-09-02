@@ -28,7 +28,7 @@ pub fn get_app_directory(platform: discord_platform) string {
         .stable => searched = search(stablePaths),
         .ptb => searched = search(ptbPaths),
         .canary => searched = search(canaryPaths),
-        .development => searched = search(developmentPaths),
+        else => searched = search(developmentPaths),
     }
 
     while (searched == null or std.os.system.access(allocator.dupeZ(u8, searched.?) catch unreachable, std.os.F_OK) != 0) {

@@ -13,7 +13,7 @@ pub fn get_app_directory(platform: discord_platform) string {
         .stable => searched = "/Applications/Discord.app/Contents/Resources/app",
         .ptb => searched = "/Applications/Discord PTB.app/Contents/Resources/app",
         .canary => searched = "/Applications/Discord Canary.app/Contents/Resources/app",
-        .development => searched = "/Applications/Discord Development.app/Contents/Resources/app",
+        else => searched = "/Applications/Discord Development.app/Contents/Resources/app",
     }
 
     var asked = false;
