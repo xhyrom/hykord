@@ -43,5 +43,5 @@ pub fn get_app_directory(platform: discord_platform) string {
         app_version_dir = app_dir.name;
     }
 
-    return join_path(&.{searched, app_version_dir, "resources", "app"});
+    return join_path(&.{searched.?, app_version_dir, "resources", "app"});
 }
