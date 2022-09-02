@@ -1,1 +1,2 @@
-export { Plugin } from "./Plugin";
+export { Plugin } from './Plugin';
+export { Theme } from './Theme';

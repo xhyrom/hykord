@@ -2,18 +2,18 @@ interface PluginOptions {
     name: string;
     author: string;
     description: string;
-    onEnable: () => void;
+    onEnable: () => string;
     onDisable?: () => void;
 }
 
-export class Plugin {
+export class Theme {
     public name: string;
     public author: string;
     public description: string;
     public enabled = false;
     public loading = false;
     public broken = false;
-    public onEnable: () => void;
+    public onEnable: () => string;
     public onDisable?: () => void;
 
     constructor(options: PluginOptions) {
@@ -23,6 +23,6 @@ export class Plugin {
         this.onEnable = options.onEnable;
         this.onDisable = options.onDisable;
 
-        window.hykord.plugins.register(this);
+        window.hykord.themes.register(this);
     }
 }

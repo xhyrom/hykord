@@ -5,8 +5,11 @@ import { join } from "path";
 import Logger from "@module/logger";
 
 export class PluginsManager {
-    location: string;
-    plugins: Map<string, Plugin>
+    private location: string;
+    private plugins: Map<string, Plugin>;
+    private modules: {
+        utilities: typeof import('@module/utilities');
+    };
 
     constructor() {
         this.location = null;
@@ -19,6 +22,9 @@ export class PluginsManager {
 
     public async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/plugins`;
+        this.modules = {
+            utilities: require('@module/utilities'),
+        }
 
         await mkdirIfNotExists(this.location);
         await this.loadPlugins();
@@ -26,23 +32,31 @@ export class PluginsManager {
 
     public async togglePlugin(plugin: Plugin): Promise<boolean> {
         if (plugin.enabled) {
+            window.hykord.settings.addToSeting('hykord.disabled_plugins', this.modules.utilities.nameToId(plugin.name));
             await this.disablePlugin(plugin);
+
             return false;
         } else {
+            window.hykord.settings.removeFromSeting('hykord.disabled_plugins', this.modules.utilities.nameToId(plugin.name));
             await this.enablePlugin(plugin);
+
             return true;
         }
     }
 
     public async enablePlugin(plugin: Plugin) {
+        if ((window.hykord.settings.getSetting('hykord.disabled_plugins', []) as string[]).includes(this.modules.utilities.nameToId(plugin.name))) return false;
+
         plugin.loading = true;
         await plugin.onEnable();
         plugin.enabled = true;
         plugin.loading = false;
+
+        return true;
     }
 
     public async disablePlugin(plugin: Plugin) {
-        await plugin.onDisable();
+        await plugin.onDisable?.();
         plugin.enabled = false;
     }
 
@@ -53,7 +67,7 @@ export class PluginsManager {
             Logger.info(`Initializing plugin ${pluginDirectory.name}.`);
             await Promise.resolve(import(`${join(this.location, pluginDirectory.name, 'dist', 'index.js')}`))
                 .catch(error => {
-                    Logger.err(`Failed to initialize plugin ${pluginDirectory.name} - ${error.code ?? ''} ${error.message}`)
+                    Logger.err(`Failed to initialize plugin ${pluginDirectory.name} - ${error.code ?? ''} ${error.message}`);
                 })
                 .then(() => {
                     Logger.info(`Plugin ${pluginDirectory.name} has been initialized.`);
@@ -66,8 +80,16 @@ export class PluginsManager {
             await Promise.resolve(this.enablePlugin(plugin))
                 .catch(error => {
                     Logger.err(`Failed to load plugin ${plugin.name} - ${error.code ?? ''} ${error.message}`);
+
+                    plugin.broken = true;
                 })
-                .then(() => {
+                .then((v: boolean) => {
+                    if (!v) {
+                        Logger.warn(`Skipping plugin ${plugin.name} because it's disabled.`);
+
+                        return;
+                    }
+
                     Logger.info(`Plugin ${plugin.name} has been loaded.`);
 
                     plugin.enabled = true;

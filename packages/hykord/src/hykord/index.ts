@@ -4,16 +4,19 @@ import Logger from '@module/logger';
 import { SettingsManager } from './managers/Settings';
 import { mkdirIfNotExists } from '@module/fs/promises';
 import { PluginsManager } from './managers/Plugins';
+import { ThemesManager } from './managers/Themes';
 
 export class Hykord {
   folder: string;
   settings: SettingsManager;
   plugins: PluginsManager;
+  themes: ThemesManager;
 
   constructor() {
     this.folder = null;
     this.settings = new SettingsManager();
     this.plugins = new PluginsManager();
+    this.themes = new ThemesManager();
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.init());
@@ -30,6 +33,7 @@ export class Hykord {
 
     await this.settings.init(); // Init settings manager
     await this.plugins.init(); // Init & load plugins
+    await this.themes.init(); // Init & load themes
     ui(); // Inject UI
   }
 

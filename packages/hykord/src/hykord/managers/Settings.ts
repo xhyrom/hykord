@@ -1,15 +1,17 @@
 import { readAndIfNotExistsCreate } from '@module/fs/promises';
 import { writeFile } from 'fs/promises';
 
-type stringOrBoolean = string | boolean;
+type SettingValue = string | boolean | string[];
 export type HykordSettings =
     'discord.experiments' |
     'discord.allow_nsfw_and_bypass_age_requirement' |
-    'hykord.enable_dev_experiment_mod';
+    'hykord.enable_dev_experiment_mod' |
+    'hykord.disabled_plugins' |
+    'hykord.disabled_themes';
 
 export class SettingsManager {
     private location: string;
-    private settings: Map<HykordSettings, boolean | string>;
+    private settings: Map<HykordSettings, SettingValue>;
     private modules: {
         webpack: typeof import('@module/webpack');
         patcher: typeof import('@module/patcher');
@@ -39,7 +41,7 @@ export class SettingsManager {
         return this;
     }
 
-    public getSetting(name: HykordSettings, defaultValue?: stringOrBoolean): stringOrBoolean {
+    public getSetting(name: HykordSettings, defaultValue?: SettingValue): SettingValue {
         return this.settings.get(name) || defaultValue;
     }
 
@@ -48,14 +50,28 @@ export class SettingsManager {
         return this.setSetting(name, !old) as boolean;
     }
 
-    public setSetting(name: HykordSettings, value: stringOrBoolean): stringOrBoolean {
+    public addToSeting(name: HykordSettings, value: string): string[] {
+        const old = this.getSetting(name) as string[] || [];
+        old.push(value);
+
+        return this.setSetting(name, old) as string[];
+    }
+
+    public removeFromSeting(name: HykordSettings, value: string): string[] {
+        let old = this.getSetting(name) as string[] || [];
+        old = old.filter(e => e !== value);
+
+        return this.setSetting(name, old) as string[];
+    }
+
+    public setSetting(name: HykordSettings, value: SettingValue): SettingValue {
         this.settings.set(name, value);
 
         writeFile(this.location, JSON.stringify(this.deepen(this.settings)));
         return value;
     }
 
-    public getAllSettings(): Map<HykordSettings, stringOrBoolean> {
+    public getAllSettings(): Map<HykordSettings, SettingValue> {
         return this.settings;
     }
 
@@ -119,13 +135,13 @@ export class SettingsManager {
         }
     }
 
-    private convertToMap(object: unknown, key?: string, map?: Map<HykordSettings, stringOrBoolean>) {
+    private convertToMap(object: unknown, key?: string, map?: Map<HykordSettings, SettingValue>) {
         map = map || new Map();
     
         for (const [name, v] of Object.entries(object)) {
             const value = v as string | boolean;
 
-            if (typeof value !== 'object') map.set(key + name as HykordSettings, value);
+            if (typeof value !== 'object' || Array.isArray(value)) map.set(key + name as HykordSettings, value);
             else this.convertToMap(value, `${key ? `${key}` : ''}${name}.`, map);
         }
     

@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "example-plugin",
   "version": "0.1.0",
   "scripts": {
     "build": "tsc -p ."

@@ -4,7 +4,7 @@ import Logger from "logger";
 import Test from "./components/Test";
 
 new Plugin({
-	name: "example",
+	name: "example-plugin",
 	author: "Example Author",
 	description: "This is example plugin",
 	onEnable: async() => {

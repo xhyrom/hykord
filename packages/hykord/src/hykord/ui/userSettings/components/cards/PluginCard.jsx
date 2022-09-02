@@ -13,7 +13,7 @@ export default class extends React.Component {
   render() {
     return (
         <ErrorBoundary>
-          <Card className="hykord-plugin-card">
+          <Card className="hykord-card">
             <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
               <FormText tag="h5">
                 <strong>{this.plugin.name}</strong>{this.plugin.author ? <> by <strong>{this.plugin.author || '-'}</strong></> : null }
@@ -21,6 +21,7 @@ export default class extends React.Component {
 
               <BooleanItem
                     toggle={() => this.plugins.togglePlugin(this.plugin)}
+                    disabled={this.plugin.broken}
                     value={this.plugin.enabled}
                 />
             </Flex>

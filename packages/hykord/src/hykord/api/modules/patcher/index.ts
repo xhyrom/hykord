@@ -1,4 +1,5 @@
 import { findAsync } from "@module/webpack";
+//import { nameToId } from "@module/utilities";
 
 export const findAndPatch = (moduleFinder, patchCallback) => {
   let cancelled = false;
@@ -17,11 +18,11 @@ export const findAndPatch = (moduleFinder, patchCallback) => {
   };
 };
 
-export const injectCss = (css: string) => {
+export const injectCss = (css: string, id?: string) => {
   const style = Object.assign(
     document.createElement('style'),
     {
-      className: 'HYKORD_INJECTED_CSS',
+      className: `HYKORD_INJECTED_CSS${id ? `-${id.replaceAll(' ', '-')}` : ''}}`,
       textContent: css,
     }
   );
@@ -32,6 +33,11 @@ export const injectCss = (css: string) => {
     if (!newCss) style.remove();
     else style.textContent = newCss;
   }
+}
+
+export const uninjectCssById = (id: string) => {
+  for (const css of Array.from(document.getElementsByClassName(`HYKORD_INJECTED_CSS-${id.replaceAll(' ', '-')}`)))
+    css.remove();
 }
 
 export const unpatchCss = () => {
