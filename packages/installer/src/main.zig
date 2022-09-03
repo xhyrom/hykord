@@ -27,6 +27,8 @@ pub fn main() anyerror!void {
         handle_error(err, true);
     };
 
+    std.debug.print("test {s} {s} {s}", .{@tagName(platform), discord_directory, hykord_source_directory});
+
     // mus tdownload fiiiiiiiiiiiiiiiiiiiiile
     // const argv = &[_][]const u8{ "bash", "-c", "'curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep 'browser_download_url.*deb''" };
     // const child = try std.ChildProcess.init(argv, allocator);
