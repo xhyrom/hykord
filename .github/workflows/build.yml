@@ -88,13 +88,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
+        with:
+          path: artifacts
 
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "artifacts/*"
-          path: artifacts
           draft: true
+          tag: canary
 
       - run: ls artifacts/*
 
