@@ -54,6 +54,10 @@ build-hykord-dependencies:
 	@cd packages/hykord/src/dependencies/spitroast && bun install && bun run prepublish
 	@cd packages/hykord/src/dependencies/websmack && bun install && bun run prepublish
 
+build-loaders:
+	@cd packages/loaders && sh build.sh
+
+
 run-injector: build-injector
 	@cd packages/injector/ && ./zig-out/bin/injector
 

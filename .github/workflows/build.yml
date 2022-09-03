@@ -82,6 +82,17 @@ jobs:
           name: injector-${{ matrix.settings.platform }}-amd64
           path: packages/injector/zig-out/bin/injector.exe
 
+      - name: Build loaders
+        if: matrix.settings.platform == 'linux'
+        run: make build-loaders
+
+      - name: Upload loaders Linux
+        uses: actions/upload-artifact@v3
+        if: matrix.settings.platform == 'linux'
+        with:
+          name: loaders
+          path: packages/loaders/dist/
+
       - name: Build hykord
         if: matrix.settings.platform == 'linux'
         run: make build-hykord
@@ -122,7 +133,7 @@ jobs:
             installer-windows-amd64.zip
             injector-linux-amd64.zip
             injector-darwin-amd64.zip
-            injector-windows-amd64.zip
+            artifacts/loaders/loader-powercord-and-replugged.zip
             hykord.zip
           tag_name: canary
 
