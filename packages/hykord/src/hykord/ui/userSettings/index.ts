@@ -2,7 +2,7 @@ import { initUserSettings, registerSection } from "@api/ui/userSettingsHykord"
 import Options from "./components/Options"
 import Plugins from "./components/Plugins";
 import Themes from "./components/Themes";
-import Test from "./components/Test";
+import Test from "./components/experiments/Test";
 
 export default async() => {
     registerSection("HYKORD_OPTIONS", "Options", await Options());

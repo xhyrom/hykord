@@ -3,6 +3,7 @@ import AsyncComponent from './AsyncComponent';
 
 export * as inputs from './inputs';
 export * as items from './items';
+export * as other from './other';
 
 export { ErrorBoundary } from './ErrorBoundary';
 
@@ -14,12 +15,20 @@ const recreateProps = (obj): string[] => {
     );
 }
 
+/** OFFICIAL DISCORD COMPONENTS */
+
 export const Button = AsyncComponent.from(findAsync(() => findByProps('BorderColors', 'Colors')));
 export const Divider = AsyncComponent.from(findAsync(() => findByDisplayName('Divider')));
 export const Card = AsyncComponent.from(findAsync(() => findByDisplayName('Card')));
 export const Flex = AsyncComponent.from(findAsync(() => findByDisplayName('Flex')));
 export const Header = AsyncComponent.from(findAsync(() => findByProps('Sizes', 'Tags')));
 export const Markdown = AsyncComponent.from(findAsync(() => findByDisplayNameAll('Markdown')[1]));
+export const SearchBar = AsyncComponent.from(findAsync(() => findByDisplayName('SearchBar')));
+
+/** Input related components */
+export const TextInput = AsyncComponent.from(findAsync(() => findByDisplayName('TextInput')));
+export const Switch = AsyncComponent.from(findAsync(() => findByDisplayName('Switch')));
+export const SwitchItem = AsyncComponent.from(findAsync(() => findByDisplayName('SwitchItem')));
 
 /** Form related components */
 export const FormText = AsyncComponent.from(findAsync(() => findByDisplayName('FormText')));
@@ -46,3 +55,7 @@ findAsync(() => findByDisplayName('FormNotice')).then(FormNotice => {
 findAsync(() => findByDisplayName('Flex')).then(Flex => {
     recreateProps(Flex).forEach(p => exports.Flex[p] = Flex[p]);
 });
+
+findAsync(() => findByDisplayName('SearchBar')).then(SearchBar => {
+    recreateProps(SearchBar).forEach(p => exports.SearchBar[p] = SearchBar[p]);
+})

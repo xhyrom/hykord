@@ -5,7 +5,7 @@ import { join } from "path";
 import Logger from "@hykord/logger";
 
 export class PluginsManager {
-    private location: string;
+    public location: string;
     private plugins: Map<string, Plugin>;
     private modules: {
         utilities: typeof import('@hykord/utilities');

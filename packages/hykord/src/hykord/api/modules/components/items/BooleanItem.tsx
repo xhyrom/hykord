@@ -1,14 +1,14 @@
-import { React, findByDisplayName } from "@hykord/webpack";
+import { React } from "@hykord/webpack";
+import { FormItem, Switch } from '..';
 
-export class Boolean extends React.Component {
+export class BooleanItem extends React.Component {
     constructor (props) {
         super(props);
 
         this.toggle = props.toggle;
         this.postHandle = props.postHandle;
-        this.note = props.note;
         this.value = props.value;
-        this.label = props.label;
+        this.disabled = props.disabled;
         
         this.state = {
             value: this.value
@@ -28,14 +28,13 @@ export class Boolean extends React.Component {
     }
   
     render () {
-        const SwitchItem = findByDisplayName("SwitchItem");
-        const FormItem = findByDisplayName("FormItem");
-
         return (
             <FormItem>
-                <SwitchItem note={this.note} value={this.state.value} onChange={this.handleChange}>
-                    {this.label}
-                </SwitchItem>
+                <Switch
+                    disabled={this.disabled}
+                    checked={this.state.value}
+                    onChange={this.handleChange}
+                />
             </FormItem>
         )
     }

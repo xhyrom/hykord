@@ -8,10 +8,10 @@ import { PluginsManager } from './managers/Plugins';
 import { ThemesManager } from './managers/Themes';
 
 export class Hykord {
-  folder: string;
-  settings: SettingsManager;
-  plugins: PluginsManager;
-  themes: ThemesManager;
+  public folder: string;
+  public settings: SettingsManager;
+  public plugins: PluginsManager;
+  public themes: ThemesManager;
 
   constructor() {
     this.folder = null;

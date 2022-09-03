@@ -5,7 +5,7 @@ import { join } from "path";
 import Logger from "@hykord/logger";
 
 export class ThemesManager {
-    private location: string;
+    public location: string;
     private themes: Map<string, Theme>;
     private modules: {
         utilities: typeof import('@hykord/utilities');
