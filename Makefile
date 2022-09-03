@@ -55,7 +55,7 @@ build-hykord-dependencies:
 	@cd packages/hykord/src/dependencies/websmack && bun install && bun run prepublish
 
 build-loaders:
-	@cd packages/loaders && chmod u+x build.sh && ./build.sh
+	@cd packages/loaders && ./build.sh
 
 
 run-injector: build-injector
