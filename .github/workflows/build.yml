@@ -4,10 +4,18 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        settings:
+          - os: ubuntu-latest
+            platform: linux
+
+          - os: macos-latest
+            platform: darwin
+          
+          - os: windows-latest
+            platform: windows
+    runs-on: ${{ matrix.settings.os }}
 
     steps:
       - uses: actions/checkout@v2
@@ -22,7 +30,7 @@ jobs:
 
       - name: Setup Bun
         uses: xhyrom/setup-bun@v0.1.7
-        if: matrix.os != 'windows-latest'
+        if: matrix.settings.platform != 'windows'
         with:
           bun-version: latest
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +41,7 @@ jobs:
           node-version: 18
 
       - name: Uname
-        if: matrix.os != 'windows-latest'
+        if: matrix.settings.platform != 'windows'
         run: uname -a
 
       - name: Init
@@ -43,44 +51,44 @@ jobs:
       - name: Build installer
         run: make build-installer
       
-      - name: Upload installer Linux/MacOS
+      - name: Upload installer Linux/darwin
         uses: actions/upload-artifact@v3
-        if: matrix.os != 'windows-latest'
+        if: matrix.settings.platform != 'windows'
         with:
-          name: installer-${{ matrix.os }}-amd64
+          name: installer-${{ matrix.settings.platform }}-amd64
           path: packages/installer/zig-out/bin/installer
 
       - name: Upload installer Windows
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'windows-latest'
+        if: matrix.settings.platform == 'windows'
         with:
-          name: installer-${{ matrix.os }}-amd64
+          name: installer-${{ matrix.settings.platform }}-amd64
           path: packages/installer/zig-out/bin/installer.exe
 
       - name: Build injector
         run: make build-injector
       
-      - name: Upload injector Linux/MacOS
+      - name: Upload injector Linux/darwin
         uses: actions/upload-artifact@v3
-        if: matrix.os != 'windows-latest'
+        if: matrix.settings.platform != 'windows'
         with:
-          name: injector-${{ matrix.os }}-amd64
+          name: injector-${{ matrix.settings.platform }}-amd64
           path: packages/injector/zig-out/bin/injector
 
       - name: Upload injector Windows
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'windows-latest'
+        if: matrix.settings.platform == 'windows'
         with:
-          name: injector-${{ matrix.os }}-amd64
+          name: injector-${{ matrix.settings.platform }}-amd64
           path: packages/injector/zig-out/bin/injector.exe
 
       - name: Build hykord
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.settings.platform == 'linux'
         run: make build-hykord
 
       - name: Upload hykord Linux
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.settings.platform == 'linux'
         with:
           name: hykord
           path: packages/hykord/dist/
@@ -95,14 +103,30 @@ jobs:
         with:
           path: artifacts
 
-      - name: Create release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "artifacts/*"
-          draft: true
-          tag: canary
+      - name: Zip artifacts
+        run: |
+          zip -r installer-linux-amd64.zip artifacts/installer-linux-amd64
+          zip -r installer-darwin-amd64.zip artifacts/installer-darwin-amd64
+          zip -r installer-windows-amd64.zip artifacts/installer-windows-amd64
+          zip -r injector-linux-amd64.zip artifacts/injector-linux-amd64
+          zip -r injector-darwin-amd64.zip artifacts/injector-darwin-amd64
+          zip -r injector-windows-amd64.zip artifacts/injector-windows-amd64
+          zip -r hykord.zip artifacts/hykord
 
-      - run: ls artifacts/*
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            installer-linux-amd64.zip
+            installer-darwin-amd64.zip
+            installer-windows-amd64.zip
+            injector-linux-amd64.zip
+            injector-darwin-amd64.zip
+            injector-windows-amd64.zip
+            hykord.zip
+          tag_name: canary
+
+      - run: ls *
 
       - name: Push to branch
         uses: JamesIves/github-pages-deploy-action@4.1.4
