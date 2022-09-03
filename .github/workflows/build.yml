@@ -79,3 +79,25 @@ jobs:
         with:
           name: hykord
           path: packages/hykord/dist/
+
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v3
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "artifacts/*"
+          path: artifacts
+          draft: true
+
+      - run: ls artifacts/*
+
+      - name: Push to branch
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: hykord-dist
+          folder: ./artifacts/hykord
