@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "rootDir": "src",
+        "rootDirs": ["src", "dist"],
         "outDir": "dist",
         "esModuleInterop": true,
         "allowJs": true,
@@ -9,18 +10,18 @@
         "module": "CommonJS",
         "moduleResolution": "Node",
         "skipLibCheck": true,
-        "baseUrl": "./src",
+        "baseUrl": ".",
         "jsx": "react",
         "removeComments": true,
         "paths": {
-            "@hykord/*": ["hykord/api/modules/*"],
-            "@dependency/*": ["dependencies/*"],
-            "@api/*": ["hykord/api/*"]
+            "@hykord/*": ["./src/hykord/api/modules/*", "./dist/hykord/api/modules/*"],
+            "@dependency/*": ["./src/dependencies/*", "./dist/dependencies/*"],
+            "@api/*": ["./src/hykord/api/*", "./dist/hykord/api/*"]
         },
         "plugins": [
             {
                 "transform": "typescript-transform-paths",
-                "afterDeclarations": true
+                "useRootDirs": true
             }
         ],
         "typeRoots": ["src/types", "node_modules/@types"]
