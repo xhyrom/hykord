@@ -9,7 +9,7 @@
           "root": ["./dist"],
           "alias": {
             "@hykord": "./dist/hykord/api/modules",
-            "@dependency": "./dist/dependency",
+            "@dependency": "./dist/dependencies",
             "@api": "./dist/hykord/api"
           }
         }
