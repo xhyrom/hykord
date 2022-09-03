@@ -84,7 +84,7 @@ jobs:
 
       - name: Build loaders
         if: matrix.settings.platform == 'linux'
-        run: cd packages/loaders && ./packages/loaders/build.sh
+        run: cd packages/loaders && ./build.sh
 
       - name: Upload loaders Linux
         uses: actions/upload-artifact@v3
