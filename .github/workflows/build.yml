@@ -82,7 +82,7 @@ jobs:
           name: injector-${{ matrix.settings.platform }}-amd64
           path: packages/injector/zig-out/bin/injector.exe
 
-      - run: test = ("testt")
+      - run: test=("testt")
 
       - name: Build loaders
         if: matrix.settings.platform == 'linux'
