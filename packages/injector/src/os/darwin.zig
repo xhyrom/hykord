@@ -12,7 +12,7 @@ pub fn does_file_exist(file: string) bool {
 }
 
 pub fn get_hykord_default_source_folder() string {
-    const home = std.os.getenv("HOME") catch unreachable;
+    const home = std.os.getenv("HOME") orelse "unknown";
 
     return join_path(&.{home, ".hykord"});
 }
