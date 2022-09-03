@@ -32,6 +32,10 @@ jobs:
         with:
           node-version: 18
 
+      - name: Uname
+        if: matrix.os != 'windows-latest'
+        run: uname -a
+
       - name: Init
         run: make init
 
