@@ -30,7 +30,7 @@ pub fn handle_error(err: anytype, inject_client: bool) void {
                 return;
             },
         }
-    } else {
+    } else if(@TypeOf(err) == std.fs.File.OpenError or @TypeOf(err) == std.os.UnlinkError or @TypeOf(err) == std.fs.Dir.DeleteDirError) {
         switch(err) {
             error.AccessDenied => {
                 if (inject_client)
@@ -45,14 +45,25 @@ pub fn handle_error(err: anytype, inject_client: bool) void {
                 return;
             },
             else => {
-                if (inject_client and err == error.PathAlreadyExists) return;
-
                 if (inject_client)
                     Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
                 else
                     Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
                 return;
             },
+        }
+    } else if(@TypeOf(err) == @typeInfo(@typeInfo(@TypeOf(std.fs.makeDirAbsolute)).Fn.return_type.?).ErrorUnion.error_set) {
+        switch(err) {
+            error.PathAlreadyExists => {
+                // Ignore
+            },
+            else => {
+                if (inject_client)
+                    Logger.err("Hykord wasn't able to inject. Error: {s} {s}", .{ @errorName(err), @TypeOf(err) })
+                else
+                    Logger.err("Hykord wasn't able to uninject. Error: {s} {s}", .{ @errorName(err), @TypeOf(err) });
+                return;
+            }
         }
     }
 }
