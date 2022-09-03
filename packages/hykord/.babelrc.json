@@ -1,0 +1,18 @@
+{
+    "inputSourceMap": false,
+    "sourceMaps": false,
+    "presets": ["minify"],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": ["./dist"],
+          "alias": {
+            "@hykord": "./dist/hykord/api/modules",
+            "@dependency": "./dist/dependency",
+            "@api": "./dist/hykord/api"
+          }
+        }
+      ]
+    ]
+}
