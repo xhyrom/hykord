@@ -59,9 +59,9 @@ pub fn handle_error(err: anytype, inject_client: bool) void {
             },
             else => {
                 if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Error: {s} {s}", .{ @errorName(err), @TypeOf(err) })
+                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
                 else
-                    Logger.err("Hykord wasn't able to uninject. Error: {s} {s}", .{ @errorName(err), @TypeOf(err) });
+                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
                 return;
             }
         }

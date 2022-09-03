@@ -89,7 +89,6 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
@@ -128,3 +127,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Hykord modified:
+# removed dist
+# added:
+
+deno/
+.github/
+bun.lockb
+package-lock.json
+pnpm-lock.yaml
+tsconfig.json
+README.md

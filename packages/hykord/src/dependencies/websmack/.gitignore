@@ -1,3 +1,13 @@
-dist.js
 node_modules
-.idea
+
+# Hykord modified:
+# removed dist.js, .idea
+# added:
+
+bun.lockb
+package-lock.json
+pnpm-lock.yaml
+tsconfig.json
+.npmignore
+CONTRIBUTING.md
+README.md
