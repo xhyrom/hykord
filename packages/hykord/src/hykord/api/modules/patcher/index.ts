@@ -22,7 +22,7 @@ export const injectCss = (css: string, id?: string) => {
   const style = Object.assign(
     document.createElement('style'),
     {
-      className: `HYKORD_INJECTED_CSS${id ? `-${id.replaceAll(' ', '-')}` : ''}}`,
+      className: `HYKORD_INJECTED_CSS${id ? `-${id.replaceAll(' ', '-')}` : ''}`,
       textContent: css,
     }
   );
