@@ -18,6 +18,6 @@
   "scripts": {
     "prebuild": "rm -rf dist/",
     "build": "ttsc -p .",
-    "postbuild": "rm -rf dist/dependencies && cp package.json ./dist/package.json && cp -r ./src/dependencies/ ./dist/dependencies && rm ./dist/dependencies/**/node_modules/ -rf && minimize-js ./dist/ -w -i -s -d"
+    "postttttttttbuild": "rm -rf dist/dependencies && cp package.json ./dist/package.json && cp -r ./src/dependencies/ ./dist/dependencies && rm ./dist/dependencies/**/node_modules/ -rf && minimize-js ./dist/ -w -i -s -d"
   }
 }

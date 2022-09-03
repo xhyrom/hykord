@@ -1,4 +1,4 @@
-import * as websmack from "@dependency/websmack";
+import * as websmack from "@dependency/websmack/dist/cjs";
 
 const wpChunk = websmack.webpackChunk("webpackChunkdiscord_app");
 export const modules = websmack.webpackChunk("webpackChunkdiscord_app")[1].c;
