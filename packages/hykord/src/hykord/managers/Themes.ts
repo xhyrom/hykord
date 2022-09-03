@@ -1,14 +1,14 @@
-import { Theme } from "@module/structures/Theme";
-import { mkdirIfNotExists } from "@module/fs/promises";
+import { Theme } from "@hykord/structures/Theme";
+import { mkdirIfNotExists } from "@hykord/fs/promises";
 import { readdir } from "fs/promises";
 import { join } from "path";
-import Logger from "@module/logger";
+import Logger from "@hykord/logger";
 
 export class ThemesManager {
     private location: string;
     private themes: Map<string, Theme>;
     private modules: {
-        utilities: typeof import('@module/utilities');
+        utilities: typeof import('@hykord/utilities');
     };
 
     constructor() {
@@ -23,7 +23,7 @@ export class ThemesManager {
     public async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/themes`;
         this.modules = {
-            utilities: require('@module/utilities'),
+            utilities: require('@hykord/utilities'),
         }
 
         await mkdirIfNotExists(this.location);

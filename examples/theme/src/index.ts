@@ -1,4 +1,4 @@
-import { Theme } from "structures";
+import { Theme } from "@hykord/structures";
 import { join } from "path";
 
 new Theme({

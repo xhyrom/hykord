@@ -1,4 +1,4 @@
-import { React } from '@module/webpack';
+import { React } from '@hykord/webpack';
 
 export default class AsyncComponent extends React.PureComponent {
   constructor (props) {

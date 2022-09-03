@@ -1,8 +1,7 @@
-import 'module-alias/register';
-import { React } from "@module/webpack";
-import { Boolean } from '@module/components/inputs';
-import { FormTitle, FormItem, ErrorBoundary } from '@module/components';
-import { openRequiredRestartModal } from '@module/utilities/modals';
+import { React } from "@hykord/webpack";
+import { Boolean } from '@hykord/components/inputs';
+import { FormTitle, FormItem, ErrorBoundary } from '@hykord/components';
+import { openRequiredRestartModal } from '@hykord/utilities/modals';
 
 export default async() => {
     const settings = window.hykord.settings;

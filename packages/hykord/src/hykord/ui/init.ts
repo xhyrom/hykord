@@ -1,4 +1,4 @@
-import Logger from '@module/logger';
+import Logger from '@hykord/logger';
 
 export default () => {
     Logger.info('Injecting UI Styles');

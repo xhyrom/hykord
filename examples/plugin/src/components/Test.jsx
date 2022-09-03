@@ -1,5 +1,5 @@
-import { React } from "webpack";
-import { FormTitle } from "components";
+import { React } from "@hykord/webpack";
+import { FormTitle } from "@hykord/components";
 
 export default async() => {
 	return () => {

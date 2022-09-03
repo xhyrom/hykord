@@ -1,6 +1,6 @@
-import { Plugin } from "structures";
-import { registerSection, unregisterPluginSection } from "utilties";
-import Logger from "logger";
+import { Plugin } from "@hykord/structures";
+import { registerSection, unregisterPluginSection } from "@hykord/utilties";
+import Logger from "@hykord/logger";
 import Test from "./components/Test";
 
 new Plugin({

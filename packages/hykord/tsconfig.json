@@ -13,10 +13,15 @@
         "jsx": "react",
         "removeComments": true,
         "paths": {
-            "@hykord/*": ["hykord/*"],
+            "@hykord/*": ["hykord/api/modules/*"],
             "@dependency/*": ["dependencies/*"],
-            "@module/*": ["hykord/api/modules/*"]
+            "@api/*": ["hykord/api/*"]
         },
+        "plugins": [
+            {
+                "transform": "typescript-transform-paths",
+            }
+        ],
         "typeRoots": ["src/types", "node_modules/@types"]
     }
 }

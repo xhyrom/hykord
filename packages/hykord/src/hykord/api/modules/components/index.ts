@@ -1,4 +1,4 @@
-import { findByDisplayName, findByDisplayNameAll, findByProps, findAsync } from '@module/webpack';
+import { findByDisplayName, findByDisplayNameAll, findByProps, findAsync } from '@hykord/webpack';
 import AsyncComponent from './AsyncComponent';
 
 export * as inputs from './inputs';

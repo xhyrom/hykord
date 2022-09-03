@@ -1,4 +1,4 @@
-import { before, after } from "@module/patcher";
+import { before, after } from "@hykord/patcher";
 
 export default function (filter, legacycompat = true) {
   let foundModule = filter();

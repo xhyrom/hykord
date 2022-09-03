@@ -1,7 +1,6 @@
-import 'module-alias/register';
-import { React } from "@module/webpack";
+import { React } from "@hykord/webpack";
 import PluginCard from './cards/PluginCard';
-import { FormTitle, FormSection, ErrorBoundary, FormLabel } from '@module/components';
+import { FormTitle, FormSection, ErrorBoundary, FormLabel } from '@hykord/components';
 
 export default async() => {
     const plugins = window.hykord.plugins;

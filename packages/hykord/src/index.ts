@@ -1,6 +1,6 @@
 /** Start file of Hykord - patcher */
 
-import 'module-alias/register';
+import '@dependency/module-alias/register';
 import Module from 'module';
 import electron from 'electron';
 import path from 'path';
@@ -19,7 +19,7 @@ const packageJson = require(path.resolve(
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 require.main!.filename = path.join(basePath, packageJson.main);
 
-import '@hykord/ipc';
+import './hykord/ipc';
 
 // Inject window
 BrowserWindow.patchBrowserWindow();

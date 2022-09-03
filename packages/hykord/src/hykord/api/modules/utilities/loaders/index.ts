@@ -1,5 +1,5 @@
 import { readFile } from 'fs/promises';
-import { injectCss, uninjectCssById } from '@module/patcher';
+import { injectCss, uninjectCssById } from '@hykord/patcher';
 
 export const loadCss = async(id: string,file: string) => {
     const content = (await readFile(file, {

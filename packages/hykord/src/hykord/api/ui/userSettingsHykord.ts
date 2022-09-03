@@ -1,6 +1,6 @@
-import { findAndPatch, after } from "@module/patcher";
-import { findByDisplayName, React } from "@module/webpack";
-import { FormDivider } from "@module/components";
+import { findAndPatch, after } from "@hykord/patcher";
+import { findByDisplayName, React } from "@hykord/webpack";
+import { FormDivider } from "@hykord/components";
 
 const hykordSections = [];
 let hykordPluginsSections = [];

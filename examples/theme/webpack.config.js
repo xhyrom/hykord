@@ -24,6 +24,6 @@ module.exports = {
   plugins: [new MiniCssExtractPlugin({ filename: 'index.css' })],
   // Better way? Please let me know lol
   externals: {
-   'structures': 'require(\'structures\')'
+   '@hykord/structures': 'require(\'@hykord/structures\')'
   }
 };

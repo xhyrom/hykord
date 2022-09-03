@@ -1,8 +1,9 @@
+import '@dependency/module-alias/register';
 import ui from './ui/init';
 import { webFrame } from 'electron';
-import Logger from '@module/logger';
+import Logger from '@hykord/logger';
 import { SettingsManager } from './managers/Settings';
-import { mkdirIfNotExists } from '@module/fs/promises';
+import { mkdirIfNotExists } from '@hykord/fs/promises';
 import { PluginsManager } from './managers/Plugins';
 import { ThemesManager } from './managers/Themes';
 

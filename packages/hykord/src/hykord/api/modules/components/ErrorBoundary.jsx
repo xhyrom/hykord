@@ -1,6 +1,6 @@
-import { React } from '@module/webpack';
+import { React } from '@hykord/webpack';
 import { FormLabel, FormTitle, Button, FormDivider } from '.';
-import Logger from '@module/logger';
+import Logger from '@hykord/logger';
 
 export class ErrorBoundary extends React.Component {
     constructor (props) {

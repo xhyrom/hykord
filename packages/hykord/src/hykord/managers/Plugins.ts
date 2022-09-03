@@ -1,14 +1,14 @@
-import { Plugin } from "@module/structures/Plugin";
-import { mkdirIfNotExists } from "@module/fs/promises";
+import { Plugin } from "@hykord/structures/Plugin";
+import { mkdirIfNotExists } from "@hykord/fs/promises";
 import { readdir } from "fs/promises";
 import { join } from "path";
-import Logger from "@module/logger";
+import Logger from "@hykord/logger";
 
 export class PluginsManager {
     private location: string;
     private plugins: Map<string, Plugin>;
     private modules: {
-        utilities: typeof import('@module/utilities');
+        utilities: typeof import('@hykord/utilities');
     };
 
     constructor() {
@@ -23,7 +23,7 @@ export class PluginsManager {
     public async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/plugins`;
         this.modules = {
-            utilities: require('@module/utilities'),
+            utilities: require('@hykord/utilities'),
         }
 
         await mkdirIfNotExists(this.location);

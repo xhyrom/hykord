@@ -1,4 +1,4 @@
-import { readAndIfNotExistsCreate } from '@module/fs/promises';
+import { readAndIfNotExistsCreate } from '@hykord/fs/promises';
 import { writeFile } from 'fs/promises';
 
 type SettingValue = string | boolean | string[];
@@ -13,8 +13,8 @@ export class SettingsManager {
     private location: string;
     private settings: Map<HykordSettings, SettingValue>;
     private modules: {
-        webpack: typeof import('@module/webpack');
-        patcher: typeof import('@module/patcher');
+        webpack: typeof import('@hykord/webpack');
+        patcher: typeof import('@hykord/patcher');
     };
     
     constructor() {
@@ -24,8 +24,8 @@ export class SettingsManager {
     async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/settings.json`;
         this.modules = {
-            webpack: require('@module/webpack'),
-            patcher: require('@module/patcher'),
+            webpack: require('@hykord/webpack'),
+            patcher: require('@hykord/patcher'),
         }
 
         const config = await readAndIfNotExistsCreate(

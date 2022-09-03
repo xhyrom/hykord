@@ -1,7 +1,6 @@
-import 'module-alias/register';
-import { React } from "@module/webpack";
+import { React } from "@hykord/webpack";
 import ThemeCard from './cards/ThemeCard';
-import { FormTitle, FormSection, ErrorBoundary, FormLabel } from '@module/components';
+import { FormTitle, FormSection, ErrorBoundary, FormLabel } from '@hykord/components';
 
 export default async() => {
     const themes = window.hykord.themes;

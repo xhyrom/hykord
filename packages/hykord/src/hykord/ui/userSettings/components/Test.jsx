@@ -1,6 +1,6 @@
-import { React } from '@module/webpack';
-import { Button, FormNotice, FormDivider, ErrorBoundary } from '@module/components';
-import { openConfirmationModal } from '@module/utilities/modals';
+import { React } from '@hykord/webpack';
+import { Button, FormNotice, FormDivider, ErrorBoundary } from '@hykord/components';
+import { openConfirmationModal } from '@hykord/utilities/modals';
 
 export default async() => {
     return () => {

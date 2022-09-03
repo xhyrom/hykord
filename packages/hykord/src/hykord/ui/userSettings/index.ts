@@ -1,4 +1,4 @@
-import { initUserSettings, registerSection } from "@hykord/api/ui/userSettingsHykord"
+import { initUserSettings, registerSection } from "@api/ui/userSettingsHykord"
 import Options from "./components/Options"
 import Plugins from "./components/Plugins";
 import Themes from "./components/Themes";

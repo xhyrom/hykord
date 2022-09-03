@@ -1,4 +1,4 @@
-import { React, findByDisplayName } from "@module/webpack";
+import { React, findByDisplayName } from "@hykord/webpack";
 
 export class Boolean extends React.Component {
     constructor (props) {

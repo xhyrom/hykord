@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import * as websmack from "@dependency/websmack";
 
 const wpChunk = websmack.webpackChunk("webpackChunkdiscord_app");

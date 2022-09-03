@@ -1,5 +1,5 @@
-import { findAsync } from "@module/webpack";
-//import { nameToId } from "@module/utilities";
+import { findAsync } from "@hykord/webpack";
+//import { nameToId } from "@hykord/utilities";
 
 export const findAndPatch = (moduleFinder, patchCallback) => {
   let cancelled = false;

@@ -1,7 +1,6 @@
-import 'module-alias/register';
+import '@dependency/module-alias/register';
 import { ipcRenderer, webFrame } from 'electron';
-import { join } from 'path';
-import Logger from '@module/logger';
+import Logger from '@hykord/logger';
 
 import '../hykord/ipc/renderer';
 
@@ -40,10 +39,6 @@ Object.defineProperty(window, 'platform', {
 Object.defineProperty(window, 'require', {
   get: () => require,
 });
-
-require('module').Module.globalPaths.push(
-  join(__dirname, '..', 'hykord', 'api', 'modules'),
-);
 
 const hykord = new (require('../hykord/index').Hykord)();
 Object.defineProperty(window, 'hykord', {

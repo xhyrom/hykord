@@ -1,6 +1,6 @@
-import { React } from '@module/webpack';
-import { BooleanItem } from '@module/components/items'
-import { Card, Flex, Markdown, FormText, ErrorBoundary } from '@module/components';
+import { React } from '@hykord/webpack';
+import { BooleanItem } from '@hykord/components/items'
+import { Card, Flex, Markdown, FormText, ErrorBoundary } from '@hykord/components';
 
 export default class extends React.Component {
   constructor (props) {

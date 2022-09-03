@@ -1,5 +1,5 @@
-import { batchFind, findAsync, React } from '@module/webpack';
-import { Markdown } from '@module/components';
+import { batchFind, findAsync, React } from '@hykord/webpack';
+import { Markdown } from '@hykord/components';
 
 interface ConfirmationModal {
   header?: string;
