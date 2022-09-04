@@ -1,6 +1,7 @@
 import '@dependency/module-alias/register';
 import { ipcRenderer, webFrame } from 'electron';
-import Logger from '@hykord/logger';
+import { Logger as ILogger } from '@hykord/logger';
+const Logger = new ILogger('patcher');
 
 import '../renderer/ipc/renderer';
 

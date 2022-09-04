@@ -1,9 +1,11 @@
+import { Logger } from '@hykord/logger';
+
 interface PluginOptions {
     name: string;
     author: string;
     description: string;
-    onEnable: () => void;
-    onDisable?: () => void;
+    onEnable: (plugin: Plugin) => void;
+    onDisable?: (plugin: Plugin) => void;
 }
 
 export class Plugin {
@@ -13,6 +15,7 @@ export class Plugin {
     public enabled = false;
     public loading = false;
     public broken = false;
+    public logger: Logger;
     public onEnable: () => void;
     public onDisable?: () => void;
 
@@ -20,8 +23,9 @@ export class Plugin {
         this.name = options.name;
         this.author = options.author;
         this.description = options.description;
-        this.onEnable = options.onEnable;
-        this.onDisable = options.onDisable;
+        this.logger = new Logger(`plugin/${this.name}`);
+        this.onEnable = () => options.onEnable(this);
+        this.onDisable = () => options.onDisable(this);
 
         window.hykord.plugins.register(this);
     }

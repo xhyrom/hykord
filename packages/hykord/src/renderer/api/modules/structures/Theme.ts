@@ -1,9 +1,11 @@
+import { Logger } from '@hykord/logger';
+
 interface PluginOptions {
     name: string;
     author: string;
     description: string;
-    onEnable: () => string;
-    onDisable?: () => void;
+    onEnable: (theme: Theme) => string;
+    onDisable?: (theme: Theme) => void;
 }
 
 export class Theme {
@@ -13,6 +15,7 @@ export class Theme {
     public enabled = false;
     public loading = false;
     public broken = false;
+    public logger: Logger;
     public onEnable: () => string;
     public onDisable?: () => void;
 
@@ -20,8 +23,9 @@ export class Theme {
         this.name = options.name;
         this.author = options.author;
         this.description = options.description;
-        this.onEnable = options.onEnable;
-        this.onDisable = options.onDisable;
+        this.logger = new Logger(`theme/${this.name}`);
+        this.onEnable = () => options.onEnable(this);
+        this.onDisable = () => options.onDisable(this);
 
         window.hykord.themes.register(this);
     }
