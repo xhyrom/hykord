@@ -95,6 +95,17 @@ jobs:
           name: loaders
           path: packages/loaders/dist/
 
+      - name: Build plugins
+        if: matrix.settings.platform == 'linux'
+        run: cd packages/plugins && ./build.sh
+
+      - name: Upload plugins Linux
+        uses: actions/upload-artifact@v3
+        if: matrix.settings.platform == 'linux'
+        with:
+          name: plugins
+          path: packages/plugins/dist/
+
       - name: Build core
         if: matrix.settings.platform == 'linux'
         run: make build-core
@@ -136,13 +147,20 @@ jobs:
             injector-linux-amd64.zip
             injector-darwin-amd64.zip
             artifacts/loaders/loader-powercord-and-replugged.zip
+            artifacts/plugins/plugin-plugin-zone.zip
             core.zip
           tag_name: canary
 
       - run: ls *
 
-      - name: Push to branch
+      - name: Push core to branch
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: hykord-dist
           folder: ./artifacts/core
+
+      - name: Push plugins to branch
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: builded-plugins
+          folder: ./artifacts/plugins

@@ -57,6 +57,8 @@ build-core-dependencies:
 build-loaders:
 	@cd packages/loaders && ./build.sh
 
+build-plugins:
+	@cd packages/plugins && ./build.sh
 
 run-injector: build-injector
 	@cd packages/injector/ && ./zig-out/bin/injector

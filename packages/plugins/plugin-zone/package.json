@@ -1,0 +1,11 @@
+{
+  "name": "plugin-zone",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.7",
+    "typescript": "^4.8.2"
+  }
+}

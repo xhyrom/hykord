@@ -2,10 +2,6 @@
   "name": "hykord",
   "version": "0.0.0",
   "author": "xHyroM",
-  "scripts": {
-    "lint": "eslint packages/core/src/ --fix",
-    "format": "prettier --write packages/core/src/**/*.ts"
-  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.0",
     "@typescript-eslint/parser": "^5.36.0",
@@ -13,5 +9,9 @@
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1",
     "typescript": "^4.8.2"
+  },
+  "scripts": {
+    "lint": "eslint packages/core/src/ --fix",
+    "format": "prettier --write packages/core/src/**/*.ts"
   }
 }

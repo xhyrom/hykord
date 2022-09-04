@@ -47,4 +47,4 @@ export class Logger {
     }
 }
 
-export default new Logger('renderer');
+export default new Logger('core');

@@ -1,5 +1,5 @@
 import { Plugin } from "@hykord/structures";
-import { registerSection, unregisterPluginSection } from "@hykord/utilties";
+import { registerSection, unregisterSection } from "@hykord/utilities";
 import Test from "./components/Test";
 
 new Plugin({
@@ -12,6 +12,6 @@ new Plugin({
 	},
 	onDisable: (plugin) => {
 		plugin.logger.info("Message from example plugin, DISABLED!!");
-		unregisterPluginSection("HYKORD_EXAMPLE_PLUGIN");
+		unregisterSection("HYKORD_EXAMPLE_PLUGIN");
 	}
 })

@@ -53,7 +53,7 @@ export class SettingsManager {
 
     public addToSeting(name: HykordSettings, value: string): string[] {
         const old = this.getSetting(name) as string[] || [];
-        old.push(value);
+        if (!old.includes(value)) old.push(value);
 
         return this.setSetting(name, old) as string[];
     }
