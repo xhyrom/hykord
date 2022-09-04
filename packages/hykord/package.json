@@ -10,9 +10,9 @@
     "typescript-transform-paths": "^3.3.1"
   },
   "_moduleAliases": {
-    "@hykord": "hykord/api/modules",
+    "@hykord": "renderer/api/modules",
     "@dependency": "dependencies",
-    "@api": "hykord/api"
+    "@api": "renderer/api"
   },
   "scripts": {
     "prebuild": "rm -rf dist/",

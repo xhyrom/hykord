@@ -1,5 +1,6 @@
 import { batchFind, findAsync, React } from '@hykord/webpack';
 import { Markdown } from '@hykord/components';
+import { IPCRenderer } from '@ipc/renderer';
 
 interface ConfirmationModal {
   header?: string;
@@ -78,4 +79,4 @@ export const openRequiredRestartModal = () => openConfirmationModal({
     cancelText: 'Restart Later',
     content: 'In order to take effect, Discord needs to be restarted. Do you want to restart now?',
     type: 'danger'
-}, (value) => value && window.HykordNative.relaunchApp());
+}, (value) => value && IPCRenderer.relaunchApp());

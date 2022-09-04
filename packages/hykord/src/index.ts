@@ -19,7 +19,7 @@ const packageJson = require(path.resolve(
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 require.main!.filename = path.join(basePath, packageJson.main);
 
-import './hykord/ipc';
+import './patch/ipc';
 
 // Inject window
 BrowserWindow.patchBrowserWindow();

@@ -2,7 +2,7 @@ import '@dependency/module-alias/register';
 import { ipcRenderer, webFrame } from 'electron';
 import Logger from '@hykord/logger';
 
-import '../hykord/ipc/renderer';
+import '../renderer/ipc/renderer';
 
 Logger.info('Loading Hykord');
 
@@ -40,7 +40,7 @@ Object.defineProperty(window, 'require', {
   get: () => require,
 });
 
-const hykord = new (require('../hykord/index').Hykord)();
+const hykord = new (require('../renderer/index').Hykord)();
 Object.defineProperty(window, 'hykord', {
   get: () => hykord,
 });

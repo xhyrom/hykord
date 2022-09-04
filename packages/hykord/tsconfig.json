@@ -14,9 +14,10 @@
         "jsx": "react",
         "removeComments": true,
         "paths": {
-            "@hykord/*": ["./src/hykord/api/modules/*", "./dist/hykord/api/modules/*"],
+            "@hykord/*": ["./src/renderer/api/modules/*", "./dist/renderer/api/modules/*"],
             "@dependency/*": ["./src/dependencies/*", "./dist/dependencies/*"],
-            "@api/*": ["./src/hykord/api/*", "./dist/hykord/api/*"]
+            "@api/*": ["./src/renderer/api/*", "./dist/renderer/api/*"],
+            "@ipc/*": ["./src/renderer/ipc/*", "./dist/renderer/ipc/*"]
         },
         "plugins": [
             {

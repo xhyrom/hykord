@@ -1,6 +1,7 @@
 import { React } from '@hykord/webpack';
 import { Button, FormNotice, FormDivider, ErrorBoundary } from '@hykord/components';
 import { openConfirmationModal } from '@hykord/utilities/modals';
+import { IPCRenderer } from '@ipc/renderer';
 
 export default async() => {
     return () => {
@@ -45,7 +46,7 @@ export default async() => {
                         },
                         (value) => {
                             if (!value) return;
-                            window.HykordNative.relaunchApp();
+                            IPCRenderer.relaunchApp();
                         }
                     )}
                 > 
