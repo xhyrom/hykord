@@ -2,7 +2,7 @@
   "name": "plugin-zone",
   "version": "0.0.1",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs && cp hykord_plugin_zone_manifest.json dist/hykord_plugin_zone_manifest.json"
   },
   "devDependencies": {
     "esbuild": "^0.15.7",
