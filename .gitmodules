@@ -1,6 +1,3 @@
-[submodule "packages/hykord/src/dependencies/spitroast"]
-	path = packages/hykord/src/dependencies/spitroast
-	url = https://github.com/Cumcord/spitroast
 [submodule "packages/installer/dependencies/zig-inquirer"]
 	path = packages/installer/dependencies/zig-inquirer
 	url = https://github.com/nektro/zig-inquirer.git

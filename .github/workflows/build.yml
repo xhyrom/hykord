@@ -95,16 +95,16 @@ jobs:
           name: loaders
           path: packages/loaders/dist/
 
-      - name: Build hykord
+      - name: Build core
         if: matrix.settings.platform == 'linux'
-        run: make build-hykord
+        run: make build-core
 
-      - name: Upload hykord Linux
+      - name: Upload core Linux
         uses: actions/upload-artifact@v3
         if: matrix.settings.platform == 'linux'
         with:
-          name: hykord
-          path: packages/hykord/dist/
+          name: core
+          path: packages/core/dist/
 
   release:
     runs-on: ubuntu-latest
@@ -124,7 +124,7 @@ jobs:
           zip -r injector-linux-amd64.zip artifacts/injector-linux-amd64
           zip -r injector-darwin-amd64.zip artifacts/injector-darwin-amd64
           zip -r injector-windows-amd64.zip artifacts/injector-windows-amd64
-          zip -r hykord.zip artifacts/hykord
+          zip -r core.zip artifacts/core
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -136,7 +136,7 @@ jobs:
             injector-linux-amd64.zip
             injector-darwin-amd64.zip
             artifacts/loaders/loader-powercord-and-replugged.zip
-            hykord.zip
+            core.zip
           tag_name: canary
 
       - run: ls *
@@ -145,4 +145,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: hykord-dist
-          folder: ./artifacts/hykord
+          folder: ./artifacts/core

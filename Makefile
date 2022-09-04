@@ -21,7 +21,7 @@ endef
 init:
 	@git submodule update --init --recursive
 
-build: build-injector build-installer build-hykord
+build: build-injector build-installer build-core
 
 build-installer:
 	$(call info_output,Building installer)
@@ -41,18 +41,18 @@ build-injector:
 
 	$(call success_output,Injector builded in ${NOW} ms)
 
-build-hykord: build-hykord-dependencies
-	$(call info_output,Building hykord)
+build-core: build-core-dependencies
+	$(call info_output,Building core)
 	$(eval FIRST := $(shell date +%Y%m%d%H%M%S))
-	@cd packages/hykord/ && bun install && bun run build
+	@cd packages/core/ && bun install && bun run build
 	$(eval SECOND := $(shell date +%Y%m%d%H%M%S))
 	$(eval NOW := $(shell ./scripts/timestamp.sh ${FIRST} ${SECOND}))
 
-	$(call success_output,Hykord builded in ${NOW} ms)
+	$(call success_output,core builded in ${NOW} ms)
 
-build-hykord-dependencies:
-	@cd packages/hykord/src/dependencies/spitroast && bun install && bun run prepublish
-	@cd packages/hykord/src/dependencies/websmack && bun install && bun run prepublish
+build-core-dependencies:
+	@cd packages/core/src/dependencies/spitroast && bun install && bun run prepublish
+	@cd packages/core/src/dependencies/websmack && bun install && bun run prepublish
 
 build-loaders:
 	@cd packages/loaders && ./build.sh
@@ -62,7 +62,7 @@ run-injector: build-injector
 	@cd packages/injector/ && ./zig-out/bin/injector
 
 run-injector-inject: build-injector
-	@cd packages/injector/ && sudo ./zig-out/bin/injector inject development $(shell pwd)/packages/hykord/dist/index.js
+	@cd packages/injector/ && sudo ./zig-out/bin/injector inject development $(shell pwd)/packages/core/dist/index.js
 
 run-injector-uninject: build-injector
 	@cd packages/injector/ && sudo ./zig-out/bin/injector uninject development
