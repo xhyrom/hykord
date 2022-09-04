@@ -17,7 +17,6 @@ do
     zip -r "dist/plugin-$plugin.zip" "./$plugin/dist"
 
     if [[ $DEV == true ]]; then
-        echo "YES"
         mkdir "$HOME/.hykord/canary/plugins/$plugin"
         rsync -rv --exclude=node_modules "./$plugin/dist" "$HOME/.hykord/canary/plugins/$plugin"
     fi
