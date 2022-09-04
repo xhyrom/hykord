@@ -19,11 +19,7 @@ export class Hykord {
     this.plugins = new PluginsManager();
     this.themes = new ThemesManager();
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.init());
-    } else {
-      this.init();
-    }
+    this.init();
   }
 
   private async init() {
