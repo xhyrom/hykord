@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Hykord } from '../hykord/index';
+import { Hykord } from '../renderer/index';
 
 export {};
 

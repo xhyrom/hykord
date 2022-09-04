@@ -28,6 +28,13 @@ export default async() => {
                 </FormItem>
                 <FormItem title={"Hykord Options"} noteHasMargin>
                     <Boolean
+                        toggle={() => settings.toggleSetting("hykord.bypass_security_check_require")}
+                        note="Bypass security check require in window.require - plugins already have access to all modules"
+                        value={settings.getSetting("hykord.bypass_security_check_require", false)}
+                        label="Bypass Security Check Require"
+                        postHandle={() => openRequiredRestartModal()}
+                    />
+                    <Boolean
                         toggle={() => settings.toggleSetting("hykord.enable_dev_experiment_mod")}
                         note="Enable experiment hykord development mod"
                         value={settings.getSetting("hykord.enable_dev_experiment_mod", false)}

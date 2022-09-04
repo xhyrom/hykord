@@ -6,6 +6,7 @@ export type HykordSettings =
     'discord.experiments' |
     'discord.allow_nsfw_and_bypass_age_requirement' |
     'hykord.enable_dev_experiment_mod' |
+    'hykord.bypass_security_check_require' |
     'hykord.disabled_plugins' |
     'hykord.disabled_themes';
 

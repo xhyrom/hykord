@@ -13,7 +13,7 @@ pub fn join_path(paths: []const []const u8) string {
 
 pub fn handle_error(err: anytype, inject_client: bool) void {
     if (@TypeOf(err) == std.os.WriteError) {
-        switch(err) {
+        switch (err) {
             error.AccessDenied => {
                 if (inject_client)
                     Logger.err("Hykord wasn't able to inject. Please re-run command with permissions.", .{})
@@ -24,14 +24,14 @@ pub fn handle_error(err: anytype, inject_client: bool) void {
             },
             else => {
                 if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
+                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{@errorName(err)})
                 else
-                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
+                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{@errorName(err)});
                 return;
             },
         }
-    } else if(@TypeOf(err) == std.fs.File.OpenError or @TypeOf(err) == std.os.UnlinkError or @TypeOf(err) == std.fs.Dir.DeleteDirError) {
-        switch(err) {
+    } else if (@TypeOf(err) == std.fs.File.OpenError or @TypeOf(err) == std.os.UnlinkError or @TypeOf(err) == std.fs.Dir.DeleteDirError) {
+        switch (err) {
             error.AccessDenied => {
                 if (inject_client)
                     Logger.err("Hykord wasn't able to inject. Please re-run command with permissions.", .{})
@@ -46,24 +46,24 @@ pub fn handle_error(err: anytype, inject_client: bool) void {
             },
             else => {
                 if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
+                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{@errorName(err)})
                 else
-                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
+                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{@errorName(err)});
                 return;
             },
         }
-    } else if(@TypeOf(err) == @typeInfo(@typeInfo(@TypeOf(std.fs.makeDirAbsolute)).Fn.return_type.?).ErrorUnion.error_set) {
-        switch(err) {
+    } else if (@TypeOf(err) == @typeInfo(@typeInfo(@TypeOf(std.fs.makeDirAbsolute)).Fn.return_type.?).ErrorUnion.error_set) {
+        switch (err) {
             error.PathAlreadyExists => {
                 // Ignore
             },
             else => {
                 if (inject_client)
-                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{ @errorName(err) })
+                    Logger.err("Hykord wasn't able to inject. Error: {s}", .{@errorName(err)})
                 else
-                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{ @errorName(err) });
+                    Logger.err("Hykord wasn't able to uninject. Error: {s}", .{@errorName(err)});
                 return;
-            }
+            },
         }
     }
 }

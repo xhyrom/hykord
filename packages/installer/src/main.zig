@@ -17,7 +17,7 @@ pub fn main() anyerror!void {
 
     const default_directory = if (C.does_file_exist(C.get_hykord_default_source_folder())) C.get_hykord_default_source_folder() else null;
     const hykord_directory = inquirer.forString(out, in, "Please, write path for hykord", allocator, default_directory) catch unreachable;
-    const hykord_source_directory = join_path(&.{hykord_directory, "install"});
+    const hykord_source_directory = join_path(&.{ hykord_directory, "install" });
 
     std.fs.makeDirAbsolute(hykord_directory) catch |err| {
         handle_error(err, true);
@@ -27,7 +27,7 @@ pub fn main() anyerror!void {
         handle_error(err, true);
     };
 
-    std.debug.print("test {s} {s} {s}", .{@tagName(platform), discord_directory, hykord_source_directory});
+    std.debug.print("test {s} {s} {s}", .{ @tagName(platform), discord_directory, hykord_source_directory });
 
     // mus tdownload fiiiiiiiiiiiiiiiiiiiiile
     // const argv = &[_][]const u8{ "bash", "-c", "'curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep 'browser_download_url.*deb''" };
