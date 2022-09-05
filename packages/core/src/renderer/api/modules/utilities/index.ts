@@ -11,5 +11,5 @@ export const linkify = (text: string) => {
 }
 
 export const nameToId = (text: string): string => {
-    return text.replaceAll(' ', '-');
+    return text.replaceAll(' ', '-').toLowerCase();
 }

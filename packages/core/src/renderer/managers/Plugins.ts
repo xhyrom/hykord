@@ -1,8 +1,8 @@
-import { Plugin } from "@hykord/structures/Plugin";
-import { mkdirIfNotExists } from "@hykord/fs/promises";
-import { readdir } from "fs/promises";
-import { join } from "path";
-import Logger from "@hykord/logger";
+import { Plugin } from '@hykord/structures/Plugin';
+import { mkdirIfNotExists } from '@hykord/fs/promises';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
+import Logger from '@hykord/logger';
 
 export class PluginsManager {
     public location: string;
@@ -60,41 +60,50 @@ export class PluginsManager {
         plugin.enabled = false;
     }
 
+    public async initializePlugin(name: string) {
+        Logger.info(`Initializing plugin ${name}.`);
+
+        await Promise.resolve(import(`${join(this.location, name, 'dist', 'index.js')}`))
+            .catch(error => {
+                Logger.err(`Failed to initialize plugin ${name} - ${error.code ?? ''} ${error.message}`);
+            })
+            .then(() => {
+                Logger.info(`Plugin ${name} has been initialized.`);
+            })
+    }
+
+    public async loadPlugin(plugin: Plugin) {
+        Logger.info(`Loading plugin ${plugin.name}.`);
+
+        await Promise.resolve(this.enablePlugin(plugin))
+            .catch(error => {
+                Logger.err(`Failed to load plugin ${plugin.name} - ${error.code ?? ''} ${error.message}`);
+
+                plugin.broken = true;
+            })
+            .then((v: boolean) => {
+                if (!v) {
+                    Logger.warn(`Skipping plugin ${plugin.name} because it's disabled.`);
+
+                    return;
+                }
+
+                Logger.info(`Plugin ${plugin.name} has been loaded.`);
+
+                plugin.enabled = true;
+                plugin.loading = false;
+            })
+    }
+
     public async loadPlugins() {
         for (const pluginDirectory of await readdir(this.location, { withFileTypes: true })) {
             if (!pluginDirectory.isDirectory()) continue;
 
-            Logger.info(`Initializing plugin ${pluginDirectory.name}.`);
-            await Promise.resolve(import(`${join(this.location, pluginDirectory.name, 'dist', 'index.js')}`))
-                .catch(error => {
-                    Logger.err(`Failed to initialize plugin ${pluginDirectory.name} - ${error.code ?? ''} ${error.message}`);
-                })
-                .then(() => {
-                    Logger.info(`Plugin ${pluginDirectory.name} has been initialized.`);
-                })
+            await this.initializePlugin(pluginDirectory.name);
         }
 
         for (const plugin of Array.from(this.plugins.values())) {
-            Logger.info(`Loading plugin ${plugin.name}.`);
-
-            await Promise.resolve(this.enablePlugin(plugin))
-                .catch(error => {
-                    Logger.err(`Failed to load plugin ${plugin.name} - ${error.code ?? ''} ${error.message}`);
-
-                    plugin.broken = true;
-                })
-                .then((v: boolean) => {
-                    if (!v) {
-                        Logger.warn(`Skipping plugin ${plugin.name} because it's disabled.`);
-
-                        return;
-                    }
-
-                    Logger.info(`Plugin ${plugin.name} has been loaded.`);
-
-                    plugin.enabled = true;
-                    plugin.loading = false;
-                })
+            await this.loadPlugin(plugin);
         }
     }
 
