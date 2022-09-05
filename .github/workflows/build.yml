@@ -15,7 +15,7 @@ jobs:
 
           - os: macos-latest
             platform: darwin
-            dtarget: x86_64-macosx
+            dtarget: x86_64-macos
           
           - os: windows-latest
             platform: windows
