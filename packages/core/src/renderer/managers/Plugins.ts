@@ -63,7 +63,7 @@ export class PluginsManager {
     public async initializePlugin(name: string) {
         Logger.info(`Initializing plugin ${name}.`);
 
-        await Promise.resolve(import(`${join(this.location, name, 'dist', 'index.js')}`))
+        await Promise.resolve(import(join(this.location, name, 'dist', 'index.js')))
             .catch(error => {
                 Logger.err(`Failed to initialize plugin ${name} - ${error.code ?? ''} ${error.message}`);
             })
