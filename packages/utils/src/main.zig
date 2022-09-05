@@ -65,5 +65,11 @@ pub fn handle_error(err: anytype, inject_client: bool) void {
                 return;
             },
         }
+    } else {
+        if (inject_client)
+            Logger.err("Hykord wasn't able to inject. Error: {s}", .{@errorName(err)})
+        else
+            Logger.err("Hykord wasn't able to uninject. Error: {s}", .{@errorName(err)});
+        return;
     }
 }

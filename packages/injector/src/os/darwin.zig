@@ -7,6 +7,7 @@ const discord_platform = utils.discord_platform;
 const join_path = utils.join_path;
 const allocator = utils.allocator;
 
+// TODO: rename to does_file_or_dir_exist
 pub fn does_file_exist(file: string) bool {
     return std.os.system.access(allocator.dupeZ(u8, file) catch unreachable, std.os.F_OK) == 0;
 }

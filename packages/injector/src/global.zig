@@ -35,7 +35,7 @@ pub fn inject(platform_: string, main_script: string) void {
     };
     defer indexJsFile.close();
 
-    _ = indexJsFile.writeAll(std.fmt.allocPrint(allocator, "require(\"{s}\")", .{main_script}) catch unreachable) catch |err| {
+    _ = indexJsFile.writeAll(std.fmt.allocPrint(allocator, "require(\"{s}\")", .{std.mem.replaceOwned(u8, allocator, main_script, "\\", "\\\\") catch unreachable}) catch unreachable) catch |err| {
         return handle_error(err, true);
     };
 

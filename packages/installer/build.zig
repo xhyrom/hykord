@@ -3,7 +3,7 @@ const std = @import("std");
 const pkgs = struct {
     const injector = std.build.Pkg{
         .name = "injector",
-        .path = std.build.FileSource{ .path = "../injector/src/c.zig"},
+        .path = std.build.FileSource{ .path = "../injector/src/global.zig"},
         .dependencies = &.{utils}
     };
     const utils = std.build.Pkg{
