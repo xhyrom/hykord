@@ -11,12 +11,15 @@ jobs:
         settings:
           - os: ubuntu-latest
             platform: linux
+            dtarget: x86_64-linux-gnu
 
           - os: macos-latest
             platform: darwin
+            dtarget: x86_64-macosx
           
           - os: windows-latest
             platform: windows
+            dtarget: x86_64-windows
     runs-on: ${{ matrix.settings.os }}
 
     steps:
@@ -51,7 +54,7 @@ jobs:
 
       # Build
       - name: Build installer
-        run: make build-installer
+        run: make dtarget=${{ matrix.settings.dtarget }} build-installer
       
       - name: Upload installer Linux/darwin
         uses: actions/upload-artifact@v3
@@ -68,7 +71,7 @@ jobs:
           path: packages/installer/zig-out/bin/installer.exe
 
       - name: Build injector
-        run: make build-injector
+        run: make dtarget=${{ matrix.settings.dtarget }} build-injector
       
       - name: Upload injector Linux/darwin
         uses: actions/upload-artifact@v3

@@ -26,7 +26,7 @@ build: build-injector build-installer build-core
 build-installer:
 	$(call info_output,Building installer)
 	$(eval FIRST := $(shell date +%Y%m%d%H%M%S))
-	@cd packages/installer/ && zig build
+	@cd packages/installer/ && zig build -Dtarget=$(dtarget)
 	$(eval SECOND := $(shell date +%Y%m%d%H%M%S))
 	$(eval NOW := $(shell ./scripts/timestamp.sh ${FIRST} ${SECOND}))
 
@@ -35,7 +35,7 @@ build-installer:
 build-injector:
 	$(call info_output,Building injector)
 	$(eval FIRST := $(shell date +%Y%m%d%H%M%S))
-	@cd packages/injector/ && zig build
+	@cd packages/injector/ && zig build -Dtarget=$(dtarget)
 	$(eval SECOND := $(shell date +%Y%m%d%H%M%S))
 	$(eval NOW := $(shell ./scripts/timestamp.sh ${FIRST} ${SECOND}))
 
