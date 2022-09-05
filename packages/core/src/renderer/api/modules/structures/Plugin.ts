@@ -17,15 +17,15 @@ export class Plugin {
     public broken = false;
     public logger: Logger;
     public onEnable: () => void;
-    public onDisable?: () => void;
+    public onDisable: () => void;
 
     constructor(options: PluginOptions) {
         this.name = options.name;
         this.author = options.author;
         this.description = options.description;
         this.logger = new Logger(`plugin/${this.name}`);
-        this.onEnable = () => options.onEnable(this);
-        this.onDisable = () => options.onDisable(this);
+        this.onEnable = () => options.onEnable?.(this);
+        this.onDisable = () => options.onDisable?.(this);
 
         window.hykord.plugins.register(this);
     }

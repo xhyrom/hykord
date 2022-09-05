@@ -56,7 +56,7 @@ export class ThemesManager {
     }
 
     public async disableTheme(theme: Theme) {
-        await theme.onDisable?.();
+        await theme.onDisable();
         this.modules.utilities.loaders.unloadCss(theme.name);
         theme.enabled = false;
     }

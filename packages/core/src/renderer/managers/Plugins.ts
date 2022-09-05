@@ -56,7 +56,7 @@ export class PluginsManager {
     }
 
     public async disablePlugin(plugin: Plugin) {
-        await plugin.onDisable?.();
+        await plugin.onDisable();
         plugin.enabled = false;
     }
 
