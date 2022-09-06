@@ -120,7 +120,7 @@ export class ThemesManager {
     }
 }
 
-class ThemeManagerBDCompat {
+export class ThemeManagerBDCompat {
     // FULLY GRABBED FROM BETTERDISCORD - dont want waste time lol
     static get splitRegex() {
         return /[^\S\r\n]*?\r?(?:\r\n|\n)[^\S\r\n]*?\*[^\S\r\n]?/;
