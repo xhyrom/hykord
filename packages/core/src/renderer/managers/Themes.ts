@@ -6,6 +6,7 @@ import Logger from "@hykord/logger";
 
 export class ThemesManager {
     public location: string;
+    public bdCompat: ThemesManagerBDCompat;
     private themes: Map<string, Theme>;
     private modules: {
         utilities: typeof import('@hykord/utilities');
@@ -14,6 +15,7 @@ export class ThemesManager {
     constructor() {
         this.location = null;
         this.themes = new Map();
+        this.bdCompat = new ThemesManagerBDCompat();
     }
 
     public async register(theme: Theme) {
@@ -99,7 +101,7 @@ export class ThemesManager {
     public async loadThemes() {
         for (const themeDirectory of await readdir(this.location, { withFileTypes: true })) {
             if (!themeDirectory.isDirectory()) {
-                await ThemeManagerBDCompat.initializeTheme(this, themeDirectory.name);
+                await this.bdCompat.initializeTheme(this, themeDirectory.name);
                 continue;
             };
 
@@ -120,21 +122,22 @@ export class ThemesManager {
     }
 }
 
-export class ThemeManagerBDCompat {
+export class ThemesManagerBDCompat {
     // FULLY GRABBED FROM BETTERDISCORD - dont want waste time lol
-    static get splitRegex() {
+    get splitRegex() {
         return /[^\S\r\n]*?\r?(?:\r\n|\n)[^\S\r\n]*?\*[^\S\r\n]?/;
     }
-    static get escapedAtRegex() {
+
+    get escapedAtRegex() {
         return /^\\@/;
     }
 
-    static parseNewMeta(fileContent): { name?: string; description?: string; author?: string; } {
+    parseNewMeta(fileContent): { name?: string; description?: string; author?: string; } {
         const block = fileContent.split("/**", 2)[1].split("*/", 1)[0];
         const out: { name?: string; description?: string; author?: string; } = {};
         let field = "";
         let accum = "";
-        for (const line of block.split(ThemeManagerBDCompat.splitRegex)) {
+        for (const line of block.split(this.splitRegex)) {
             if (line.length === 0) continue;
             if (line.charAt(0) === "@" && line.charAt(1) !== " ") {
                 out[field] = accum.trim();
@@ -143,7 +146,7 @@ export class ThemeManagerBDCompat {
                 accum = line.substring(l + 1);
             }
             else {
-                accum += " " + line.replace("\\n", "\n").replace(ThemeManagerBDCompat.escapedAtRegex, "@");
+                accum += " " + line.replace("\\n", "\n").replace(this.escapedAtRegex, "@");
             }
         }
         out[field] = accum.trim();
@@ -151,12 +154,12 @@ export class ThemeManagerBDCompat {
         return out;
     }
 
-    static async initializeTheme(manager: ThemesManager, name: string) {
+    async initializeTheme(manager: ThemesManager, name: string) {
         const content = (await readFile(join(manager.location, name), {
             encoding: 'utf-8'
         })).toString();
 
-        const data = ThemeManagerBDCompat.parseNewMeta(content);
+        const data = this.parseNewMeta(content);
         if (!data.name) return;
 
         new Theme({
