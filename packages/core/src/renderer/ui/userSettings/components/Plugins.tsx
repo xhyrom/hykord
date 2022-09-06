@@ -30,6 +30,7 @@ export default async() => {
                             onChange={setInput}
                         />
                         <Button
+                            style={{ marginRight: "20px" }}
                             color={Button.Colors.BRAND_NEW}
                             size={Button.Sizes.MEDIUM}
                             look={Button.Looks.FILLED}
