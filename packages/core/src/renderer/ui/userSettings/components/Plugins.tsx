@@ -37,6 +37,14 @@ export default async() => {
                         >
                             Open Plugins Folder
                         </Button>
+                        <Button
+                            color={Button.Colors.PRIMARY}
+                            size={Button.Sizes.MEDIUM}
+                            look={Button.Looks.FILLED}
+                            onClick={() => window.hykord.plugins.loadPlugins()}
+                        >
+                            Reload
+                        </Button>
                     </Flex>
                     <FormDivider className='hykord-form-divider' />
                     {allPlugins.map(plugin => (

@@ -55,7 +55,3 @@ findAsync(() => findByDisplayName('FormNotice')).then(FormNotice => {
 findAsync(() => findByDisplayName('Flex')).then(Flex => {
     recreateProps(Flex).forEach(p => exports.Flex[p] = Flex[p]);
 });
-
-findAsync(() => findByDisplayName('SearchBar')).then(SearchBar => {
-    recreateProps(SearchBar).forEach(p => exports.SearchBar[p] = SearchBar[p]);
-})

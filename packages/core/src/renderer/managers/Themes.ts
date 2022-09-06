@@ -19,6 +19,8 @@ export class ThemesManager {
     }
 
     public async register(theme: Theme) {
+        if (Array.from(this.themes.keys()).includes(theme.name)) return;
+
         this.themes.set(theme.name, theme);
     }
 
@@ -109,7 +111,8 @@ export class ThemesManager {
         }
 
         for (const theme of Array.from(this.themes.values())) {
-            await this.loadTheme(theme);
+            if (!theme.enabled) await this.loadTheme(theme);
+            else Logger.warn(`Theme ${theme.name} is already enabled!`);
         }
     }
 
@@ -122,6 +125,14 @@ export class ThemesManager {
     }
 }
 
+interface ThemesManagerBDCompatMeta {
+    name?: string;
+    description?: string;
+    author?: string;
+    version?: string;
+    license?: string;
+};
+
 export class ThemesManagerBDCompat {
     // FULLY GRABBED FROM BETTERDISCORD - dont want waste time lol
     get splitRegex() {
@@ -132,9 +143,9 @@ export class ThemesManagerBDCompat {
         return /^\\@/;
     }
 
-    parseNewMeta(fileContent): { name?: string; description?: string; author?: string; } {
+    parseNewMeta(fileContent): ThemesManagerBDCompatMeta {
         const block = fileContent.split("/**", 2)[1].split("*/", 1)[0];
-        const out: { name?: string; description?: string; author?: string; } = {};
+        const out: ThemesManagerBDCompatMeta = {};
         let field = "";
         let accum = "";
         for (const line of block.split(this.splitRegex)) {
@@ -166,6 +177,8 @@ export class ThemesManagerBDCompat {
             name: data.name,
             author: data?.author,
             description: data?.description,
+            version: data?.version,
+            license: data?.license,
             onEnable: () => {
                 return join(manager.location, name);
             }

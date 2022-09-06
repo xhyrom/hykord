@@ -6,6 +6,8 @@ new Plugin({
 	name: "example-plugin",
 	author: "Example Author",
 	description: "This is example plugin",
+	version: "1.0.0",
+	license: "MIT",
 	onEnable: async(plugin) => {
 		plugin.logger.info("Message from example plugin, ENABLED!!");
 		registerSection("HYKORD_EXAMPLE_PLUGIN", "Example Plugin", await Test());

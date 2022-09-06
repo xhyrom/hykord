@@ -1,6 +1,6 @@
 import { React } from '@hykord/webpack';
 import { BooleanItem } from '@hykord/components/items'
-import { Card, Flex, Markdown, FormText, ErrorBoundary } from '@hykord/components';
+import { Card, Flex, Markdown, FormText, ErrorBoundary, FormDivider } from '@hykord/components';
 
 export default class extends React.Component {
   constructor (props) {
@@ -26,6 +26,9 @@ export default class extends React.Component {
                 />
             </Flex>
             <Markdown>{this.theme.description || 'Good days, bad days.'}</Markdown>
+            <FormDivider className='hykord-form-divider' />
+            <FormText>Version: {this.theme.version || '?.?.?'}</FormText>
+            <FormText>License: {this.theme.license || '???'}</FormText>
           </Card>
         </ErrorBoundary>
     )

@@ -17,6 +17,8 @@ export class PluginsManager {
     }
 
     public async register(plugin: Plugin) {
+        if (Array.from(this.plugins.keys()).includes(plugin.name)) return;
+
         this.plugins.set(plugin.name, plugin);
     }
 
@@ -103,7 +105,8 @@ export class PluginsManager {
         }
 
         for (const plugin of Array.from(this.plugins.values())) {
-            await this.loadPlugin(plugin);
+            if (!plugin.enabled) await this.loadPlugin(plugin);
+            else Logger.warn(`Plugin ${plugin.name} is already enabled!`);
         }
     }
 
