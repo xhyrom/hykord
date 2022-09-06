@@ -11,7 +11,7 @@ const handle_error = utils.handle_error;
 
 const action_type = enum { inject, uninject };
 
-fn checkIfGitInstalled () !void {
+fn checkIfGitInstalled() !void {
     const argv = &[_]string{ "git", "--version" };
     const child = try std.ChildProcess.init(argv, allocator);
     defer child.deinit();
@@ -20,12 +20,12 @@ fn checkIfGitInstalled () !void {
     child.stdout_behavior = .Pipe;
     child.stdout = std.io.getStdOut();
 
-    _  = try child.spawn();
+    _ = try child.spawn();
 
     _ = try child.stdout.?.reader().readAllAlloc(allocator, 1024);
 }
 
-fn cloneRepo (cwd: string, repo: string, branch: string) !void {
+fn cloneRepo(cwd: string, repo: string, branch: string) !void {
     const argv = &[_]string{ "git", "clone", repo, "-b", branch, "." };
     const child = try std.ChildProcess.init(argv, allocator);
     defer child.deinit();
@@ -35,7 +35,7 @@ fn cloneRepo (cwd: string, repo: string, branch: string) !void {
     child.stdout_behavior = .Pipe;
     child.stdout = std.io.getStdOut();
 
-    _  = try child.spawn();
+    _ = try child.spawn();
 
     _ = try child.stdout.?.reader().readAllAlloc(allocator, 1024);
 }
@@ -74,7 +74,7 @@ pub fn main() anyerror!void {
         return;
     };
 
-    injector.inject(@tagName(platform), join_path(&.{hykord_source_directory, "index.js"}));
+    injector.inject(@tagName(platform), join_path(&.{ hykord_source_directory, "index.js" }));
 
     // mus tdownload fiiiiiiiiiiiiiiiiiiiiile
     // const argv = &[_][]const u8{ "bash", "-c", "'curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep 'browser_download_url.*deb''" };
