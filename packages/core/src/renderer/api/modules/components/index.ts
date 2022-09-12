@@ -29,6 +29,7 @@ export const SearchBar = AsyncComponent.from(findAsync(() => findByDisplayName('
 export const TextInput = AsyncComponent.from(findAsync(() => findByDisplayName('TextInput')));
 export const Switch = AsyncComponent.from(findAsync(() => findByDisplayName('Switch')));
 export const SwitchItem = AsyncComponent.from(findAsync(() => findByDisplayName('SwitchItem')));
+export const Slider =  AsyncComponent.from(findAsync(() => findByDisplayName('Slider')));
 
 /** Form related components */
 export const FormText = AsyncComponent.from(findAsync(() => findByDisplayName('FormText')));

@@ -1,4 +1,4 @@
-plugins=("plugin-zone")
+plugins=("plugin-zone" "custom-volume-range")
 
 if [ -d dist ]; then
     rm -rf dist/
