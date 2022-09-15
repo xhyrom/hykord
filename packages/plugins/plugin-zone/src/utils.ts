@@ -14,7 +14,7 @@ export interface PartialPlugin {
 }
 
 export const downloadPlugin = async(plugin: PartialPlugin) => {
-    let index: any = await fetch(`${plugin.path}/dist/index.js`);
+    let index: any = await fetch(`${BASE_URL}/${plugin.path}/dist/index.js`);
     // @ts-expect-error missing hykord types, must create @xhyrom/hykord-types pkg
     const pluginDirectory = join(window.hykord.plugins.location, nameToId(plugin.name));
 

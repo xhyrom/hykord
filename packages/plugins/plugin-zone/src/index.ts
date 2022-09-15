@@ -9,6 +9,7 @@ new Plugin({
 	name: 'Plugin Zone',
 	author: 'xHyroM',
 	description: 'Place for verified hykord plugins',
+	version: '0.1.0',
 	onEnable: async(plugin) => {
 		init(plugin);
 		registerSection('HYKORD_PLUGIN_PLUGIN_ZONE', 'Plugin Zone', await index());
