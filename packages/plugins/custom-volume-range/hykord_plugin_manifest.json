@@ -1,5 +1,6 @@
 {
     "name": "Custom Volume Range",
+    "version": "0.1.1",
     "author": "xHyroM",
     "description": "Allows you to set custom volume range over 200%"
 }

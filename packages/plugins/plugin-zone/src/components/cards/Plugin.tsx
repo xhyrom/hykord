@@ -2,6 +2,7 @@ import { React } from '@hykord/webpack';
 import { nameToId } from '@hykord/utilities';
 import { Card, Flex, Markdown, FormText, ErrorBoundary, Button } from '@hykord/components';
 import { downloadPlugin, PartialPlugin } from '../../utils';
+import { compare } from 'semver';
 
 export default class extends React.Component {
     plugins: any;
@@ -14,11 +15,12 @@ export default class extends React.Component {
         this.plugin = props.pluginData;
 
         this.checkIfPluginIsInstalled = this.checkIfPluginIsInstalled.bind(this);
+        this.checkIfPluginIsLatest = this.checkIfPluginIsLatest.bind(this);
 
-        // @ts-expect-error react
+        // @ts-expect-error 
         this.state = {
-            type: this.checkIfPluginIsInstalled(this.plugin.name) ? 'Running' : 'Install plugin',
-            disabled: this.checkIfPluginIsInstalled(this.plugin.name),
+            type: this.checkIfPluginIsInstalled(this.plugin.name) ? this.checkIfPluginIsLatest(this.plugin.name, this.plugin.version) ? 'Running' : 'Update' : 'Install plugin',
+            disabled: this.checkIfPluginIsInstalled(this.plugin.name) ? this.checkIfPluginIsLatest(this.plugin.name, this.plugin.version) ? true : false : false,
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -26,7 +28,7 @@ export default class extends React.Component {
     }
 
     async handleClick() {
-        if (!this.checkIfPluginIsInstalled(this.plugin.name)) {
+        if (!this.checkIfPluginIsInstalled(this.plugin.name) || !this.checkIfPluginIsLatest(this.plugin.name, this.plugin.version)) {
             // @ts-expect-error react
             this.setState({
                 disabled: true,
@@ -34,7 +36,7 @@ export default class extends React.Component {
                 ...this.state
             })
 
-            const downloaded = await downloadPlugin(this.plugin);
+            const downloaded = await downloadPlugin(this.plugin, !this.checkIfPluginIsLatest(this.plugin.name, this.plugin.version));
 
             // @ts-expect-error react
             this.setState({
@@ -47,6 +49,10 @@ export default class extends React.Component {
     checkIfPluginIsInstalled(name: string) {
         // @ts-expect-error Missing types
         return window.hykord.plugins.getAllPlugins().some(p => p.name.toLowerCase() === nameToId(name) || p.name.toLowerCase() === name.toLowerCase());
+    }
+
+    checkIfPluginIsLatest(name: string, version: string) {
+        return compare(window.hykord.plugins.getPlugin(this.plugin.name)?.version || '0.0.1', version) !== -1
     }
 
     render() {
