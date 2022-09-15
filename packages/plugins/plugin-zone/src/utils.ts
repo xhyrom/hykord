@@ -24,6 +24,7 @@ export const downloadPlugin = async(plugin: PartialPlugin) => {
 		return false;
 	}
 
+	console.log(index, `${BASE_URL}/${plugin.path}/dist/index.js`);
 	index = await index.text();
 	await mkdir(join(pluginDirectory, 'dist'), { recursive: true });
 	await writeFile(join(pluginDirectory, 'dist', 'index.js'), index);
