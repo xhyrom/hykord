@@ -8,7 +8,7 @@ new Plugin({
 	name: 'Custom Volume Range',
 	author: 'xHyroM',
 	description: 'Allows you to set custom volume range over 200%',
-	version: '0.1.0',
+	version: '0.1.1',
 	onEnable: async(plugin) => {
 		registerSection('HYKORD_PLUGIN_CUSTOM_VOLUME_RANGE', 'Custom Volume Range', await Settings());
 
@@ -16,7 +16,7 @@ new Plugin({
 			() => findByDisplayName("Slider"),
 			(Slider) => after("render", Slider.prototype, function(_, slider) {
 				if (this.props) {
-					const maxVolume = 400;
+					const maxVolume = window.hykord.settings.getSetting('plugin_custom_volume_range.maxVolume', 400);
 	
 					this.props.maxValue = maxVolume;
 					this.state.value = this.state.initialValueProp;

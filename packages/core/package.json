@@ -12,7 +12,8 @@
   "_moduleAliases": {
     "@hykord": "renderer/api/modules",
     "@dependency": "dependencies",
-    "@api": "renderer/api"
+    "@api": "renderer/api",
+    "@ipc": "renderer/ipc"
   },
   "scripts": {
     "prebuild": "rm -rf dist/",

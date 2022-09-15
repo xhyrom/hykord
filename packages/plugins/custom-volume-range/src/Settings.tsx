@@ -5,7 +5,7 @@ import { Text } from '@hykord/components/inputs';
 export default async() => {
 	return () => {
         const [volumeOption, setVolumeOption] = React.useState({
-            value: 200,
+            value: window.hykord.settings.getSetting('plugin_custom_volume_range.maxVolume', 400),
             error: ''
         });
 
@@ -22,17 +22,12 @@ export default async() => {
                         error={volumeOption.error}
                         value={volumeOption.value}
                         onChange={value => {
-                            if (value > 5000) {
-                                setVolumeOption({
-                                    ...volumeOption,
-                                    error: 'Maximum allowed volume is 5000.'
-                                })
-                            }
-
                             setVolumeOption({
                                 error: '',
                                 value: value
                             })
+
+                            window.hykord.settings.setSetting('plugin_custom_volume_range.maxVolume', value);
                         }}
                     />
                 </FormItem>
