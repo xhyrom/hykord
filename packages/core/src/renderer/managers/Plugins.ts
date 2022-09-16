@@ -3,7 +3,7 @@ import { mkdirIfNotExists } from '@hykord/fs/promises';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 import Logger from '@hykord/logger';
-import { compare } from 'semver';
+import { compare } from '@dependency/semver';
 
 export class PluginsManager {
     public location: string;
@@ -18,12 +18,10 @@ export class PluginsManager {
     }
 
     public async register(plugin: Plugin) {
-        console.log('REGISTRRRRRRRRRR');
         if (
             Array.from(this.plugins.keys()).includes(plugin.name) &&
             compare(plugin?.version || '0.0.1', this.plugins.get(plugin.name)?.version) === 0
         ) return;
-        console.log('register');
 
         this.plugins.set(plugin.name, plugin);
     }

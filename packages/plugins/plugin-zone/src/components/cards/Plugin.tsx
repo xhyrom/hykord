@@ -2,7 +2,7 @@ import { React } from '@hykord/webpack';
 import { nameToId } from '@hykord/utilities';
 import { Card, Flex, Markdown, FormText, ErrorBoundary, Button } from '@hykord/components';
 import { downloadPlugin, PartialPlugin } from '../../utils';
-import { compare } from 'semver';
+import { compare } from '@dependency/semver';
 
 export default class extends React.Component {
     plugins: any;

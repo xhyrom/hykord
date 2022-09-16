@@ -1,6 +1,7 @@
-import { registerPluginSection, unregisterPluginSection } from "@api/ui/userSettingsHykord"
+import { registerPluginSection, unregisterPluginSection } from '@api/ui/userSettingsHykord';
 
 export * as modals from './modals';
+export * as notices from './notices';
 export * as loaders from './loaders';
 
 export const registerSection = registerPluginSection;

@@ -7,7 +7,7 @@ try {
     minify: true,
     bundle: true,
     format: "iife",
-    external: ["@hykord/webpack", "@hykord/components", "@hykord/structures", "@hykord/utilities", "@hykord/patcher", "path", "fs", "semver"],
+    external: ["@hykord/webpack", "@hykord/components", "@hykord/structures", "@hykord/utilities", "@hykord/patcher", "path", "fs", "@dependency/semver"],
     target: ["esnext"],
   });
 
