@@ -29,7 +29,6 @@ export const waitFor = async(querySelector) => {
     return elem;
 };
 
-
 // @ts-expect-error works
 const TrueElement = global.NEW_BACKEND || !process.contextIsolated
   ? Element
@@ -47,12 +46,20 @@ export const getOwnerInstance = (node) => {
   }
 
   return null;
-}
+};
+
+export const forceUpdateElement = (query, all = false) => {
+  // @ts-expect-error Use document from top context
+  const elements = all ? [ ...electron.webFrame.top.context.document.querySelectorAll(query) ] : [ electron.webFrame.top.context.document.querySelector(query) ];
+  elements.filter(Boolean).forEach(element => {
+    getOwnerInstance(element)?.forceUpdate();
+  });
+};
 
 /**
  * @source https://github.com/powercord-org/powercord/blob/v2/src/fake_node_modules/powercord/util/findInTree.js
  */
- export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) => {
+export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) => {
   if (!tree || typeof tree !== 'object') {
     return null;
   }
@@ -108,4 +115,4 @@ export const findInReactTree = (tree, filter) => {
   return findInTree(tree, filter, {
     walkable: [ 'props', 'children', 'child', 'sibling' ]
   });
-}
+};

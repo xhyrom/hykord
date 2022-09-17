@@ -11,6 +11,8 @@ import { EventEmitter } from 'events';
 export enum HykordEvents {
   NOTIFICATION_SEND = 'notification_send',
   NOTIFICATION_CLOSED = 'notification_closed',
+  TOAST_SEND = 'tost_send',
+  TOAST_CLOSED = 'toast_closed',
 }
 
 export class Hykord {

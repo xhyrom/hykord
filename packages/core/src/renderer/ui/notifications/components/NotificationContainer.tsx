@@ -3,7 +3,7 @@ import { React } from '@hykord/webpack';
 import { HykordEvents } from '@main';
 import { Notification } from './Notification';
 
-export class NotificationsContainer extends React.Component {
+export class NotificationContainer extends React.Component {
   constructor (props) {
     super(props);
 

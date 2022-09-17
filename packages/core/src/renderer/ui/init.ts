@@ -10,6 +10,5 @@ export default () => {
     userSettings();
 
     const notifications = require('./notifications/index').default;
-    console.log('TESTTTT');
     notifications();
 }
