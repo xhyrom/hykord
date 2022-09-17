@@ -6,12 +6,19 @@ import { SettingsManager } from './managers/Settings';
 import { mkdirIfNotExists } from '@hykord/fs/promises';
 import { PluginsManager } from './managers/Plugins';
 import { ThemesManager } from './managers/Themes';
+import { EventEmitter } from 'events';
+
+export enum HykordEvents {
+  NOTIFICATION_SEND = 'notification_send',
+  NOTIFICATION_CLOSED = 'notification_closed',
+}
 
 export class Hykord {
   public folder: string;
   public settings: SettingsManager;
   public plugins: PluginsManager;
   public themes: ThemesManager;
+  public events: EventEmitter = new EventEmitter();
 
   constructor() {
     this.folder = null;

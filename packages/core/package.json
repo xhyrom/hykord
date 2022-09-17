@@ -13,7 +13,8 @@
     "@hykord": "renderer/api/modules",
     "@dependency": "dependencies",
     "@api": "renderer/api",
-    "@ipc": "renderer/ipc"
+    "@ipc": "renderer/ipc",
+    "@main": "renderer/index"
   },
   "scripts": {
     "prebuild": "rm -rf dist/",

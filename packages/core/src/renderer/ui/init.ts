@@ -8,4 +8,8 @@ export default () => {
 
     const userSettings = require('./userSettings/index').default;
     userSettings();
+
+    const notifications = require('./notifications/index').default;
+    console.log('TESTTTT');
+    notifications();
 }

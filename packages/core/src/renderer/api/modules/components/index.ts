@@ -24,6 +24,7 @@ export const Flex = AsyncComponent.from(findAsync(() => findByDisplayName('Flex'
 export const Header = AsyncComponent.from(findAsync(() => findByProps('Sizes', 'Tags')));
 export const Markdown = AsyncComponent.from(findAsync(() => findByDisplayNameAll('Markdown')[1]));
 export const SearchBar = AsyncComponent.from(findAsync(() => findByDisplayName('SearchBar')));
+export const Clickable = AsyncComponent.from(findAsync(() => findByDisplayName('Clickable')));
 
 /** Input related components */
 export const TextInput = AsyncComponent.from(findAsync(() => findByDisplayName('TextInput')));
