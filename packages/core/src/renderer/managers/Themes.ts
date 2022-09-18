@@ -31,12 +31,12 @@ export class ThemesManager {
 
     public async toggleTheme(theme: Theme): Promise<boolean> {
         if (theme.enabled) {
-            window.hykord.settings.addToSeting('hykord.disabled_themes', nameToId(theme.name));
+            window.hykord.settings.removeFromSeting('hykord.enabled_themes', nameToId(theme.name));
             await this.disableTheme(theme);
 
             return false;
         } else {
-            window.hykord.settings.removeFromSeting('hykord.disabled_themes', nameToId(theme.name));
+            window.hykord.settings.addToSeting('hykord.enabled_themes', nameToId(theme.name));
             await this.enableTheme(theme);
 
             return true;
@@ -44,7 +44,7 @@ export class ThemesManager {
     }
 
     public async enableTheme(theme: Theme) {
-        if ((window.hykord.settings.getSetting('hykord.disabled_themes', []) as string[]).includes(nameToId(theme.name))) return false;
+        if (!(window.hykord.settings.getSetting('hykord.enabled_themes', []) as string[]).includes(nameToId(theme.name))) return false;
 
         theme.loading = true;
         loaders.loadCss(theme.name, await theme.onEnable());

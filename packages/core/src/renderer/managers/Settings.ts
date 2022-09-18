@@ -10,7 +10,7 @@ export type HykordSettings =
     'hykord.enable_dev_experiment_mod' |
     'hykord.bypass_security_check_require' |
     'hykord.disabled_plugins' |
-    'hykord.disabled_themes';
+    'hykord.enabled_themes';
 
 export class SettingsManager {
     private location: string;
