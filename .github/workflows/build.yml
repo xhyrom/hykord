@@ -165,5 +165,5 @@ jobs:
       - name: Push plugins to branch
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          branch: builded-plugins
+          branch: built-plugins
           folder: ./artifacts/plugins
