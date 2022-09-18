@@ -3,7 +3,7 @@ import { Logger } from '@hykord/logger';
 interface PluginOptions {
     name: string;
     author: string;
-    description: string;
+    description?: string;
     version?: string;
     license?: string;
     onEnable: (theme: Theme) => string;

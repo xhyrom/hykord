@@ -1,0 +1,7 @@
+{
+    "name": "theme with manifest",
+    "author": "example author",
+    "description": "theme with manifest",
+    "license": "Unlicense",
+    "main": "index.css"
+}

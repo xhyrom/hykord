@@ -1,0 +1,7 @@
+{
+    "name": "plugin with manifest",
+    "author": "example author",
+    "description": "plugin with manifest",
+    "license": "Unlicense",
+    "main": "index.js"
+}

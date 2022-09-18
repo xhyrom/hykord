@@ -1,16 +1,14 @@
 import { Theme } from "@hykord/structures/Theme";
-import { mkdirIfNotExists } from "@hykord/fs/promises";
+import { exists, mkdirIfNotExists } from "@hykord/fs/promises";
 import { readdir, readFile } from "fs/promises";
 import { join } from "path";
 import Logger from "@hykord/logger";
+import { tryRequireOrX, nameToId, loaders } from "@hykord/utilities";
 
 export class ThemesManager {
     public location: string;
     public bdCompat: ThemesManagerBDCompat;
     private themes: Map<string, Theme>;
-    private modules: {
-        utilities: typeof import('@hykord/utilities');
-    };
 
     constructor() {
         this.location = null;
@@ -26,9 +24,6 @@ export class ThemesManager {
 
     public async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/themes`;
-        this.modules = {
-            utilities: require('@hykord/utilities'),
-        }
 
         await mkdirIfNotExists(this.location);
         await this.loadThemes();
@@ -36,12 +31,12 @@ export class ThemesManager {
 
     public async toggleTheme(theme: Theme): Promise<boolean> {
         if (theme.enabled) {
-            window.hykord.settings.addToSeting('hykord.disabled_themes', this.modules.utilities.nameToId(theme.name));
+            window.hykord.settings.addToSeting('hykord.disabled_themes', nameToId(theme.name));
             await this.disableTheme(theme);
 
             return false;
         } else {
-            window.hykord.settings.removeFromSeting('hykord.disabled_themes', this.modules.utilities.nameToId(theme.name));
+            window.hykord.settings.removeFromSeting('hykord.disabled_themes', nameToId(theme.name));
             await this.enableTheme(theme);
 
             return true;
@@ -49,10 +44,10 @@ export class ThemesManager {
     }
 
     public async enableTheme(theme: Theme) {
-        if ((window.hykord.settings.getSetting('hykord.disabled_themes', []) as string[]).includes(this.modules.utilities.nameToId(theme.name))) return false;
+        if ((window.hykord.settings.getSetting('hykord.disabled_themes', []) as string[]).includes(nameToId(theme.name))) return false;
 
         theme.loading = true;
-        this.modules.utilities.loaders.loadCss(theme.name, await theme.onEnable());
+        loaders.loadCss(theme.name, await theme.onEnable());
         theme.enabled = true;
         theme.loading = false;
 
@@ -61,20 +56,46 @@ export class ThemesManager {
 
     public async disableTheme(theme: Theme) {
         await theme.onDisable();
-        this.modules.utilities.loaders.unloadCss(theme.name);
+        loaders.unloadCss(theme.name);
         theme.enabled = false;
     }
 
     public async initializeTheme(name: string) {
         Logger.info(`Initializing theme ${name}.`);
 
-        await Promise.resolve(import(join(this.location, name, 'dist', 'index.js')))
-            .catch(error => {
-                Logger.err(`Failed to initialize theme ${name} - ${error.code ?? ''} ${error.message}`);
+        const index = join(this.location, name, 'dist', 'index.js');
+        const manifest = await exists(join(this.location, name, 'hykord_manifest.json'))
+            ? join(this.location, name, 'hykord_manifest.json')
+            : join(this.location, name, 'dist', 'hykord_manifest.json');
+
+        if (await exists(index)) {
+            await Promise.resolve(import(join(this.location, name, 'dist', 'index.js')))
+                .catch(error => {
+                    Logger.err(`Failed to initialize theme ${name} - ${error.code ?? ''} ${error.message}`);
+                })
+                .then(() => {
+                    Logger.info(`Theme ${name} has been initialized.`);
+                })
+        } else if(await exists(manifest)) {
+            const { name: themeName, author, description, version, license, main } = tryRequireOrX(manifest, {});
+
+            if (!themeName || !author || !main) {
+                return Logger.err(`Failed to initialize theme ${name} - Missing property name/author or main in hykord_manifest.json`);
+            }
+
+            new Theme({
+                name: themeName,
+                author,
+                description,
+                version,
+                license,
+                onEnable: () => {
+                    return join(this.location, name, manifest.includes('dist') ? 'dist' : '', main);
+                }
             })
-            .then(() => {
-                Logger.info(`Theme ${name} has been initialized.`);
-            })
+        } else {
+            Logger.err(`Failed to initialize theme ${name} - can't find dist/index.js or hykord_manifest.json`);
+        }
     }
 
     public async loadTheme(theme: Theme) {

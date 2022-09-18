@@ -3,7 +3,7 @@ import { Logger } from '@hykord/logger';
 interface PluginOptions {
     name: string;
     author: string;
-    description: string;
+    description?: string;
     version?: string;
     license?: string;
     onEnable: (plugin: Plugin) => void;
@@ -33,6 +33,6 @@ export class Plugin {
         this.onEnable = () => options.onEnable?.(this);
         this.onDisable = () => options.onDisable?.(this);
 
-        window.hykord.plugins.register(this);
+        if (this.name && this.author) window.hykord.plugins.register(this);
     }
 }

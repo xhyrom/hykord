@@ -1,16 +1,14 @@
 import { Plugin } from '@hykord/structures/Plugin';
-import { mkdirIfNotExists } from '@hykord/fs/promises';
+import { exists, mkdirIfNotExists } from '@hykord/fs/promises';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 import Logger from '@hykord/logger';
 import { compare } from '@dependency/semver';
+import { nameToId, tryRequireOrX } from '@hykord/utilities';
 
 export class PluginsManager {
     public location: string;
     private plugins: Map<string, Plugin>;
-    private modules: {
-        utilities: typeof import('@hykord/utilities');
-    };
 
     constructor() {
         this.location = null;
@@ -28,9 +26,6 @@ export class PluginsManager {
 
     public async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/plugins`;
-        this.modules = {
-            utilities: require('@hykord/utilities'),
-        }
 
         await mkdirIfNotExists(this.location);
         await this.loadPlugins();
@@ -38,12 +33,12 @@ export class PluginsManager {
 
     public async togglePlugin(plugin: Plugin): Promise<boolean> {
         if (plugin.enabled) {
-            window.hykord.settings.addToSeting('hykord.disabled_plugins', this.modules.utilities.nameToId(plugin.name));
+            window.hykord.settings.addToSeting('hykord.disabled_plugins', nameToId(plugin.name));
             await this.disablePlugin(plugin);
 
             return false;
         } else {
-            window.hykord.settings.removeFromSeting('hykord.disabled_plugins', this.modules.utilities.nameToId(plugin.name));
+            window.hykord.settings.removeFromSeting('hykord.disabled_plugins', nameToId(plugin.name));
             await this.enablePlugin(plugin);
 
             return true;
@@ -51,7 +46,7 @@ export class PluginsManager {
     }
 
     public async enablePlugin(plugin: Plugin) {
-        if ((window.hykord.settings.getSetting('hykord.disabled_plugins', []) as string[]).includes(this.modules.utilities.nameToId(plugin.name))) return false;
+        if ((window.hykord.settings.getSetting('hykord.disabled_plugins', []) as string[]).includes(nameToId(plugin.name))) return false;
 
         plugin.loading = true;
         await plugin.onEnable();
@@ -69,13 +64,46 @@ export class PluginsManager {
     public async initializePlugin(name: string) {
         Logger.info(`Initializing plugin ${name}.`);
 
-        await Promise.resolve(import(join(this.location, name, 'dist', 'index.js')))
-            .catch(error => {
-                Logger.err(`Failed to initialize plugin ${name} - ${error.code ?? ''} ${error.message}`);
-            })
-            .then(() => {
-                Logger.info(`Plugin ${name} has been initialized.`);
-            })
+        const index = join(this.location, name, 'dist', 'index.js');
+        const manifest = await exists(join(this.location, name, 'hykord_manifest.json'))
+            ? join(this.location, name, 'hykord_manifest.json')
+            : join(this.location, name, 'dist', 'hykord_manifest.json');
+
+        if (await exists(index)) {
+            await Promise.resolve(import(join(this.location, name, 'dist', 'index.js')))
+                .catch(error => {
+                    Logger.err(`Failed to initialize plugin ${name} - ${error.code ?? ''} ${error.message}`);
+                })
+                .then(() => {
+                    Logger.info(`Plugin ${name} has been initialized.`);
+                })
+        } else if(await exists(manifest)) {
+            const { name: pluginName, author, description, version, license, main } = tryRequireOrX(manifest, {});
+
+            if (!pluginName || !author || !main) {
+                return Logger.err(`Failed to initialize plugin ${name} - Missing property name/author or main in hykord_manifest.json`);
+            }
+
+            await Promise.resolve(import(join(this.location, name, manifest.includes('dist') ? 'dist' : '', main)))
+                .catch(error => {
+                    Logger.err(`Failed to initialize plugin ${name} - ${error.code ?? ''} ${error.message}`);
+                })
+                .then((originalPlugin) => {
+                    new Plugin({
+                        name: pluginName,
+                        author,
+                        description,
+                        version,
+                        license,
+                        onEnable: originalPlugin.onEnable,
+                        onDisable: originalPlugin.onDisable,
+                    })
+
+                    Logger.info(`Plugin ${name} has been initialized.`);
+                })
+        } else {
+            Logger.err(`Failed to initialize plugin ${name} - can't find dist/index.js or hykord_manifest.json`);
+        }
     }
 
     public async loadPlugin(plugin: Plugin) {

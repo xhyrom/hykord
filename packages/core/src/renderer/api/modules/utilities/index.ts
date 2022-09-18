@@ -18,6 +18,14 @@ export const nameToId = (text: string): string => {
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+export const tryRequireOrX = (path: string, defaultValue = null) => {
+  try {
+    return require(path);
+  } catch {
+    return defaultValue;
+  }
+}
+
 export const waitFor = async(querySelector) => {
     let elem;
   

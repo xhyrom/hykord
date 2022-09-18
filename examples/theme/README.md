@@ -1,4 +1,4 @@
 ## Example hykord theme
 
-Put to ~/.hykord/themes/example  
+Put **this directory** to ~/.hykord/theme (for example ~/.hykord/themes/theme)  
 **Hykord will load dist/index.js**

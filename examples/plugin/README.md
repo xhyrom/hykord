@@ -1,4 +1,4 @@
 ## Example hykord plugin
 
-Put to ~/.hykord/plugins/example  
+Put **this directory** to ~/.hykord/plugins (for example ~/.hykord/plugins/plugin)  
 **Hykord will load dist/index.js**

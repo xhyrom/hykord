@@ -1,5 +1,7 @@
 import { readAndIfNotExistsCreate } from '@hykord/fs/promises';
 import { writeFile } from 'fs/promises';
+import { after, findAndPatch } from '@hykord/patcher';
+import { findByProps, FluxDispatcher } from '@hykord/webpack';
 
 type SettingValue = string | boolean | string[];
 export type HykordSettings =
@@ -13,10 +15,6 @@ export type HykordSettings =
 export class SettingsManager {
     private location: string;
     private settings: Map<HykordSettings, SettingValue>;
-    private modules: {
-        webpack: typeof import('@hykord/webpack');
-        patcher: typeof import('@hykord/patcher');
-    };
     
     constructor() {
         this.location = null;
@@ -24,10 +22,6 @@ export class SettingsManager {
 
     async init() {
         this.location = `${process.env.HOME || process.env.USERPROFILE}/.hykord/${window.GLOBAL_ENV.RELEASE_CHANNEL}/settings.json`;
-        this.modules = {
-            webpack: require('@hykord/webpack'),
-            patcher: require('@hykord/patcher'),
-        }
 
         const config = await readAndIfNotExistsCreate(
             this.location,
@@ -82,9 +76,9 @@ export class SettingsManager {
         switch(name) {
             case 'discord.allow_nsfw_and_bypass_age_requirement': {
                 const patch = () => {
-                    this.modules.patcher.findAndPatch(
-                        () => this.modules.webpack.findByProps('getUsers'),
-                        (User) => this.modules.patcher.after("getCurrentUser", User, (_, user) => {
+                    findAndPatch(
+                        () => findByProps('getUsers'),
+                        (User) => after("getCurrentUser", User, (_, user) => {
                             user.nsfwAllowed = value;
                             return user;
                         })
@@ -94,10 +88,10 @@ export class SettingsManager {
                 if (first) {
                     const method = () => {
                         patch();
-                        this.modules.webpack.FluxDispatcher.unsubscribe('CONNECTION_OPEN', method);
+                        FluxDispatcher.unsubscribe('CONNECTION_OPEN', method);
                     };
 
-                    this.modules.webpack.FluxDispatcher.subscribe('CONNECTION_OPEN', method);
+                    FluxDispatcher.subscribe('CONNECTION_OPEN', method);
                 } else {
                     patch();
                 }
@@ -105,8 +99,8 @@ export class SettingsManager {
             }
             case 'discord.experiments': {
                 const patch = () => {
-                    const usermod = this.modules.webpack.findByProps('getUsers')
-                    const nodes = Object.values(this.modules.webpack.findByProps('_dispatcher')._dispatcher._actionHandlers._dependencyGraph.nodes);
+                    const usermod = findByProps('getUsers')
+                    const nodes = Object.values(findByProps('_dispatcher')._dispatcher._actionHandlers._dependencyGraph.nodes);
     
                     try {
                         // @ts-expect-error It works
@@ -124,10 +118,10 @@ export class SettingsManager {
                 if (first && value) {
                     const method = () => {
                         patch();
-                        this.modules.webpack.FluxDispatcher.unsubscribe('CONNECTION_OPEN', method);
+                        FluxDispatcher.unsubscribe('CONNECTION_OPEN', method);
                     };
 
-                    this.modules.webpack.FluxDispatcher.subscribe('CONNECTION_OPEN', method);
+                    FluxDispatcher.subscribe('CONNECTION_OPEN', method);
                 } else if (value) {
                     patch();
                 }
