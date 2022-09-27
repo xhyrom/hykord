@@ -1,4 +1,4 @@
-import { batchFind, findAsync, React } from '@hykord/webpack';
+import { findAsync, React } from '@hykord/webpack';
 import { Markdown } from '@hykord/components';
 import { IPCRenderer } from '@ipc/renderer';
 
@@ -20,7 +20,7 @@ export const openConfirmationModal = async({
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   callback = (value: boolean) => {},
 ) => {
-  const [{ openModal }, Colors, ConfirmModal] = await findAsync(() => batchFind(
+  /*const [{ openModal }, Colors, ConfirmModal] = await findAsync(() => batchFind(
     ({ findByProps, findByDisplayName }) => {
       findByProps("openModalLazy");
       findByProps("button", "colorRed");
@@ -70,7 +70,7 @@ export const openConfirmationModal = async({
         </ConfirmModal>
       );
     });
-  })
+  })*/
 }
 
 export const openRequiredRestartModal = () => openConfirmationModal({

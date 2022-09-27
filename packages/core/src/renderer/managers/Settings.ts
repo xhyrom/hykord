@@ -75,7 +75,7 @@ export class SettingsManager {
 
         switch(name) {
             case 'discord.allow_nsfw_and_bypass_age_requirement': {
-                const patch = () => {
+                /*const patch = () => {
                     findAndPatch(
                         () => findByProps('getUsers'),
                         (User) => after("getCurrentUser", User, (_, user) => {
@@ -94,11 +94,11 @@ export class SettingsManager {
                     FluxDispatcher.subscribe('CONNECTION_OPEN', method);
                 } else {
                     patch();
-                }
+                }*/
                 break;
             }
             case 'discord.experiments': {
-                const patch = () => {
+                /*const patch = () => {
                     const usermod = findByProps('getUsers')
                     const nodes = Object.values(findByProps('_dispatcher')._dispatcher._actionHandlers._dependencyGraph.nodes);
     
@@ -124,7 +124,7 @@ export class SettingsManager {
                     FluxDispatcher.subscribe('CONNECTION_OPEN', method);
                 } else if (value) {
                     patch();
-                }
+                }*/
                 break;
             }
         }
