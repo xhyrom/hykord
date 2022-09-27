@@ -1,4 +1,4 @@
-import { findByDisplayName, findByProps, findAsync } from '@hykord/webpack';
+import { findByDisplayName, findByProps, findAsync, find } from '@hykord/webpack';
 import AsyncComponent from './AsyncComponent';
 
 export * as inputs from './inputs';
@@ -22,7 +22,7 @@ export const Divider = AsyncComponent.from(findAsync(() => findByDisplayName('Di
 export const Card = AsyncComponent.from(findAsync(() => findByDisplayName('Card')));
 export const Flex = AsyncComponent.from(findAsync(() => findByDisplayName('Flex')));
 export const Header = AsyncComponent.from(findAsync(() => findByProps('Sizes', 'Tags')));
-export const Markdown = AsyncComponent.from(findAsync(() => findByProps("parseBlock", "parseInline", "defaultOutput")));
+export const Markdown = AsyncComponent.from(findAsync(() => find(m => m?.prototype?.render && m.rules)));
 export const SearchBar = AsyncComponent.from(findAsync(() => findByDisplayName('SearchBar')));
 export const Clickable = AsyncComponent.from(findAsync(() => findByDisplayName('Clickable')));
 

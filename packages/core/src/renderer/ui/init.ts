@@ -7,7 +7,7 @@ export default () => {
     Logger.info('Injecting UI');
 
     const userSettings = require('./userSettings/index').default;
-    userSettings();
+    //userSettings();
 
     const notifications = require('./notifications/index').default;
     notifications();

@@ -38,6 +38,7 @@ export const Flux = findByProps("connectStores");
 export const FluxDispatcher = findByProps("_currentDispatchActionType");
 */
 
+export const find = WebsMack.find;
 export const findByDisplayName = WebsMack.getByDisplayName;
 export const findByProps = WebsMack.getByProps;
 export { default as findAsync } from "./findAsync";
