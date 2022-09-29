@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "es2016",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {
+      "@common": ["./src/common/index.ts"],
+      "@patcher": ["./src/renderer/patcher/index.ts"],
+      "@hykord/*": ["./src/renderer/api/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
+  },
+  "include": ["./src/**/*"]
+}
