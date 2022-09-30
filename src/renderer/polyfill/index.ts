@@ -1,6 +1,7 @@
 import * as HykordExample from '@hykord/example';
 import * as HykordPatcher from '@hykord/patcher';
 import * as HykordStructures from '@hykord/structures';
+import * as HykordWebpack from '@hykord/webpack';
 
 /**
  * Creates require for plugins
@@ -13,6 +14,7 @@ const createRequire = (path: string) => {
             case '@hykord/example': return HykordExample
             case '@hykord/patcher': return HykordPatcher
             case '@hykord/structures': return HykordStructures
+            case '@hykord/webpack': return HykordWebpack
             case 'path': return HykordNative.getPolyfillRemote().path
             case 'electron': return HykordNative.getPolyfillRemote().electron
             case 'fs': return HykordNative.getPolyfillRemote().fs

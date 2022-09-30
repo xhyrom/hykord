@@ -10,13 +10,14 @@ const Color = {
     Green: '#98C379',
     Yellow: '#E5C07B',
     Debug: '#707782',
+    Orange: '#f5c542',
     Reset: 'inherit',
 };
 
 export class Logger {
     public name: string;
     constructor(name: string) {
-        this.name = `Hykord/${name}`;
+        this.name = name;
     }
 
     public info(...message: string[]) {
@@ -53,8 +54,10 @@ export class Logger {
         }
     
         console.info(
-            `%c ${this.name}/${level} %c`,
+            `%c Hykord %c %c ${this.name} %c`,
             `background: ${color}; color: black; font-weight: bold; border-radius: 5px;`,
+            `color: ${Color.Reset}`,
+            `background: ${Color.Orange}; color: black; font-weight: bold; border-radius: 5px;`,
             `color: ${Color.Reset}`,
             ...message
         );

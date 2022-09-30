@@ -1,10 +1,12 @@
 import esbuild from 'esbuild';
 import alias from 'esbuild-plugin-alias';
 import { join, resolve } from 'node:path';
-import { readFileSync } from 'fs';
+import { readFileSync, rmSync } from 'node:fs';
+
+rmSync(join(__dirname, '..', 'dist'), { recursive: true });
 
 const watch = process.argv.includes('--watch');
-const dev = !process.argv.includes('--dev');
+const dev = process.argv.includes('--dev');
 
 const tsconfig = JSON.parse(readFileSync(join(__dirname, '..', 'tsconfig.json')).toString());
 
@@ -29,8 +31,8 @@ const common: esbuild.BuildOptions = {
   logLevel: 'info',
   absWorkingDir: join(__dirname, '..'),
   bundle: true,
-  minify: dev,
-  sourcemap: true,
+  minify: !dev,
+  sourcemap: dev,
   format: 'cjs' as esbuild.Format,
   watch: watch,
   plugins: [
@@ -42,7 +44,7 @@ const common: esbuild.BuildOptions = {
 Promise.all([
     esbuild.build({
       ...common,
-      entryPoints: ['src/main/preload.ts'],
+      entryPoints: ['src/preload/index.ts'],
       outfile: 'dist/preload.js',
       platform: 'node',
       target: ['esnext'],

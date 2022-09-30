@@ -1,3 +1,1 @@
-import { ipcMain } from 'electron';
-
-// TODO: events
+import './settings';

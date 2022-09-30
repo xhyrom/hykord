@@ -1,14 +1,16 @@
 import { dirname, join } from 'path';
 import electron from 'electron';
 import BrowserWindow from './patches/BrowserWindow';
+import { Logger } from '@common';
+import './ipc';
 
-console.log('[Hykord/core] Patching...');
+Logger.info('Patching...');
 
 const electronPath = require.resolve('electron');
 const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
-const discordPackage = require(join(discordPath, 'package.json'));
-const discordMain = join(discordPath, discordPackage.main);
-require.main!.filename = discordMain;
+//const discordPackage = require(join(discordPath, 'package.json'));
+//const discordMain = join(discordPath, discordPackage.main);
+//require.main!.filename = discordMain;
 
 process.env.DISCORD_APP_PATH = discordPath;
 
@@ -27,10 +29,6 @@ Object.defineProperty(global, 'appSettings', {
   configurable: true,
 });
 
-// @ts-ignore
-electron.app.setAppPath(discordPath);
-electron.app.name = discordPackage.name;
-
 electron.app.whenReady().then(() => {
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders, url }, cb) => {
     if (responseHeaders) {
@@ -46,6 +44,4 @@ electron.app.whenReady().then(() => {
   });
 })
 
-require('./ipc');
-
-require('module')._load(discordMain);
+//require('module')._load(discordMain);
