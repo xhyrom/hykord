@@ -9,7 +9,8 @@
     "paths": {
       "@common": ["./src/common/index.ts"],
       "@patcher": ["./src/renderer/patcher/index.ts"],
-      "@hykord/*": ["./src/renderer/api/*"]
+      "@hykord/*": ["./src/renderer/modules/*"],
+      "@types": ["./src/types.ts"]
     },
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true

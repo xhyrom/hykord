@@ -1,27 +1,19 @@
 import { join } from 'path';
-import { deepen, convertToMap, Logger } from '@common';
-import { writeFile, readFile, access } from 'fs/promises';
+import { deepen, convertToMap, CoreLogger as Logger } from '@common';
+import { writeFile } from 'fs/promises';
 
-const exists = async(path: string) => {
+const requireAndIfNotExistsCreate = (path: string, fallback: any): string => {
     try {
-        await access(path);
-        return true;
-    } catch {
-        return false;
+        return require(path);
+    } catch (e) {
+        return fallback;
     }
 }
 
-const readAndIfNotExistsCreate = async(path: string, fallback: string): Promise<string> => {
-    const exist = await exists(path);
-    if (exist) return (await readFile(path)).toString();
-    
-    await writeFile(path, fallback);
-
-    return fallback;
-}
-
 export type PossibleSettingValue = string | boolean | number | string[] | undefined | null;
-export type KnownSettings = 'hykord.quickCss';
+export type KnownSettings = 
+    'hykord.quickCss' |
+    'hykord.react-dev-tools';
 
 export class SettingsManager {
     private readonly location: string;
@@ -32,41 +24,25 @@ export class SettingsManager {
 
         this.location = join(location, 'settings.json');
 
-        this.init();
-    }
-
-    private async init() {
-        const config = await readAndIfNotExistsCreate(
+        const config = requireAndIfNotExistsCreate(
             this.location,
-            JSON.stringify({})
+            {}
         )
 
-        this.settings = convertToMap(JSON.parse(config));
+        this.settings = convertToMap(config);
     }
 
     public getSetting(name: KnownSettings, defaultValue?: PossibleSettingValue): PossibleSettingValue {
         return this.settings.get(name) || defaultValue;
     }
 
+    public setSetting(name: KnownSettings, value: PossibleSettingValue): Map<KnownSettings, PossibleSettingValue> {
+        return this.settings.set(name, value);
+    }
+
     public async save() {
-        await writeFile(this.location, JSON.stringify(deepen(this.settings)));
+        return await writeFile(this.location, JSON.stringify(deepen(this.settings)));
     }
 }
 
-/*export default (location: string) => {
-    // I know this is very bad but nevermind
-    /*const settingsClass = new SettingsManager(location);
-    const object = {};
-
-    for (const name of Object.getOwnPropertyNames(Object.getPrototypeOf(settingsClass))) {
-        if (name === 'constructor' || name === 'init' || name === 'convertToMap') continue;
-        // @ts-expect-error - look above
-        object[name] = settingsClass[name];
-    }
-
-    // @ts-expect-error - look above
-    object.__proto__ = settingsClass.__proto__;
-
-    return object as SettingsManager;*/
-/*    return new SettingsManager(location);
-}*/
+export default new SettingsManager(join(`${process.env.HOME || process.env.USERPROFILE}`, '.hykord'));

@@ -1,9 +1,9 @@
 import esbuild from 'esbuild';
 import alias from 'esbuild-plugin-alias';
 import { join, resolve } from 'node:path';
-import { readFileSync, rmSync } from 'node:fs';
+import { readFileSync, rmSync, existsSync } from 'node:fs';
 
-rmSync(join(__dirname, '..', 'dist'), { recursive: true });
+if (existsSync(join(__dirname, '..', 'dist'))) rmSync(join(__dirname, '..', 'dist'), { recursive: true });
 
 const watch = process.argv.includes('--watch');
 const dev = process.argv.includes('--dev');

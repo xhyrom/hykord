@@ -14,16 +14,7 @@ export const exists = async(path: string) => {
     }
 }
 
-export const getContentOrCreateIfNotExists = async (path: string) => {
-    try {
-        return await fsPromises.readFile(path, 'utf8');
-    } catch (e) {
-        await fsPromises.writeFile(path, '');
-        return '';
-    }
-}
-
-export const readAndIfNotExistsCreate = async(path: string, fallback: string): Promise<string> => {
+export const readAndIfNotExistsCreate = async(path: string, fallback: string = ''): Promise<string> => {
     const exist = await exists(path);
     if (exist) return (await fsPromises.readFile(path)).toString();
     

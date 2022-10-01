@@ -1,8 +1,9 @@
 import { dirname, join } from 'path';
 import electron from 'electron';
 import BrowserWindow from './patches/BrowserWindow';
-import { Logger } from '@common';
-import './ipc';
+import installExt, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import { CoreLogger as Logger } from '@common';
+import SettingsManager from './api/SettingsManager';
 
 Logger.info('Patching...');
 
@@ -42,6 +43,15 @@ electron.app.whenReady().then(() => {
     }
     cb({ cancel: false, responseHeaders });
   });
+
+  if (SettingsManager.getSetting('hykord.react-dev-tools', false)) {
+    Logger.info('Installing React Developer Tools...');
+
+    installExt(REACT_DEVELOPER_TOOLS)
+      .then((name) => Logger.info(`Added Extension:  ${name}`))
+      .catch((err) => Logger.err('An error occurred while installing React Dev Tools: ', err));
+  }
 })
 
+require('./ipc');
 //require('module')._load(discordMain);

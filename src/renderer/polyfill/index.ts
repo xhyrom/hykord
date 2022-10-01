@@ -15,6 +15,7 @@ const createRequire = (path: string) => {
             case '@hykord/patcher': return HykordPatcher
             case '@hykord/structures': return HykordStructures
             case '@hykord/webpack': return HykordWebpack
+//            case '@hykord/components': return HykordComponents
             case 'path': return HykordNative.getPolyfillRemote().path
             case 'electron': return HykordNative.getPolyfillRemote().electron
             case 'fs': return HykordNative.getPolyfillRemote().fs
