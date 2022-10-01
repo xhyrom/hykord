@@ -22,7 +22,8 @@ const createRequire = (path: string) => {
             case 'fs/promises': return HykordNative.getPolyfillRemote().fs.promises
 
             default:
-                //return Module._load(mod, path, createRequire);
+                // Only works if hykord.unsafe-require setting is enabled
+                return HykordNative.require(mod);
         }
     }
 }

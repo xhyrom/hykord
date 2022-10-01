@@ -11,7 +11,7 @@ declare global {
             pop(): any;
         };
         [k: PropertyKey]: any;
-        require(mod: string): any;
+        require<T>(mod: string): T;
     }
 }
 

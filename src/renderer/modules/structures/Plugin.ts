@@ -1,14 +1,14 @@
-export abstract class Theme {
+export abstract class Plugin {
     // Required properties
     public abstract readonly name: string;
     public abstract readonly version: string;
     public abstract readonly author: string;
-    public abstract start(): string;
+    public abstract start(): void;
 
     // Optional properties
     public description: string | null = null;
     public license: string | null = null;
-    public showInSettings: boolean = true;
-    public cssId: string | null = null;
+    public toggleable: boolean = true;
     public internal: boolean = false;
+    public stop?(): void;
 }

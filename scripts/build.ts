@@ -19,11 +19,15 @@ const aliases = Object.fromEntries(
   ]),
 );
 
+// Add this dependencies to the bundle
+const blacklist = ['electron-devtools-installer', 'unzip-crx3', 'spitroast'];
 const makeAllPackagesExternalPlugin: esbuild.Plugin = {
   name: 'make-all-packages-external',
   setup(build) {
     let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/; // Must not start with '/' or './' or '../'
-    build.onResolve({ filter }, args => ({ path: args.path, external: true }));
+    build.onResolve({ filter }, args => {
+      if (!blacklist.includes(args.path)) return { path: args.path, external: true };
+    });
   },
 };
 

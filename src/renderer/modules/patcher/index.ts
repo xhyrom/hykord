@@ -1,3 +1,5 @@
+export * from 'spitroast';
+
 export const patchCss = (content: string, id?: string) => {
     const style = Object.assign(
         document.createElement('style'),

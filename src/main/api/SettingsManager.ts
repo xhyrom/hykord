@@ -13,7 +13,8 @@ const requireAndIfNotExistsCreate = (path: string, fallback: any): string => {
 export type PossibleSettingValue = string | boolean | number | string[] | undefined | null;
 export type KnownSettings = 
     'hykord.quickCss' |
-    'hykord.react-dev-tools';
+    'hykord.react-dev-tools' |
+    'hykord.disable-science-requests';
 
 export class SettingsManager {
     private readonly location: string;

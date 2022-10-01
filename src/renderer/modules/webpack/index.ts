@@ -18,8 +18,6 @@ class Module {
   public loaded: boolean;
 
   constructor (module: RawModule) {
-    Object.assign(this, module.props);
-
     this.id = module.id;
     this.exports = module.exports;
     this.loaded = module.loaded;
@@ -35,8 +33,6 @@ class Module {
     return objectExports.find(x => props.every(prop => Object.keys(x).includes(prop))) ?? null;
   }
 }
-
-type ModuleType = typeof Module & Record<string, unknown>;
 
 let instance: WebpackInstance;
 let ready = false;
@@ -85,26 +81,40 @@ export function getRawModules () {
   return Object.values(instance.c) as RawModule[];
 }
 
-type Filter = (module: RawModule) => boolean | Exports;
+type Filter = (module: Exports) => boolean | Exports;
 
-export function getAllModules (filter?: Filter | undefined): ModuleType[] {
+export function getAllModules (filter?: Filter | undefined): Module[] {
   return getRawModules()
     .map(m => {
-      const isMatch = !filter || filter(m);
-      if (!isMatch) {
-        return;
+      const isMatch = filter ? filter : () => true;
+
+      if (m.exports && isMatch(m.exports)) return new Module(m);
+      if (typeof m.exports !== 'object') return;
+
+      if (m.exports?.default && isMatch(m.exports?.default as Exports)) return new Module({
+        id: m.id,
+        exports: m.exports.default as Exports,
+        loaded: m.loaded
+      });
+
+      for (const key in m.exports) {
+        const nested = m.exports[key];
+        // @ts-expect-error prototype is everywhere!!!!!
+        if (nested && isMatch(nested)) return new Module({
+          id :m.id,
+          exports: nested as Exports,
+          loaded: m.loaded
+        });
       }
 
-      m.props = typeof m.exports === 'object' ? m.exports : {};
-
-      return new Module(m);
+      return;
     })
-    .filter(Boolean) as unknown as ModuleType[];
+    .filter(Boolean) as unknown as Module[];
 }
 
-export const getModule = (filter: Filter): ModuleType | null => getAllModules(filter)[0] ?? null;
+export const getModule = (filter: Filter): Module | null => getAllModules(filter)[0] ?? null;
 
-export function getAllByProps (...props: string[]): ModuleType[] {
+export function getAllByProps (...props: string[]): Module[] {
   return getRawModules()
     .map(m => {
       if (!m.exports || typeof m.exports !== 'object') {
@@ -120,7 +130,42 @@ export function getAllByProps (...props: string[]): ModuleType[] {
 
       return new Module(m);
     })
-    .filter(Boolean) as unknown as ModuleType[];
+    .filter(Boolean) as unknown as Module[];
 }
 
-export const getByProps = (...props: string[]): ModuleType | null => getAllByProps(...props)[0] ?? null;
+export const getByProps = (...props: string[]): Module | null => getAllByProps(...props)[0] ?? null;
+
+export function getAllByPrototypeFields (...protos: string[]): Module[] {
+  return getRawModules()
+    .map(m => {
+      if (!m.exports) {
+        return;
+      }
+
+      // @ts-expect-error prototype is everywhere!!!!!
+      if (m.exports?.prototype && protos.every((p) => p in m.exports.prototype)) return new Module(m);
+      if (typeof m.exports !== 'object') return;
+
+      // @ts-expect-error prototype is everywhere!!!!!
+      if (m.exports.default?.prototype && protos.every((p) => p in m.exports.default.prototype)) return new Module({
+        id: m.id,
+        exports: m.exports.default as Exports,
+        loaded: m.loaded
+      });
+
+      for (const key in m.exports) {
+        const nested = m.exports[key];
+        // @ts-expect-error prototype is everywhere!!!!!
+        if (nested?.prototype && protos.every((p) => p in nested?.prototype)) return new Module({
+          id :m.id,
+          exports: nested as Exports,
+          loaded: m.loaded
+        });
+      }
+
+      return;
+    })
+    .filter(Boolean) as unknown as Module[];
+}
+
+export const getByPrototypeFields = (...protos: string[]): Module | null => getAllByPrototypeFields(...protos)[0] ?? null;

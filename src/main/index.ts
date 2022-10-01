@@ -51,6 +51,13 @@ electron.app.whenReady().then(() => {
       .then((name) => Logger.info(`Added Extension:  ${name}`))
       .catch((err) => Logger.err('An error occurred while installing React Dev Tools: ', err));
   }
+
+  if (SettingsManager.getSetting('hykord.disable-science-requests', false)) {
+    electron.session.defaultSession.webRequest.onBeforeRequest(
+      { urls: ['https://*/api/v*/science'] },
+      (_, callback) => callback({ cancel: true })
+    )
+  }
 })
 
 require('./ipc');

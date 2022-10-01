@@ -1,2 +1,10 @@
-export * as themes from './theme';
-//export * as plugins from './plugins';
+import * as plugins from './plugin';
+import * as themes from './theme';
+
+export {
+    plugins,
+    themes
+};
+
+plugins.init();
+themes.init();
