@@ -11,9 +11,9 @@ export class Settings extends Plugin {
   version = '0.0.0';
   toggleable = false;
   public async start(): Promise<void> {
-      const React: typeof import('react') = (await this.getReact()).exports as any;
-      const divider: any = (await this.getDivider()).exports;
-      const userSettings: any = (await this.getSettings()).exports;
+      const React: typeof import('react') = (await this.getReact()) as any;
+      const divider: any = (await this.getDivider());
+      const userSettings: any = (await this.getSettings());
       
       this.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default(React));
 
