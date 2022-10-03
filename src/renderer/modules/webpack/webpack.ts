@@ -2,63 +2,27 @@
 // Thanks, Replugged!
 // Temporary solution
 
-import { WebpackInstance } from 'discord-types/other';
-import { byProps, byProtos, Filter } from './filters';
+import { byProps, byProtos } from './filters';
+import { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback } from '@hypes';
 
-export type Exports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string;
-export type RawModule = Record<string, unknown> & {
-  id: number;
-  loaded: boolean;
-  exports: Exports
-};
+export const subscriptions = new Map<Filter, LazyCallback>();
 
-let instance: WebpackInstance;
-let ready = false;
+let instance: WebpackRequire;
 
-function patchPush (webpackChunk: typeof window.webpackChunkdiscord_app) {
-  let original = webpackChunk.push;
+export function _initWebpack(webpackChunk: WebpackChunkGlobal) {
+  if (instance !== void 0) throw "no.";
 
-  function handlePush (chunk: [unknown, Record<number, RawModule>]) {
-    return original.call(webpackChunk, chunk);
-  }
-
-  Object.defineProperty(webpackChunk, 'push', {
-    get: () => handlePush,
-    set: (v) => (original = v),
-    configurable: true
-  });
-}
-
-function loadWebpackModules (webpackChunk: typeof window.webpackChunkdiscord_app) {
   instance = webpackChunk.push([
     [ Symbol('hykord') ],
     {},
-    (r: WebpackInstance) => r
-  ]);
-
-  patchPush(webpackChunk);
-
-  ready = true;
+    (r: WebpackRequire) => r
+  ]) as WebpackRequire;
+  webpackChunk.pop();
 }
 
-let webpackChunk: typeof window.webpackChunkdiscord_app | undefined;
+export const getRawModules = (): RawModule[] => instance ? Object.values(instance.c) as RawModule[] : [];
 
-Object.defineProperty(window, 'webpackChunkdiscord_app', {
-  get: () => webpackChunk,
-  set: (v) => {
-    if (!ready && v?.push !== Array.prototype.push) {
-      loadWebpackModules(v);
-    }
-    webpackChunk = v;
-  },
-  configurable: true
-});
-
-export function getRawModules () {
-  return Object.values(instance.c) as RawModule[];
-}
-
-export function getAllModules (filter?: Filter | undefined): Exports[] {
+export const getAllModules = (filter?: Filter | undefined): ModuleExports[] => {
   return getRawModules()
     .map(m => {
       const isMatch = filter ? filter : () => true;
@@ -66,24 +30,35 @@ export function getAllModules (filter?: Filter | undefined): Exports[] {
       if (m.exports && isMatch(m.exports)) return m.exports;
       if (typeof m.exports !== 'object') return;
 
-      if (m.exports?.default && isMatch(m.exports?.default as Exports)) return m.exports.default;
+      if (m.exports?.default && isMatch(m.exports?.default as ModuleExports)) return m.exports.default;
 
       for (const key in m.exports) {
-        const nested = m.exports[key] as Exports;
+        const nested = m.exports[key] as ModuleExports;
         if (nested && isMatch(nested)) return nested;
       }
 
       return;
     })
-    .filter(Boolean) as unknown as Exports[];
-}
+    .filter(Boolean) as unknown as ModuleExports[];
+};
 
-export const getModule = (filter?: Filter | undefined): Exports | null => getAllModules(filter)[0] ?? null;
+export const getModule = (filter?: Filter | undefined): ModuleExports | null => getAllModules(filter)[0] ?? null;
 
 // By properties
-export const getAllByProps = (...props: string[]): Exports[] => getAllModules(byProps(...props));
-export const getByProps = (...props: string[]): Exports | null => getAllByProps(...props)[0] ?? null;
+export const getAllByProps = (...props: string[]): ModuleExports[] => getAllModules(byProps(...props));
+export const getByProps = (...props: string[]): ModuleExports | null => getAllByProps(...props)[0] ?? null;
 
 // By prototype fields/properties
-export const getAllByPrototypeFields = (...protos: string[]): Exports[] => getAllModules(byProtos(...protos));
-export const getByPrototypeFields = (...protos: string[]): Exports | null => getAllByPrototypeFields(...protos)[0] ?? null;
+export const getAllByPrototypeFields = (...protos: string[]): ModuleExports[] => getAllModules(byProtos(...protos));
+export const getByPrototypeFields = (...protos: string[]): ModuleExports | null => getAllByPrototypeFields(...protos)[0] ?? null;
+
+export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void {
+  if (typeof filter === 'string') filter = byProps(filter);
+  else if (Array.isArray(filter)) filter = byProps(...filter);
+  else if (typeof filter !== 'function') filter = byProps(filter);
+
+  const existing = getModule(filter!);
+  if (existing) return void callback(existing);
+
+  subscriptions.set(filter, callback);
+}

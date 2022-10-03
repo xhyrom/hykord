@@ -8,11 +8,12 @@
     "strict": true,
     "paths": {
       "@common": ["./src/common/index.ts"],
+      "@hypes": ["./src/hypes/index.ts"],
       "@patcher": ["./src/renderer/patcher/index.ts"],
-      "@hykord/*": ["./src/renderer/modules/*"],
-      "@types": ["./src/types.ts"]
+      "@hykord/*": ["./src/renderer/modules/*"]
     },
     "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true
   },
   "include": ["./src/**/*"]

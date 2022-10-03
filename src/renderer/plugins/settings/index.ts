@@ -1,5 +1,5 @@
 import { Plugin } from '@hykord/structures';
-import { getByProps, getByPrototypeFields, getModule } from '@hykord/webpack';
+import { React, waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 
 export class Settings extends Plugin {
@@ -11,11 +11,11 @@ export class Settings extends Plugin {
   version = '0.0.0';
   toggleable = false;
   public async start(): Promise<void> {
-      const React: typeof import('react') = (await this.getReact()) as any;
-      const divider: any = (await this.getDivider());
       const userSettings: any = (await this.getSettings());
       
-      this.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default(React));
+      this.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default);
+      this.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default);
+      this.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default);
 
       this.unpatch = after('getPredicateSections', userSettings.prototype, (_, sects) => {
         const changelog = sects.find((c: any) => c.section.toLowerCase() === 'changelog');
@@ -28,40 +28,30 @@ export class Settings extends Plugin {
             { section: "DIVIDER" },
             { section: "HEADER", label: "Hykord" },
             ...this.sections,
-//            { section: "DIVIDER" },
-//            { section: "HEADER", label: "Hykord Plugins" },
           );
         }
 
         if (debugInfo) {
-            debugInfo.element = (element => () => {
-                const res = element();
-    
-                if (res.props.children && res.props.children.length === 4) {
-                  // Add divider
-                  res.props.children.push(
-                    Object.assign({}, res.props.children[0], {
-                      props: Object.assign({}, res.props.children[0].props, {
-                        children: [ React.createElement(divider, {
-                          className: 'hykord-form-divider'
-                        })]
-                      })
-                    }),
-                    // eslint-disable-next-line no-useless-escape
-                    ...Object.entries(HykordNative.getVersions()).map(([name, value]) => {
-                      return Object.assign({}, res.props.children[0], {
-                        props: Object.assign({}, res.props.children[0].props, {
-                          children: [ name, ' ', React.createElement('span', {
-                            className: res.props.children[0].props.children[4].props.className,
-                            children: [ value ]
-                          }) ]
-                        })
-                      })
+          debugInfo.element = (element => () => {
+            const res = element();
+
+            if (res.props.children && res.props.children.length === 4) {
+              res.props.children.push(
+                ...Object.entries(HykordNative.getVersions()).map(([name, value]) => {
+                  return Object.assign({}, res.props.children[0], {
+                    props: Object.assign({}, res.props.children[0].props, {
+                      children: [ name, ' ', React.createElement('span', {
+                        className: res.props.children[0].props.children[4].props.className,
+                        children: [ value ]
+                      }) ]
                     })
-                  );
-                }
-                return res;
-            })(debugInfo.element);
+                  })
+                })
+              );
+            }
+
+            return res;
+          })(debugInfo.element);
         }
 
         return sects;
@@ -82,44 +72,11 @@ export class Settings extends Plugin {
     };
   }
 
-  private async getReact() {
-      let knownModule = getByProps('useState');
-      while (!knownModule) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          knownModule = getByProps('useState');
-      }
-
-      return knownModule;
-  }
-
-  private async getDivider() {
-      let knownModule = getModule(m => {
-          if (typeof m !== 'function') return false;
-          var s = m?.toString?.();
-          if (!s) return false;
-          return s.length < 200 && s.includes('divider')
-      });
-
-      while (!knownModule) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          knownModule = getModule(m => {
-              if (typeof m !== 'function') return false;
-              var s = m?.toString?.();
-              if (!s) return false;
-              return s.length < 200 && s.includes('divider')
-          });
-      }
-
-      return knownModule;
-  }
-
   private async getSettings() {
-      let knownModule = getByPrototypeFields('getPredicateSections');
-      while (!knownModule) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          knownModule = getByPrototypeFields('getPredicateSections');
-      }
-
-      return knownModule;
+    return new Promise((resolve) => {
+      waitFor(Filters.byProtos('getPredicateSections'), (s) => {
+        resolve(s);
+      });
+    })
   }
 }

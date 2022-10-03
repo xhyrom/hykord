@@ -1,7 +1,7 @@
 // Called from preload.ts, exported as Hykord
 
 import { CoreLogger as Logger } from '@common';
-import '@hykord/webpack';
+import './modules/webpack/patch';
 import './polyfill';
 import './loaders';
 

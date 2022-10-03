@@ -1,4 +1,4 @@
-import { HykordIpcEvents } from '@types';
+import { HykordIpcEvents } from '@hypes';
 import { ipcMain } from 'electron';
 import SettingManager from '../api/SettingsManager';
 

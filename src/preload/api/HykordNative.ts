@@ -1,7 +1,7 @@
 import * as polyfill from '../polyfill';
 import { join } from 'path';
 import { ipcRenderer } from 'electron';
-import { HykordIpcEvents } from '@types';
+import { HykordIpcEvents } from '@hypes';
 import { PreloadLogger as Logger } from '@common';
 
 const getDirectory = () => join(`${process.env.HOME || process.env.USERPROFILE}`, '.hykord');
@@ -17,8 +17,8 @@ export default {
              * 
              * @deprecated Use SET_SETTING instead
              */
-            setSync: (name: string, value: string) => ipcRenderer.sendSync(HykordIpcEvents.SET_SETTING_SYNC, name, value),
-            set: (name: string, value: string) => ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
+            setSync: (name: string, value: any) => ipcRenderer.sendSync(HykordIpcEvents.SET_SETTING_SYNC, name, value),
+            set: (name: string, value: any) => ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
             save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS)
         })
     }),
