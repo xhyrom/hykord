@@ -9,6 +9,7 @@ export class Settings extends Plugin {
   name = 'Settings';
   author = 'Hykord';
   version = '0.0.0';
+  description = 'Inject hykord specific settings into the settings panel';
   toggleable = false;
   public async start(): Promise<void> {
       const userSettings: any = (await this.getSettings());

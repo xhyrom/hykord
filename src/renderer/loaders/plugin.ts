@@ -14,8 +14,12 @@ export const load = async() => {
     if (!(await exists(directory))) await mkdir(directory);
 
     for (const file of await readdir(directory)) {
-        const pluginExports = await import(join(directory, file));
-        addPlugin(pluginExports.default ? new pluginExports.default() : new pluginExports());
+        try {
+            const pluginExports = await import(join(directory, file));
+            addPlugin(pluginExports.default ? new pluginExports.default() : new pluginExports());
+        } catch(error: any) {
+            Logger.err(`Failed to load plugin ${file}: ${error.message}`);
+        }
     }
 
     for (const plugin of plugins) {

@@ -2,6 +2,7 @@ import { React } from '@hykord/webpack';
 import { Switch as OriginalSwitch } from '..';
 
 interface Props {
+    disabled?: boolean;
     value: boolean;
     onChange: (value: boolean) => boolean | Promise<boolean>;
     note: string;
@@ -30,6 +31,7 @@ export class Switch extends React.Component<Props> {
     render () {
         return (
             <OriginalSwitch
+                disabled={this.props.disabled}
                 value={this.state.value}
                 onChange={this.handleChange}
                 note={this.props.note}

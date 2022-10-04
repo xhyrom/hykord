@@ -13,6 +13,7 @@ export const Forms = {} as {
 export let Card: Components.Card;
 export let Button: any;
 export let Switch: any;
+export let Checkbox: any
 export let Tooltip: Components.Tooltip;
 
 // Custom components:
@@ -43,5 +44,6 @@ waitFor(m => {
 
 waitFor(['Hovers', 'Looks', 'Sizes'], m => Button = m);
 waitFor(Filters.byCode('helpdeskArticleId'), m => Switch = m);
+waitFor(Filters.byCode('input', 'createElement', 'checkbox'), m => Checkbox = m);
 waitFor(['Positions', 'Colors'], m => Tooltip = m);
 waitFor(m => m.Types?.PRIMARY === 'cardPrimary', m => Card = m);

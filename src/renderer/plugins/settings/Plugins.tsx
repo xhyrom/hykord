@@ -1,10 +1,12 @@
 import { Forms } from '@hykord/components';
 import { React } from '@hykord/webpack';
 import { ErrorBoundary } from '@hykord/components/ErrorBoundary';
+import { plugins } from '@loader/plugin';
+import AddonCard from './cards/AddonCard';
 
 export default ErrorBoundary.wrap(() => {
     return <Forms.FormSection tag='h1' title='Plugins'>
-        <Forms.FormTitle>asd</Forms.FormTitle>
-        <h1>Nice</h1>
+        <Forms.FormTitle>Here you can see installed plugins</Forms.FormTitle>
+        {plugins.map(plugin => <AddonCard name={plugin.name} type={'plugin'} />)}
     </Forms.FormSection>
 })
