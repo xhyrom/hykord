@@ -8,7 +8,7 @@ export enum HykordIpcEvents {
 }
 
 export type KnownSettings = 
-    'hykord.quick_css' |
-    'hykord.react-dev-tools' |
+    'hykord.quick-css' |
+    'hykord.react-devtools' |
     'hykord.disable-science-requests' |
     'hykord.unsafe-require';

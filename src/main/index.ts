@@ -44,7 +44,7 @@ electron.app.whenReady().then(() => {
     cb({ cancel: false, responseHeaders });
   });
 
-  if (SettingsManager.getSetting('hykord.react-dev-tools', false)) {
+  if (SettingsManager.getSetting('hykord.react-devtools', false)) {
     Logger.info('Installing React Developer Tools...');
 
     installExt(REACT_DEVELOPER_TOOLS)

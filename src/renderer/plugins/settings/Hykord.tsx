@@ -51,13 +51,13 @@ export default ErrorBoundary.wrap(() => {
                 <br />
                 <Forms.FormTitle>Options</Forms.FormTitle>
                 <Inputs.Switch
-                    value={HykordNative.getManagers().getSettings().getSync('hykord.quick_css', false)}
+                    value={HykordNative.getManagers().getSettings().getSync('hykord.quick-css', false)}
                     note={'Allows you to use QuickCSS'}
                     onChange={async(value: boolean) => {
                         if (value) await loadQuickCss();
                         else quickCss.unload();
-                        
-                        return HykordNative.getManagers().getSettings().set('hykord.quick_css', value);
+
+                        return HykordNative.getManagers().getSettings().set('hykord.quick-css', value);
                     }}
                     label='Use QuickCss'
                 />
@@ -67,6 +67,12 @@ export default ErrorBoundary.wrap(() => {
                     note={'Disable discord\'s science requests and tracking'}
                     onChange={(value: boolean) => HykordNative.getManagers().getSettings().set('hykord.disable-science-requests', value)}
                     label='Disable science requests'
+                />
+                <Inputs.Switch
+                    value={HykordNative.getManagers().getSettings().getSync('hykord.react-devtools', false)}
+                    note={'Allows you to use react devtools'}
+                    onChange={(value: boolean) => HykordNative.getManagers().getSettings().set('hykord.react-devtools', value)}
+                    label='Enable React DevTools'
                 />
                 <Inputs.Switch
                     value={HykordNative.getManagers().getSettings().getSync('hykord.unsafe-require', false)}

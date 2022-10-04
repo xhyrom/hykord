@@ -16,7 +16,7 @@ const load = async() => {
     await import('../themes');
 
     // Load quickCss
-    if (await HykordNative.getManagers().getSettings().get('hykord.quick_css')) await loadQuickCss();
+    if (await HykordNative.getManagers().getSettings().get('hykord.quick-css')) await loadQuickCss();
 
     // Load external themes
     const directory = join(HykordNative.getDirectory(), 'themes');
