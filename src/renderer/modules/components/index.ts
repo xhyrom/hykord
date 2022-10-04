@@ -9,18 +9,24 @@ export const Forms = {} as {
     FormDivider: any;
     FormText: Components.FormText;
 }
-export const Inputs = {} as {
-    Switch: typeof import('./inputs/Switch').Switch;
-}
-export let ErrorBoundary: typeof import('./ErrorBoundary').ErrorBoundary;
+
 export let Card: Components.Card;
 export let Button: any;
 export let Switch: any;
 export let Tooltip: Components.Tooltip;
 
+// Custom components:
+export const Inputs = {} as {
+    Switch: typeof import('./inputs/Switch').Switch;
+}
+
+export let Flex: typeof import('./Flex').Flex;
+export let ErrorBoundary: typeof import('./ErrorBoundary').ErrorBoundary;
+
 waitFor('useState', () => {
     ErrorBoundary = require('./ErrorBoundary').ErrorBoundary;
     Inputs.Switch = require('./inputs/Switch').Switch;
+    Flex = require('./Flex').Flex;
 });
 
 waitFor(m => m.Tags && Filters.byCode('errorSeparator')(m), m => Forms.FormTitle = m);

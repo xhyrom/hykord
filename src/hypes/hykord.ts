@@ -4,10 +4,11 @@ export enum HykordIpcEvents {
     'SET_SETTING_SYNC' = 'HYKORD_SET_SETTING_SYNC',
     'SET_SETTING' = 'HYKORD_SET_SETTING',
     'SAVE_SETTINGS' = 'HYKORD_SAVE_SETTINGS',
+    'RELAUNCH_APP' = 'HYKORD_RELAUNCH_APP',
 }
 
 export type KnownSettings = 
-    'hykord.quickCss' |
+    'hykord.quick_css' |
     'hykord.react-dev-tools' |
     'hykord.disable-science-requests' |
     'hykord.unsafe-require';

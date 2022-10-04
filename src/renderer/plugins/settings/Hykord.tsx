@@ -1,13 +1,66 @@
-import { Forms, Inputs } from '@hykord/components';
+import { Forms, Inputs, Button, Card, Flex } from '@hykord/components';
 import { React } from '@hykord/webpack';
 import { ErrorBoundary } from '@hykord/components/ErrorBoundary';
+import { shell } from 'electron';
+import { loadQuickCss } from '@loader/theme';
+import { quickCss } from '../../utils';
 
 export default ErrorBoundary.wrap(() => {
     return (
         <>
         <Forms.FormSection tag='h1' title='Hykord'>
             <Forms.FormSection>
+                <Card
+                    type={Card.Types.PRIMARY}
+                    body={
+                        <>
+                            <Flex style={
+                                {
+                                    'justifyContent': 'space-between' 
+                                }
+                            }>
+                                <Forms.FormText>
+                                    Directory: {Hykord.directory}<br />
+                                    Enabled plugins: X<br />
+                                    Enabled Themes: X<br />
+                                </Forms.FormText>
+                                <div>
+                                    <Button
+                                        color={Button.Colors.BRAND_NEW}
+                                        size={Button.Sizes.TINY}
+                                        look={Button.Looks.FILLED}
+                                        onClick={() => shell.openPath(Hykord.directory)}
+                                    >
+                                        Open Folder
+                                    </Button>
+                                    <Button
+                                        style={{ marginTop: '10px' }}
+                                        color={Button.Colors.YELLOW}
+                                        size={Button.Sizes.TINY}
+                                        look={Button.Looks.FILLED}
+                                        onClick={() => HykordNative.relaunchApp()}
+                                    >
+                                        Restart
+                                    </Button>
+                                </div>
+                            </Flex>
+                        </>
+                    }
+                />
+
+                <br />
                 <Forms.FormTitle>Options</Forms.FormTitle>
+                <Inputs.Switch
+                    value={HykordNative.getManagers().getSettings().getSync('hykord.quick_css', false)}
+                    note={'Allows you to use QuickCSS'}
+                    onChange={async(value: boolean) => {
+                        if (value) await loadQuickCss();
+                        else quickCss.unload();
+                        
+                        return HykordNative.getManagers().getSettings().set('hykord.quick_css', value);
+                    }}
+                    label='Use QuickCss'
+                />
                 {/* // TODO: ADD REQUIRE RESTART MODAL */}
                 <Inputs.Switch
                     value={HykordNative.getManagers().getSettings().getSync('hykord.disable-science-requests', false)}

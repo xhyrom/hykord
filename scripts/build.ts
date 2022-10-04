@@ -80,6 +80,7 @@ Promise.all([
       plugins: [
         alias(aliases)
       ],
+      external: ['electron'],
       globalName: 'Hykord',
     })
 ]).catch(err => {

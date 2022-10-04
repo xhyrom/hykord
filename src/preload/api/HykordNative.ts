@@ -19,14 +19,15 @@ export default {
              */
             setSync: (name: KnownSettings, value: any) => ipcRenderer.sendSync(HykordIpcEvents.SET_SETTING_SYNC, name, value),
             set: (name: KnownSettings, value: any) => ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
-            save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS)
+            save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS),
         })
     }),
     getDirname: () => __dirname,
     getVersions: () => process.versions,
     getPolyfillRemote: () => polyfill,
+    relaunchApp: () => ipcRenderer.send(HykordIpcEvents.RELAUNCH_APP),
     require: (mod: string) => {
-        const allowed = ipcRenderer.sendSync(HykordIpcEvents.GET_SETTING_SYNC, 'hykord.unsafe-require');
+        const allowed = ipcRenderer.sendSync(HykordIpcEvents.GET_SETTING_SYNC, 'hykord.unsafe-require', false);
         if (!allowed) {
             Logger.err(`Unsafe require is disabled, cannot require ${mod}`);
             return null;

@@ -20,7 +20,7 @@ export class Switch extends React.Component<Props> {
     }
   
     async handleChange() {
-        const value = await this.props.onChange(!this.props.value);
+        const value = await this.props.onChange(!this.state.value);
 
         this.setState({
             value: value

@@ -7,12 +7,16 @@ const { readdir, exists, mkdir, readAndIfNotExistsCreate } = window.require<type
 
 export const themes: Theme[] = [];
 
+export const loadQuickCss = async () => {
+    quickCss.load(await readAndIfNotExistsCreate(join(Hykord.directory, 'quickCss.css')));
+};
+
 const load = async() => {
     // Load internal themes
     await import('../themes');
 
     // Load quickCss
-    quickCss.load(await readAndIfNotExistsCreate(join(Hykord.directory, 'quickCss.css')));
+    if (await HykordNative.getManagers().getSettings().get('hykord.quick_css')) await loadQuickCss();
 
     // Load external themes
     const directory = join(HykordNative.getDirectory(), 'themes');

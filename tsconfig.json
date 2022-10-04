@@ -10,6 +10,7 @@
       "@common": ["./src/common/index.ts"],
       "@hypes": ["./src/hypes/index.ts"],
       "@patcher": ["./src/renderer/patcher/index.ts"],
+      "@loader/*": ["./src/renderer/loaders/*"],
       "@hykord/*": ["./src/renderer/modules/*"]
     },
     "allowSyntheticDefaultImports": true,
