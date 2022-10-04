@@ -31,7 +31,6 @@ export class SettingsManager {
     }
 
     public getSetting(name: KnownSettings, defaultValue?: PossibleSettingValue): PossibleSettingValue {
-        console.log(name, defaultValue, this.settings.get(name), this.settings.get(name) ?? defaultValue);
         return this.settings.get(name) ?? defaultValue;
     }
 
