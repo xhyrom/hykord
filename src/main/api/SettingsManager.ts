@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { KnownSettings } from '@hypes';
 import { deepen, convertToMap, CoreLogger as Logger } from '@common';
 import { writeFile } from 'fs/promises';
 
@@ -11,10 +12,6 @@ const requireAndIfNotExistsCreate = (path: string, fallback: any): string => {
 }
 
 export type PossibleSettingValue = string | boolean | number | string[] | undefined | null;
-export type KnownSettings = 
-    'hykord.quickCss' |
-    'hykord.react-dev-tools' |
-    'hykord.disable-science-requests';
 
 export class SettingsManager {
     private readonly location: string;
@@ -34,7 +31,8 @@ export class SettingsManager {
     }
 
     public getSetting(name: KnownSettings, defaultValue?: PossibleSettingValue): PossibleSettingValue {
-        return this.settings.get(name) || defaultValue;
+        console.log(name, defaultValue, this.settings.get(name), this.settings.get(name) ?? defaultValue);
+        return this.settings.get(name) ?? defaultValue;
     }
 
     public setSetting(name: KnownSettings, value: PossibleSettingValue): Map<KnownSettings, PossibleSettingValue> {

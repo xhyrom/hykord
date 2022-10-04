@@ -5,3 +5,9 @@ export enum HykordIpcEvents {
     'SET_SETTING' = 'HYKORD_SET_SETTING',
     'SAVE_SETTINGS' = 'HYKORD_SAVE_SETTINGS',
 }
+
+export type KnownSettings = 
+    'hykord.quickCss' |
+    'hykord.react-dev-tools' |
+    'hykord.disable-science-requests' |
+    'hykord.unsafe-require';

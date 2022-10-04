@@ -8,8 +8,10 @@ import './loaders';
 Logger.info('In renderer');
 
 export const directory = HykordNative.getDirectory();
-export const test = 'a';
 
 export * as Utils from './utils';
 export * as Webpack from '@hykord/webpack';
+export * as Components from '@hykord/components';
+export * as Structures from '@hykord/structures';
+export * as Patcher from '@hykord/patcher';
 export * as Loaders from './loaders';

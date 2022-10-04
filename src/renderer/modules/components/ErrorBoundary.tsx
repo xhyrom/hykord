@@ -33,7 +33,9 @@ export class ErrorBoundary extends React.Component {
         if (this.state.state === State.NO_ERROR) return this.props.children;
 
         return (
-            <Card style={
+            <>
+            {this.state.message}
+                        <Card style={
                 {
                     padding: "2em",
                     backgroundColor: "#e7828430",
@@ -52,6 +54,7 @@ export class ErrorBoundary extends React.Component {
                     </pre>
                 </code>
             </Card>
+            </>
         );
     }
 }

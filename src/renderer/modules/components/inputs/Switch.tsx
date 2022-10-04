@@ -1,14 +1,14 @@
 import { React } from '@hykord/webpack';
-import { Switch } from '..';
+import { Switch as OriginalSwitch } from '..';
 
 interface Props {
     value: boolean;
-    onChange: (value: boolean) => boolean;
+    onChange: (value: boolean) => boolean | Promise<boolean>;
     note: string;
     label: string;
 }
 
-export class Boolean extends React.Component<Props> {
+export class Switch extends React.Component<Props> {
     constructor (props: Props) {
         super(props);
 
@@ -29,13 +29,13 @@ export class Boolean extends React.Component<Props> {
   
     render () {
         return (
-            <Switch
-                value={this.props.value}
+            <OriginalSwitch
+                value={this.state.value}
                 onChange={this.handleChange}
                 note={this.props.note}
             >
                 {this.props.label}
-            </Switch>
+            </OriginalSwitch>
         )
     }
 }
