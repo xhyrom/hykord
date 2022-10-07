@@ -10,4 +10,7 @@ export abstract class Plugin {
     public license?: string;
     public toggleable?: boolean = true;
     public stop?(): void;
+
+    // DONT TOUCH
+    public $enabled?: boolean = false;
 }

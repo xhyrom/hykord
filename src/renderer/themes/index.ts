@@ -4,7 +4,7 @@ import { addTheme } from '../loaders/theme';
 declare const $generated: string;
 
 addTheme({
-    name: 'internal',
+    name: 'Internal',
     version: '0.0.0',
     author: 'Hykord',
     toggleable: false,

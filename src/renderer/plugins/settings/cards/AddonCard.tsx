@@ -1,7 +1,8 @@
 import { React } from '@hykord/webpack'
-import { Card, Checkbox, ErrorBoundary, Flex, Forms } from '@hykord/components'
-import { plugins } from '@loader/plugin';
-import { themes } from '@loader/theme';
+import { Card, Inputs, ErrorBoundary, Flex, Forms } from '@hykord/components'
+import { plugins, togglePlugin } from '@loader/plugin';
+import { themes, toggleTheme } from '@loader/theme';
+import { Plugin, Theme } from '@hykord/structures';
 
 interface Props {
     type: 'plugin' | 'theme';
@@ -14,6 +15,7 @@ export default ErrorBoundary.wrap((props: Props) => {
         themes.find(t => t.name === props.name);
 
     return <Card
+        className='hykord-card'
         type={Card.Types.PRIMARY}
         body={
             <>
@@ -26,10 +28,18 @@ export default ErrorBoundary.wrap((props: Props) => {
                         <strong>{addon?.name}</strong> by <strong>{addon?.author}</strong>
                     </Forms.FormText>
 
-                    <Checkbox
-                        disabled={!addon?.toggleable}
-                        checked={true}
-                        onChange={() => true}
+                    <Inputs.Checkbox
+                        disabled={!addon!.toggleable}
+                        checked={addon!.$enabled!}
+                        onChange={() => {
+                            if (props.type === 'plugin') {
+                                togglePlugin(addon as Plugin);
+                            } else {
+                                toggleTheme(addon as Theme);
+                            }
+
+                            return addon!.$enabled!;
+                        }}
                     />
                 </Flex>
 

@@ -1,13 +1,18 @@
 export interface ITheme {
+    // Required properties
     readonly name: string;
     readonly version: string;
     readonly author: string;
     start(): string;
 
+    // Optional properties
     description?: string;
     license?: string;
     toggleable?: boolean;
     cssId?: string;
+
+    // DONT TOUCH
+    $enabled?: boolean;
 }
 
 export abstract class Theme implements ITheme {
@@ -22,4 +27,7 @@ export abstract class Theme implements ITheme {
     public license?: string | undefined = undefined;
     public toggleable?: boolean = true;
     public cssId?: string | undefined = undefined;
+
+    // DONT TOUCH
+    public $enabled?: boolean = false;
 }

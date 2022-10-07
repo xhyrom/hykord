@@ -20,6 +20,7 @@ export let Tooltip: Components.Tooltip;
 // Custom components:
 export const Inputs = {} as {
     Switch: typeof import('./inputs/Switch').Switch;
+    Checkbox: typeof import('./inputs/Checkbox').Checkbox;
 }
 
 export let Flex: typeof import('./Flex').Flex;
@@ -27,7 +28,6 @@ export let ErrorBoundary: typeof import('./ErrorBoundary').ErrorBoundary;
 
 waitFor('useState', () => {
     ErrorBoundary = require('./ErrorBoundary').ErrorBoundary;
-    Inputs.Switch = require('./inputs/Switch').Switch;
     Flex = require('./Flex').Flex;
 });
 
@@ -44,7 +44,15 @@ waitFor(m => {
 }, m => Forms.FormDivider = m);
 
 waitFor(['Hovers', 'Looks', 'Sizes'], m => Button = m);
-waitFor(Filters.byCode('helpdeskArticleId'), m => Switch = m);
-waitFor(Filters.byCode('input', 'createElement', 'checkbox'), m => Checkbox = m);
+waitFor(Filters.byCode('helpdeskArticleId'), m => {
+    Switch = m;
+    Inputs.Switch = require('./inputs/Switch').Switch;
+});
+
+waitFor(Filters.byCode('input', 'createElement', 'checkbox'), m => {
+    Checkbox = m;
+    Inputs.Checkbox = require('./inputs/Checkbox').Checkbox;
+});
+
 waitFor(['Positions', 'Colors'], m => Tooltip = m);
 waitFor(m => m.Types?.PRIMARY === 'cardPrimary', m => Card = m);

@@ -24,7 +24,7 @@ export const load = async() => {
 
     for (const plugin of plugins) {
         Logger.info('Loading plugin', plugin.name);
-        plugin.start();
+        togglePlugin(plugin);
         Logger.info('Plugin', plugin.name, 'has been loaded!');
     }
 
@@ -37,4 +37,19 @@ export const init = async() => {
 
 export const addPlugin = async(plugin: Plugin) => {
     plugins.push(plugin);
+}
+
+export const enablePlugin = (plugin: Plugin) => {
+    plugin!.$enabled = true;
+    plugin.start();
+}
+
+export const disablePlugin = (plugin: Plugin) => {
+    plugin!.$enabled = false;
+    plugin.stop?.();
+}
+
+export const togglePlugin = (plugin: Plugin) => {
+    if (plugin.$enabled) disablePlugin(plugin);
+    else enablePlugin(plugin);
 }
