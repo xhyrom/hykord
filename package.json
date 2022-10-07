@@ -21,7 +21,8 @@
   },
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "lint": "eslint src/ --fix && prettier --write src/**/*.ts"
+    "lint": "eslint src/ --fix && prettier --write src/**/*.ts",
+    "patch": "node packages/patcher/index.mjs"
   },
   "type": "commonjs"
 }
