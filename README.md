@@ -1,5 +1,5 @@
 # Hykord
-> Fully rewrite of old hykord
+> Full rewrite of old hykord
 
 ## Features
 - Simple and easy to use discord client
@@ -10,7 +10,7 @@
 - All discord versions (stable, canary, ptb, development)
 
 ## Installation
-> **Note:** This is a rewrite of old hykord, so you need to uninstall old hykord first
+> **Note:** This is a rewrite of old hykord, so you need to uninstall old hykord first  
 > Automatic installer is in progress
 
 1. You must have [node.js](https://nodejs.org/en/) installed (also bun for pkg manager, optional)
