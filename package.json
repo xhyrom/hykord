@@ -14,6 +14,7 @@
     "eslint-config-prettier": "^8.5.0",
     "parcel": "^2.7.0",
     "prettier": "^2.7.1",
+    "sass": "^1.55.0",
     "spitroast": "^1.4.2",
     "tsx": "^3.9.0",
     "typescript": "^4.8.4"

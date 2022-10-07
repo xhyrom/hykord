@@ -1,8 +1,13 @@
 import { addTheme } from '../loaders/theme';
 
-// Themes:
-import { Form } from './form';
+// Generated in scripts/build.ts
+declare const $generated: string;
+const content = $generated;
 
-addTheme(new Form(), true);
-
-// TODO: auto generate with esbuild
+addTheme({
+    name: 'internal',
+    version: '0.0.0',
+    author: 'Hykord',
+    toggleable: false,
+    start: () => content
+});
