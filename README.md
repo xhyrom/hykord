@@ -10,7 +10,7 @@
 - All discord versions (stable, canary, ptb, development)
 
 ## Installation
-> **Note:** This is a rewrite of old hykord, so you need to uninstall old hykord first  
+> **Warning:** This is a rewrite of old hykord, so you need to uninstall old hykord first  
 > Automatic installer is in progress
 
 1. You must have [node.js](https://nodejs.org/en/) installed (also bun for pkg manager, optional)
