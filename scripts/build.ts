@@ -1,8 +1,8 @@
 import esbuild from 'esbuild';
 import alias from 'esbuild-plugin-alias';
-import sass from 'sass';
-import { join, resolve, dirname, extname } from 'node:path';
-import { readFileSync, readdirSync, rmSync, existsSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { readFileSync, rmSync, existsSync } from 'node:fs';
+import { generateInternalTheme } from './plugins/generate-internal-theme';
 
 if (existsSync(join(__dirname, '..', 'dist'))) rmSync(join(__dirname, '..', 'dist'), { recursive: true });
 
@@ -31,35 +31,6 @@ const makeAllPackagesExternalPlugin: esbuild.Plugin = {
     });
   },
 };
-
-const generateInternalTheme: esbuild.Plugin = {
-  name: 'generate-internal-theme',
-  setup(build) {
-    build.onLoad({ filter: /\/themes\/index\.ts$/ }, (args) => {
-      const files = readdirSync(dirname(args.path));
-
-      const code = readFileSync(args.path).toString();
-      let generated = '';
-
-      for (const file of files) {
-        switch (extname(file)) {
-          case '.sass': {
-            // Dont know if compile has minify option
-            generated += sass.renderSync({
-              file: join(dirname(args.path), file),
-              outputStyle: 'compressed'
-            }).css;
-          }
-        }
-      }
-
-      return {
-        contents: code.replace('const content = $generated', `const content = '${generated}'`),
-        loader: 'ts'
-      };
-    });
-  }
-}
 
 const common: esbuild.BuildOptions = {
   logLevel: 'info',
