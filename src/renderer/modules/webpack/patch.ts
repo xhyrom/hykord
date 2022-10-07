@@ -9,7 +9,8 @@ Object.defineProperty(window, 'webpackChunkdiscord_app', {
     if (v?.push !== Array.prototype.push) {
         _initWebpack(v);
         patchPush();
-        // @ts-ignore
+
+        // @ts-expect-error no types
         delete window['webpackChunkdiscord_app'];
         window['webpackChunkdiscord_app'] = v;   
     }

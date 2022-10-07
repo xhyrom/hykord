@@ -1,5 +1,5 @@
 import { React } from '@hykord/webpack'
-import { Card, Checkbox, ErrorBoundary, Flex, Forms, Inputs } from '@hykord/components'
+import { Card, Checkbox, ErrorBoundary, Flex, Forms } from '@hykord/components'
 import { plugins } from '@loader/plugin';
 import { themes } from '@loader/theme';
 

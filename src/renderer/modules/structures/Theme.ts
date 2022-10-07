@@ -1,4 +1,16 @@
-export abstract class Theme {
+export interface ITheme {
+    readonly name: string;
+    readonly version: string;
+    readonly author: string;
+    start(): string;
+
+    description?: string;
+    license?: string;
+    toggleable?: boolean;
+    cssId?: string;
+}
+
+export abstract class Theme implements ITheme {
     // Required properties
     public abstract readonly name: string;
     public abstract readonly version: string;
@@ -6,9 +18,8 @@ export abstract class Theme {
     public abstract start(): string;
 
     // Optional properties
-    public description: string | null = null;
-    public license: string | null = null;
-    public toggleable: boolean = true;
-    public internal: boolean = false;
-    public cssId: string | null = null;
+    public description?: string | undefined = undefined;
+    public license?: string | undefined = undefined;
+    public toggleable?: boolean = true;
+    public cssId?: string | undefined = undefined;
 }

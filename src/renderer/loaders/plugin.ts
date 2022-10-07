@@ -23,7 +23,7 @@ export const load = async() => {
     }
 
     for (const plugin of plugins) {
-        Logger.info('Loading', plugin.internal ? 'internal' : '' ,'plugin', plugin.name);
+        Logger.info('Loading plugin', plugin.name);
         plugin.start();
         Logger.info('Plugin', plugin.name, 'has been loaded!');
     }
@@ -35,7 +35,6 @@ export const init = async() => {
     document.addEventListener('DOMContentLoaded', load);
 }
 
-export const addPlugin = async(plugin: Plugin, internal: boolean = false) => {
-    plugin.internal = internal;
+export const addPlugin = async(plugin: Plugin) => {
     plugins.push(plugin);
 }

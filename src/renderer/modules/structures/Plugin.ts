@@ -6,9 +6,8 @@ export abstract class Plugin {
     public abstract start(): void;
 
     // Optional properties
-    public description: string | null = null;
-    public license: string | null = null;
-    public toggleable: boolean = true;
-    public internal: boolean = false;
+    public description?: string;
+    public license?: string;
+    public toggleable?: boolean = true;
     public stop?(): void;
 }

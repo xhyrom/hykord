@@ -8,7 +8,7 @@ import * as HykordComponents from '@hykord/components';
  * Creates require for plugins
  */
 
-const createRequire = (path: string) => {
+const createRequire = () => {
     return (mod: string) => {
         switch (mod) {
             case 'hykord': return Hykord
@@ -30,6 +30,6 @@ const createRequire = (path: string) => {
     }
 }
 
-window.require = createRequire('.') as any;
+window.require = createRequire() as any;
 
 export default window.require;
