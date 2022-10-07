@@ -1,6 +1,5 @@
 import { Plugin } from '@hykord/structures';
 import { waitFor, Filters } from '@hykord/webpack';
-import { after } from '@hykord/patcher';
 
 export class Experiments extends Plugin {
   unpatch: any;
@@ -8,7 +7,7 @@ export class Experiments extends Plugin {
   name = 'Experiments';
   author = 'Hykord';
   version = '0.0.0';
-  description = 'Enable discord experiments';
+  description = 'Enable discord experiments - for full experience enable Is Staff plugin';
   public async start(): Promise<void> {
     const currentUser: any = await this.getCurrentUser();
     const dispatcher: any = await this.getDispatcher();
@@ -17,19 +16,10 @@ export class Experiments extends Plugin {
     const user = currentUser.getCurrentUser();
 
     actions.find((n: any) => n.name === 'ExperimentStore').actionHandler({
-      type: 'CONNECTION_OPEN', user: {flags: user.flags |= 1}, experiments: [],
+      type: 'CONNECTION_OPEN', user: { flags: user.flags |= 1 }, experiments: [],
     });
 
     actions.find((n: any) => n.name === 'DeveloperExperimentStore').actionHandler();
-
-    this.unpatch = after('getCurrentUser', currentUser, (_, res) => {
-      res.flags |= 1;
-      return res;
-    });
-  }
-
-  public stop(): void {
-    this.unpatch();
   }
 
   private async getCurrentUser() {
