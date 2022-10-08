@@ -1,6 +1,9 @@
 import { Plugin } from '@hykord/structures';
 import { waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
+import { Logger as RealLogger } from '@common';
+
+const Logger = new RealLogger('Experiments');
 
 export class Experiments extends Plugin {
   unpatch: any;
@@ -9,7 +12,11 @@ export class Experiments extends Plugin {
   author = 'Hykord';
   version = '0.0.0';
   description = 'Enable discord experiments';
-  public async start(): Promise<void> {
+  public start(): void {
+    this.fullStart();
+  }
+
+  public async fullStart(): Promise<void> {
     const currentUser: any = await this.getCurrentUser();
     const dispatcher: any = await this.getDispatcher();
 
@@ -32,6 +39,8 @@ export class Experiments extends Plugin {
       res.flags |= 1;
       return res;
     });
+
+    Logger.info('Plugin successfully injected everything needed');
   }
 
   public stop(): void {

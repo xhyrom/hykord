@@ -25,7 +25,7 @@ export const generateInternalTheme: esbuild.Plugin = {
         }
   
         return {
-          contents: code.replace('    start: () => $generated', `    start: () => '${generated}'`),
+          contents: code.replace('start: () => $generated', `start: () => '${generated}'`),
           loader: 'ts'
         };
       });

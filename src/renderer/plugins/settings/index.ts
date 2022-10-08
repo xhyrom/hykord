@@ -1,6 +1,9 @@
 import { Plugin } from '@hykord/structures';
 import { React, waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
+import { Logger as RealLogger } from '@common';
+
+const Logger = new RealLogger('Settings');
 
 export class Settings extends Plugin {
   unpatch: any;
@@ -11,7 +14,11 @@ export class Settings extends Plugin {
   version = '0.0.0';
   description = 'Inject hykord specific settings into the settings panel';
   toggleable = false;
-  public async start(): Promise<void> {
+  public start(): void {
+    this.fullStart();
+  }
+
+  public async fullStart(): Promise<void> {
     const userSettings: any = (await this.getSettings());
     
     this.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default);
@@ -57,7 +64,9 @@ export class Settings extends Plugin {
       }
 
       return sects;
-    })
+    });
+
+    Logger.info('Plugin successfully injected everything needed');
   }
 
   public stop(): void {
