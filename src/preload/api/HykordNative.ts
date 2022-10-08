@@ -21,7 +21,9 @@ export default {
             set: (name: KnownSettings, value: any) => ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
             save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS),
         }),
-        getUpdater: () => ({
+        getGit: () => ({
+            getRepository: () => ipcRenderer.invoke(HykordIpcEvents.GET_REPOSITORY),
+            getLatestCommitHash: () => ipcRenderer.invoke(HykordIpcEvents.GET_LATEST_COMMIT_HASH),
             checkForUpdates: () => ipcRenderer.invoke(HykordIpcEvents.CHECK_FOR_UPDATES),
             downloadUpdate: () => ipcRenderer.invoke(HykordIpcEvents.DOWNLOAD_UPDATE),
         })
