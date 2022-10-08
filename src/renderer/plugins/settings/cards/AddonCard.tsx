@@ -34,7 +34,7 @@ export default ErrorBoundary.wrap((props: Props) => {
     if (!addon) return null;
 
     const [disabled, setDisabled] = React.useState(!addon!.toggleable!);
-    const [checked, setChecked] = React.useState(addon?.$enabled!);
+    const [checked, setChecked] = React.useState(addon!.$enabled!);
 
     return <Card
         className='hykord-card'
