@@ -16,10 +16,10 @@ export type WebpackChunk = [
     (
       wpModule: RawModule,
       wpExports: typeof wpModule.exports,
-      wpRequire: WebpackRequire
+      wpRequire: WebpackRequire,
     ) => void
   >,
-  ((r: WebpackRequire) => unknown)?
+  ((r: WebpackRequire) => unknown)?,
 ];
 export type WebpackChunkGlobal = {
   push: (chunk: WebpackChunk) => unknown;

@@ -6,6 +6,6 @@ import './git';
 
 // Custom event because DiscordNative.app.relaunch will throw exception
 ipcMain.on(HykordIpcEvents.RELAUNCH_APP, () => {
-    app.quit();
-    app.relaunch();
-})
+  app.quit();
+  app.relaunch();
+});

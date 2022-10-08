@@ -2,18 +2,16 @@
 
 import { React } from '@hykord/webpack';
 
-export const Flex = (props: React.PropsWithChildren<{
+export const Flex = (
+  props: React.PropsWithChildren<{
     flexDirection?: React.CSSProperties['flexDirection'];
     style?: React.CSSProperties;
     className?: string;
-}>) => {
-    props.style ??= {};
-    props.style.flexDirection ||= props.flexDirection;
-    props.style.gap ??= '1em';
-    props.style.display = 'flex';
-    return (
-        <div {...props}>
-            {props.children}
-        </div>
-    );
-}
+  }>,
+) => {
+  props.style ??= {};
+  props.style.flexDirection ||= props.flexDirection;
+  props.style.gap ??= '1em';
+  props.style.display = 'flex';
+  return <div {...props}>{props.children}</div>;
+};

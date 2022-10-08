@@ -16,11 +16,17 @@ export class Experiments extends Plugin {
     const actions = await this.getConnectionOpen(dispatcher);
     const user = currentUser.getCurrentUser();
 
-    actions.find((n: any) => n.name === 'ExperimentStore').actionHandler({
-      type: 'CONNECTION_OPEN', user: {flags: user.flags |= 1}, experiments: [],
-    });
+    actions
+      .find((n: any) => n.name === 'ExperimentStore')
+      .actionHandler({
+        type: 'CONNECTION_OPEN',
+        user: { flags: (user.flags |= 1) },
+        experiments: [],
+      });
 
-    actions.find((n: any) => n.name === 'DeveloperExperimentStore').actionHandler();
+    actions
+      .find((n: any) => n.name === 'DeveloperExperimentStore')
+      .actionHandler();
 
     this.unpatch = after('getCurrentUser', currentUser, (_, res) => {
       res.flags |= 1;
@@ -49,11 +55,17 @@ export class Experiments extends Plugin {
   }
 
   private async getConnectionOpen(dispatcher: any) {
-    let found = dispatcher._dispatcher._actionHandlers._orderedActionHandlers['CONNECTION_OPEN'];
+    let found =
+      dispatcher._dispatcher._actionHandlers._orderedActionHandlers[
+        'CONNECTION_OPEN'
+      ];
 
     while (!found) {
       await new Promise((r) => setTimeout(r, 100));
-      found = dispatcher._dispatcher._actionHandlers._orderedActionHandlers['CONNECTION_OPEN'];
+      found =
+        dispatcher._dispatcher._actionHandlers._orderedActionHandlers[
+          'CONNECTION_OPEN'
+        ];
     }
 
     return found;

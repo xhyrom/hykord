@@ -1,17 +1,17 @@
 enum Level {
-  info = "info",
-  warn = "warn",
-  err = "error",
-  debug = "debug",
+  info = 'info',
+  warn = 'warn',
+  err = 'error',
+  debug = 'debug',
 }
 
 const Color = {
-  Red: "#E47B83",
-  Green: "#98C379",
-  Yellow: "#E5C07B",
-  Debug: "#707782",
-  Orange: "#f5c542",
-  Reset: "inherit",
+  Red: '#E47B83',
+  Green: '#98C379',
+  Yellow: '#E5C07B',
+  Debug: '#707782',
+  Orange: '#f5c542',
+  Reset: 'inherit',
 };
 
 export class Logger {
@@ -59,7 +59,7 @@ export class Logger {
       `color: ${Color.Reset}`,
       `background: ${Color.Orange}; color: black; font-weight: bold; border-radius: 5px;`,
       `color: ${Color.Reset}`,
-      ...message
+      ...message,
     );
   }
 }

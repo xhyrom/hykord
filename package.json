@@ -22,7 +22,7 @@
   "scripts": {
     "build": "tsx scripts/build.ts",
     "watch": "tsx scripts/build.ts --dev --watch",
-    "lint": "eslint src/ --fix && prettier --write src/**/*.ts",
+    "lint": "eslint src/ --fix && prettier --write src/**/*.{ts,tsx}",
     "patch": "node packages/patcher/index.mjs"
   },
   "type": "commonjs"

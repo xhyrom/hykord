@@ -4,4 +4,4 @@ import { waitFor } from './webpack';
 
 export let React: typeof import('react');
 
-waitFor('useState', (m) => React = m as any);
+waitFor('useState', (m) => (React = m as any));

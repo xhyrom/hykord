@@ -3,7 +3,7 @@ export const deepen = (map: Map<any, any>) => {
   const result = {};
 
   for (const objectPath in object) {
-    const parts = objectPath.split(".");
+    const parts = objectPath.split('.');
 
     let target: any = result;
     while (parts.length > 1) {
@@ -20,16 +20,16 @@ export const deepen = (map: Map<any, any>) => {
 export const convertToMap = (
   object: any,
   key?: string,
-  map?: Map<any, any>
+  map?: Map<any, any>,
 ) => {
   map = map || new Map();
 
   for (const [name, v] of Object.entries(object)) {
     const value = v as string | boolean;
 
-    if (typeof value !== "object" || Array.isArray(value))
+    if (typeof value !== 'object' || Array.isArray(value))
       map.set(key + name, value);
-    else convertToMap(value, `${key ? `${key}` : ""}${name}.`, map);
+    else convertToMap(value, `${key ? `${key}` : ''}${name}.`, map);
   }
 
   return map;
