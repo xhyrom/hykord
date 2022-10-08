@@ -39,10 +39,7 @@ const withDispatcher = (
   };
 };
 
-const Settings = (props: {
-  settings: PluginSetting[];
-  addon: Plugin | Theme;
-}) => {
+const Settings = (props: { settings: PluginSetting[]; addon: Plugin }) => {
   return (
     <div
       style={{
@@ -52,12 +49,7 @@ const Settings = (props: {
     >
       {props.settings.map((setting) => (
         <Inputs.Switch
-          value={HykordNative.getManagers()
-            .getSettings()
-            .getSync(
-              `plugins.${props.addon.$cleanName}.${setting.name}`,
-              setting.defaultValue,
-            )}
+          value={props.addon.getSettingSync(setting.name, setting.defaultValue)}
           note={setting.description}
           onChange={(value: boolean) =>
             HykordNative.getManagers()
@@ -124,7 +116,7 @@ export default ErrorBoundary.wrap((props: Props) => {
                             body: (
                               <Settings
                                 settings={(addon as Plugin)!.settings!}
-                                addon={addon}
+                                addon={addon as Plugin}
                               />
                             ),
                             confirmText: '',
