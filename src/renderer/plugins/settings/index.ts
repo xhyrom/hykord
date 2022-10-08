@@ -15,6 +15,7 @@ export class Settings extends Plugin {
     const userSettings: any = (await this.getSettings());
     
     this.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default);
+    this.registerSection('HYKORD_MAIN_UPDATER', 'Updater', (await import('./Updater')).default);
     this.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default);
     this.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default);
 

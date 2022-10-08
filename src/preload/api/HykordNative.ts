@@ -20,6 +20,10 @@ export default {
             setSync: (name: KnownSettings, value: any) => ipcRenderer.sendSync(HykordIpcEvents.SET_SETTING_SYNC, name, value),
             set: (name: KnownSettings, value: any) => ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
             save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS),
+        }),
+        getUpdater: () => ({
+            checkForUpdates: () => ipcRenderer.invoke(HykordIpcEvents.CHECK_FOR_UPDATES),
+            downloadUpdate: () => ipcRenderer.invoke(HykordIpcEvents.DOWNLOAD_UPDATE),
         })
     }),
     getDirname: () => __dirname,
