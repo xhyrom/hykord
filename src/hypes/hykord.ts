@@ -17,4 +17,5 @@ export type KnownSettings =
   | 'hykord.quick-css'
   | 'hykord.react-devtools'
   | 'hykord.disable-science-requests'
-  | 'hykord.unsafe-require';
+  | 'hykord.unsafe-require'
+  | string;

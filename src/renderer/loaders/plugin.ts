@@ -41,6 +41,7 @@ export const init = async () => {
 };
 
 export const addPlugin = async (plugin: Plugin) => {
+  plugin.$cleanName = plugin.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   plugins.push(plugin);
 };
 

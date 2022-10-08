@@ -13,6 +13,7 @@ export interface ITheme {
 
     // DONT TOUCH
     $enabled?: boolean;
+    $cleanName?: string;
 }
 
 export abstract class Theme implements ITheme {
@@ -30,4 +31,5 @@ export abstract class Theme implements ITheme {
 
     // DONT TOUCH
     public $enabled?: boolean = false;
+    public $cleanName?: string;
 }

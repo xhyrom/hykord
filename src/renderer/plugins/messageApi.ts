@@ -15,6 +15,26 @@ export class MessageAPI extends Plugin {
     author = 'Hykord';
     version = '0.0.0';
     description = 'Allows to listen for messages';
+    settings = [
+        {
+            type: 'boolean',
+            name: 'Send',
+            description: 'allow send',
+            defaultValue: true,
+        },
+        {
+            type: 'boolean',
+            name: 'Edit',
+            description: 'allow edit',
+            defaultValue: true,
+        },
+        {
+            type: 'boolean',
+            name: 'Receive',
+            description: 'allow receive',
+            defaultValue: false,
+        },
+    ]
     public start(): void {
         this.fullStart();
     }
@@ -22,35 +42,46 @@ export class MessageAPI extends Plugin {
     public async fullStart(): Promise<void> {
         const Messages: any = await this.getMessages();
 
-        this.unpatchSendMessage = after('sendMessage', Messages, (args, res) => {
-            const [ channelId, message, ...extra ] = args;
-            Message.$handleSendMessage(channelId, message, extra);
+        if (await this.getSetting('Send', true)) {
+            this.unpatchSendMessage = after('sendMessage', Messages, (args, res) => {
+                const [ channelId, message, ...extra ] = args;
+                Message.$handleSendMessage(channelId, message, extra);
+    
+                return res;
+            });
 
-            return res;
-        });
+            Logger.info('Send injected');
+        }
 
-        this.unpatchEditMessage = after('editMessage', Messages, (args, res) => {
-            const [ channelId, messageId, message ] = args;
-            Message.$handleEditMessage(channelId, messageId, message);
+        if (await this.getSetting('Edit', true)) {
+            this.unpatchEditMessage = after('editMessage', Messages, (args, res) => {
+                const [ channelId, messageId, message ] = args;
+                Message.$handleEditMessage(channelId, messageId, message);
+    
+                return res;
+            });
 
-            return res;
-        });
+            Logger.info('Edit injected');
+        }
 
-        // Make option because this can impact performance
-        this.unpatchReceiveMessage = after('receiveMessage', Messages, (args, res) => {
-            const [ channelId, message ] = args;
-            Message.$handleReceiveMessage(channelId, message);
+        if (await this.getSetting('Receive', false)) {
+            this.unpatchReceiveMessage = after('receiveMessage', Messages, (args, res) => {
+                const [ channelId, message ] = args;
+                Message.$handleReceiveMessage(channelId, message);
 
-            return res;
-        })
+                return res;
+            })
+
+            Logger.info('Receive injected');
+        }
 
         Logger.info('Plugin successfully injected everything needed');
     }
 
     public stop(): void {
-        this.unpatchSendMessage();
-        this.unpatchEditMessage();
-        this.unpatchReceiveMessage();
+        this.unpatchSendMessage?.();
+        this.unpatchEditMessage?.();
+        this.unpatchReceiveMessage?.();
     }
 
     private async getMessages() {

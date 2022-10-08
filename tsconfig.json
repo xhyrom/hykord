@@ -16,7 +16,7 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "types": ["./packages/types/src/global.d.ts"]
+    "typeRoots": ["./packages/types/src/global.d.ts"]
   },
   "include": ["./src/**/*"]
 }

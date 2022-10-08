@@ -1,4 +1,9 @@
 declare module '@hykord/structures' {
+    interface Setting {
+        type: 'text' | 'number' | 'boolean';
+        defaultValue: any;
+    }
+
     export abstract class Plugin {
         // Required properties
         public abstract readonly name: string;
@@ -10,6 +15,7 @@ declare module '@hykord/structures' {
         public description?: string;
         public license?: string;
         public toggleable?: boolean;
+        public settings?: Setting[];
         public dependsOn?: string[];
         public stop?(): void;
 

@@ -2,7 +2,7 @@
 // Thanks, Replugged!
 // Temporary solution
 
-import { byProps, byProtos } from './filters';
+import { byCode, byProps, byProtos } from './filters';
 import { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback } from '@hypes';
 
 export const subscriptions = new Map<Filter, LazyCallback>();
@@ -51,6 +51,10 @@ export const getByProps = (...props: string[]): ModuleExports | null => getAllBy
 // By prototype fields/properties
 export const getAllByPrototypeFields = (...protos: string[]): ModuleExports[] => getAllModules(byProtos(...protos));
 export const getByPrototypeFields = (...protos: string[]): ModuleExports | null => getAllByPrototypeFields(...protos)[0] ?? null;
+
+// By code
+export const getAllByCode = (...code: string[]): ModuleExports[] => getAllModules(byCode(...code));
+export const getByCode = (...code: string[]): ModuleExports | null => getAllByCode(...code)[0] ?? null;
 
 export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void {
   if (typeof filter === 'string') filter = byProps(filter);

@@ -75,6 +75,7 @@ export const init = () => {
 };
 
 export const addTheme = async (theme: Theme) => {
+  theme.$cleanName = theme.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   themes.push(theme);
 };
 
