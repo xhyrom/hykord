@@ -15,7 +15,8 @@
     },
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "types": ["./packages/types/src/global.d.ts"]
   },
   "include": ["./src/**/*"]
 }

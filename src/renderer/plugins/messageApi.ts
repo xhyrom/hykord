@@ -9,6 +9,7 @@ const Logger = new RealLogger('Message API');
 export class MessageAPI extends Plugin {
     unpatchSendMessage: any;
     unpatchEditMessage: any;
+    unpatchReceiveMessage: any;
 
     name = 'Message API';
     author = 'Hykord';
@@ -35,12 +36,21 @@ export class MessageAPI extends Plugin {
             return res;
         });
 
+        // Make option because this can impact performance
+        this.unpatchReceiveMessage = after('receiveMessage', Messages, (args, res) => {
+            const [ channelId, message ] = args;
+            Message.$handleReceiveMessage(channelId, message);
+
+            return res;
+        })
+
         Logger.info('Plugin successfully injected everything needed');
     }
 
     public stop(): void {
         this.unpatchSendMessage();
         this.unpatchEditMessage();
+        this.unpatchReceiveMessage();
     }
 
     private async getMessages() {

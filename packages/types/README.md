@@ -1,0 +1,1 @@
+NPM package for building hykord plugins
