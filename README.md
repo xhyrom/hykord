@@ -11,7 +11,7 @@
 
 ## Installation
 > **Warning:** This is a rewrite of old hykord, so you need to uninstall old hykord first  
-> Automatic installer is in progress
+> Automatic installer is WIP
 
 1. You must have [node.js](https://nodejs.org/en/) installed (also bun for pkg manager, optional)
 2. Clone this repo into any folder
