@@ -3,6 +3,7 @@ import * as HykordPatcher from '@hykord/patcher';
 import * as HykordStructures from '@hykord/structures';
 import * as HykordWebpack from '@hykord/webpack';
 import * as HykordComponents from '@hykord/components';
+import * as HykordApis from '@hykord/apis';
 
 /**
  * Creates require for plugins
@@ -23,6 +24,8 @@ const createRequire = () => {
         return HykordWebpack;
       case '@hykord/components':
         return HykordComponents;
+      case '@hykord/apis':
+        return HykordApis;
       case 'path':
         return HykordNative.getPolyfillRemote().path;
       case 'electron':

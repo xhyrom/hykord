@@ -41,6 +41,11 @@ export default ErrorBoundary.wrap((props: Props) => {
   const [disabled, setDisabled] = React.useState(!addon!.toggleable!);
   const [checked, setChecked] = React.useState(addon!.$enabled!);
 
+  if (
+    props.type === 'plugin' &&
+    plugins.find(p => p.dependsOn?.includes(addon!.name!))
+  ) setDisabled(true);
+
   return (
     <Card
       className="hykord-card"

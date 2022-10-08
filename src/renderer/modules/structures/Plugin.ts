@@ -9,6 +9,7 @@ export abstract class Plugin {
     public description?: string;
     public license?: string;
     public toggleable?: boolean = true;
+    public dependsOn?: string[] = [];
     public stop?(): void;
 
     // DONT TOUCH

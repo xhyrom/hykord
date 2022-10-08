@@ -15,5 +15,6 @@ export * as Utils from './utils';
 export * as Webpack from '@hykord/webpack';
 export * as Components from '@hykord/components';
 export * as Structures from '@hykord/structures';
+export * as Apis from '@hykord/apis';
 export * as Patcher from '@hykord/patcher';
 export * as Loaders from './loaders';
