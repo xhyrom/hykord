@@ -18,12 +18,12 @@
 3. Install dependencies `npm install`
 4. Run patcher `npm run patch`
    1. You can also add `app/index.js` and `app/package.json` to discord app resources/ folder
-   ```js
-   // index.js
-   require("PATH\\dist\\main");
-   require("../app.asar");
+ ```js
+ // index.js
+ require("PATH\\dist\\main");
+ require("../app.asar");
 
-   // package.json
-   {"name": "discord", "main": "index.js"}
-   ```
+ // package.json
+ {"name": "discord", "main": "index.js"}
+ ```
 5. Build project `npm run build`
