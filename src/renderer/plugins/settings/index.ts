@@ -26,8 +26,8 @@ export class Settings extends Plugin {
         sects.splice(
           sects.indexOf(changelog) - 1,
           0,
-          { section: "DIVIDER" },
-          { section: "HEADER", label: "Hykord" },
+          { section: 'DIVIDER' },
+          { section: 'HEADER', label: 'Hykord' },
           ...this.sections,
         );
       }

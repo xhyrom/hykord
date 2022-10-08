@@ -1,1 +1,1 @@
-export const example = () => "EXAMPLE MODULE";
+export const example = () => 'EXAMPLE MODULE';

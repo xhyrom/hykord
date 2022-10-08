@@ -10,7 +10,7 @@ export const subscriptions = new Map<Filter, LazyCallback>();
 let instance: WebpackRequire;
 
 export function _initWebpack(webpackChunk: WebpackChunkGlobal) {
-  if (instance !== void 0) throw "no.";
+  if (instance !== void 0) throw 'no.';
 
   instance = webpackChunk.push([
     [ Symbol('hykord') ],

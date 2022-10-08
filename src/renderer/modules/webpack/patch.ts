@@ -57,7 +57,7 @@ function patchPush () {
     }
   
     handlePush.original = window['webpackChunkdiscord_app'].push;
-    Object.defineProperty(window['webpackChunkdiscord_app'], "push", {
+    Object.defineProperty(window['webpackChunkdiscord_app'], 'push', {
         get: () => handlePush,
         set: (v) => (handlePush.original = v),
         configurable: true
