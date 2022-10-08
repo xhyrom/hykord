@@ -24,10 +24,12 @@ export const Inputs = {} as {
 
 export let Flex: typeof import('./Flex').Flex;
 export let ErrorBoundary: typeof import('./ErrorBoundary').ErrorBoundary;
+export let Link: typeof import('./Link').Link;
 
 waitFor('useState', () => {
     ErrorBoundary = require('./ErrorBoundary').ErrorBoundary;
     Flex = require('./Flex').Flex;
+    Link = require('./Link').Link;
 });
 
 waitFor(m => m.Tags && Filters.byCode('errorSeparator')(m), m => Forms.FormTitle = m);

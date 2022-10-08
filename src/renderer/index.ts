@@ -4,8 +4,10 @@ import { CoreLogger as Logger } from '@common';
 import './modules/webpack/patch';
 import './polyfill';
 import './loaders';
+import { checkForUpdates } from './utils/updater';
 
 Logger.info('In renderer');
+checkForUpdates();
 
 export const directory = HykordNative.getDirectory();
 
