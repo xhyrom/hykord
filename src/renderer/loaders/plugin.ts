@@ -23,9 +23,7 @@ export const load = async() => {
     }
 
     for (const plugin of plugins) {
-        Logger.info('Loading plugin', plugin.name);
         togglePlugin(plugin);
-        Logger.info('Plugin', plugin.name, 'has been loaded!');
     }
 
     document.removeEventListener('DOMContentLoaded', load);
@@ -39,17 +37,33 @@ export const addPlugin = async(plugin: Plugin) => {
     plugins.push(plugin);
 }
 
-export const enablePlugin = (plugin: Plugin) => {
-    plugin!.$enabled = true;
-    plugin.start();
+export const enablePlugin = async(plugin: Plugin) => {
+    Logger.info('Loading plugin', plugin.name);
+    
+    try {
+        await plugin.start();
+        plugin!.$enabled = true;
+
+        Logger.info('Plugin', plugin.name, 'has been loaded!')
+    } catch(error: any) {
+        Logger.err(`Failed to start plugin ${plugin.name}: ${error.message}`);
+    }
 }
 
-export const disablePlugin = (plugin: Plugin) => {
-    plugin!.$enabled = false;
-    plugin.stop?.();
+export const disablePlugin = async(plugin: Plugin) => {
+    Logger.info('Disabling plugin', plugin.name);
+    
+    try {
+        await plugin.stop?.();
+        plugin!.$enabled = false;
+
+        Logger.info('Plugin', plugin.name, 'has been disabled!')
+    } catch(error: any) {
+        Logger.err(`Failed to stop plugin ${plugin.name}: ${error.message}`);
+    }
 }
 
-export const togglePlugin = (plugin: Plugin) => {
-    if (plugin.$enabled) disablePlugin(plugin);
-    else enablePlugin(plugin);
+export const togglePlugin = async(plugin: Plugin) => {
+    if (plugin.$enabled) await disablePlugin(plugin);
+    else await enablePlugin(plugin);
 }

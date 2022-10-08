@@ -20,7 +20,6 @@ export let Tooltip: Components.Tooltip;
 // Custom components:
 export const Inputs = {} as {
     Switch: typeof import('./inputs/Switch').Switch;
-    Checkbox: typeof import('./inputs/Checkbox').Checkbox;
 }
 
 export let Flex: typeof import('./Flex').Flex;
@@ -49,10 +48,7 @@ waitFor(Filters.byCode('helpdeskArticleId'), m => {
     Inputs.Switch = require('./inputs/Switch').Switch;
 });
 
-waitFor(Filters.byCode('input', 'createElement', 'checkbox'), m => {
-    Checkbox = m;
-    Inputs.Checkbox = require('./inputs/Checkbox').Checkbox;
-});
+waitFor(Filters.byCode('input', 'createElement', 'checkbox'), m => Checkbox = m);
 
 waitFor(['Positions', 'Colors'], m => Tooltip = m);
 waitFor(m => m.Types?.PRIMARY === 'cardPrimary', m => Card = m);

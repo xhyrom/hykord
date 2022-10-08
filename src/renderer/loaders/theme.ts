@@ -54,9 +54,7 @@ const load = async() => {
     }
 
     for (const theme of themes) {
-        Logger.info('Loading theme', theme.name);
         toggleTheme(theme);
-        Logger.info('Theme', theme.name, 'has been loaded!');
     }
 
     document.removeEventListener('DOMContentLoaded', load);
@@ -71,13 +69,21 @@ export const addTheme = async(theme: Theme) => {
 }
 
 export const enableTheme = (theme: Theme) => {
+    Logger.info('Loading theme', theme.name);
+
     theme!.$enabled = true;
     patchCss(theme.start(), theme.cssId ?? theme.name);
+
+    Logger.info('Theme', theme.name, 'has been loaded!');
 }
 
 export const disableTheme = (theme: Theme) => {
+    Logger.info('Unloading theme', theme.name);
+
     theme!.$enabled = false;
     unpatchCss(theme.cssId ?? theme.name);
+
+    Logger.info('Theme', theme.name, 'has been unloaded!');
 }
 
 export const toggleTheme = (theme: Theme) => {

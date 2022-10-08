@@ -1,5 +1,5 @@
 import { React } from '@hykord/webpack'
-import { Card, Inputs, ErrorBoundary, Flex, Forms } from '@hykord/components'
+import { Card, Checkbox, ErrorBoundary, Flex, Forms } from '@hykord/components'
 import { plugins, togglePlugin } from '@loader/plugin';
 import { themes, toggleTheme } from '@loader/theme';
 import { Plugin, Theme } from '@hykord/structures';
@@ -9,10 +9,32 @@ interface Props {
     name: string;
 }
 
+const withDispatcher = (dispatcher: React.Dispatch<React.SetStateAction<boolean>>, addon: Plugin | Theme, action: () => any) => {
+    return async() => {
+        addon.toggleable = false;
+        dispatcher(true);
+
+        try {
+            await action();
+        } catch(e) {
+            console.log(e);
+            // TODO: Handle error
+        } finally {
+            addon.toggleable = true;
+            dispatcher(false);
+        }
+    }
+}
+
 export default ErrorBoundary.wrap((props: Props) => {
-    const addon = props.type === 'plugin' ? 
+    const addon: Plugin | Theme | undefined = props.type === 'plugin' ? 
         plugins.find(p => p.name === props.name) :
         themes.find(t => t.name === props.name);
+
+    if (!addon) return null;
+
+    const [disabled, setDisabled] = React.useState(!addon!.toggleable!);
+    const [checked, setChecked] = React.useState(addon?.$enabled!);
 
     return <Card
         className='hykord-card'
@@ -28,18 +50,18 @@ export default ErrorBoundary.wrap((props: Props) => {
                         <strong>{addon?.name}</strong> by <strong>{addon?.author}</strong>
                     </Forms.FormText>
 
-                    <Inputs.Checkbox
-                        disabled={!addon!.toggleable}
-                        checked={addon!.$enabled!}
-                        onChange={() => {
+                    <Checkbox
+                        disabled={disabled}
+                        checked={checked}
+                        onChange={withDispatcher(setDisabled, addon, async() => {
                             if (props.type === 'plugin') {
-                                togglePlugin(addon as Plugin);
+                                await togglePlugin(addon as Plugin);
                             } else {
-                                toggleTheme(addon as Theme);
+                                await toggleTheme(addon as Theme);
                             }
 
-                            return addon!.$enabled!;
-                        }}
+                            setChecked(addon!.$enabled!);
+                        })}
                     />
                 </Flex>
 
