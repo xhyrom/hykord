@@ -27,3 +27,6 @@
  {"name": "discord", "main": "index.js"}
  ```
 5. Build project `npm run build`
+
+## Links
+[![Discord](https://discord.com/api/guilds/1028317806229459087/widget.png?style=banner2)](https://discord.gg/sETCUjPqVV)
