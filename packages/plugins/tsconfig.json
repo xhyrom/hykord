@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+      "moduleResolution": "node",
+      "types": ["dist"],
+      "typeRoots": ["../types/"]
+    }
+}  

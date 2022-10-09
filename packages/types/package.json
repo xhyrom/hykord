@@ -1,0 +1,9 @@
+{
+  "name": "types",
+  "version": "0.0.0",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "^0.1.11",
+    "discord-api-types": "^0.37.12"
+  }
+}

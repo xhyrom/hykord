@@ -1,0 +1,10 @@
+import { SendListener, EditListener, ReceiveListener, Message, APIMessage } from '@common';
+export declare const $handleSendMessage: (channelId: string, message: Message, extra: any) => void;
+export declare const $handleEditMessage: (channelId: string, messageId: string, message: Message) => void;
+export declare const $handleReceiveMessage: (channelId: string, message: APIMessage) => void;
+export declare const addPreSendListener: (listener: SendListener) => SendListener;
+export declare const removePreSendListener: (listener: SendListener) => void;
+export declare const addPreEditListener: (listener: EditListener) => EditListener;
+export declare const removePreEditListener: (listener: EditListener) => void;
+export declare const addPreReceiveListener: (listener: ReceiveListener) => ReceiveListener;
+export declare const removePreReceiveListener: (listener: ReceiveListener) => void;
