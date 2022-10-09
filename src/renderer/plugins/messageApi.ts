@@ -17,19 +17,19 @@ export class MessageAPI extends Plugin {
     description = 'Allows to listen for messages';
     settings = [
         {
-            type: 'boolean',
+            type: 'switch',
             name: 'Send',
             description: 'allow send',
             defaultValue: true,
         },
         {
-            type: 'boolean',
+            type: 'switch',
             name: 'Edit',
             description: 'allow edit',
             defaultValue: true,
         },
         {
-            type: 'boolean',
+            type: 'switch',
             name: 'Receive',
             description: 'allow receive',
             defaultValue: false,

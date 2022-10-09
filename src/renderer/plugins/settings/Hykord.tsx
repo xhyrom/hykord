@@ -11,6 +11,7 @@ export default ErrorBoundary.wrap(() => {
       <Forms.FormSection tag="h1" title="Hykord">
         <Forms.FormSection>
           <Card
+            className="hykord-card"
             type={Card.Types.PRIMARY}
             body={
               <>
