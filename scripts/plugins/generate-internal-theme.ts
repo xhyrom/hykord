@@ -1,5 +1,6 @@
 import esbuild from 'esbuild';
 import sass from 'sass';
+import CleanCSS from 'clean-css';
 import { join, dirname, extname } from 'node:path';
 import { readFileSync, readdirSync } from 'node:fs';
 
@@ -20,6 +21,12 @@ export const generateInternalTheme: esbuild.Plugin = {
                 file: join(dirname(args.path), file),
                 outputStyle: 'compressed'
               }).css;
+
+              break;
+            }
+            case '.css': {
+              // @ts-expect-error no types
+              generated += new CleanCSS().minify(readFileSync(join(dirname(args.path), file)).toString()).styles;
             }
           }
         }

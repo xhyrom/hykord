@@ -1,4 +1,3 @@
-import * as HykordExample from '@hykord/example';
 import * as HykordPatcher from '@hykord/patcher';
 import * as HykordStructures from '@hykord/structures';
 import * as HykordWebpack from '@hykord/webpack';
@@ -14,8 +13,6 @@ const createRequire = () => {
     switch (mod) {
       case 'hykord':
         return Hykord;
-      case '@hykord/example':
-        return HykordExample;
       case '@hykord/patcher':
         return HykordPatcher;
       case '@hykord/structures':

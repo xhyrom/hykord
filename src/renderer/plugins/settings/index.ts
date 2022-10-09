@@ -24,10 +24,10 @@ export class Settings extends Plugin {
   public async fullStart(): Promise<void> {
     const userSettings: any = (await this.getSettings());
     
-    SettingsApi.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default);
-    SettingsApi.registerSection('HYKORD_MAIN_UPDATER', 'Updater', (await import('./Updater')).default);
-    SettingsApi.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default);
-    SettingsApi.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default);
+    SettingsApi.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default, 1);
+    SettingsApi.registerSection('HYKORD_MAIN_UPDATER', 'Updater', (await import('./Updater')).default, 2);
+    SettingsApi.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default, 3);
+    SettingsApi.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default, 4);
 
     this.unpatch = after('getPredicateSections', userSettings.prototype, (_, sects) => {
       const debugInfo = sects[sects.findIndex((c: any) => c.section.toLowerCase() === 'custom') + 1];

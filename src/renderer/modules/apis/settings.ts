@@ -1,10 +1,13 @@
-// Sections are injected in Settings plugin
-export const sections: { section: string; label: string; element: any }[] = [];
+// Sections are injected in settingsApi plugin
+export const sections: { priority: number; section: string; label: string; element: any }[] = [];
 
-export const registerSection = (id: string, name: string, component: any) => {
-    const section = { section: id, label: name, element: component };
+// For plugin settings use `settings` property in Plugin
+export const registerSection = (id: string, name: string, component: any, priority = 99) => {
+    const section = { priority: priority, section: id, label: name, element: component };
     sections.push(section);
-  
+
+    sections.sort((a, b) => a.priority - b.priority);
+
     return () => {
       const i = sections.indexOf(section);
       if (i !== -1) sections.splice(i, 1);

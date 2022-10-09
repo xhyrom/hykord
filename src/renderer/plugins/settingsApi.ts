@@ -21,7 +21,6 @@ export class SettingsAPI extends Plugin {
 
     public async fullStart(): Promise<void> {
         const Settings: any = await this.getSettings();
-        console.log('LOOOO');
         this.unpatch = after('getPredicateSections', Settings.prototype, (_, sects) => {
             const location = sects.findIndex((c: any) => c.section.toLowerCase() === 'friend requests') + 1;
       

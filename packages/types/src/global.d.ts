@@ -1,1 +1,2 @@
-import './hykord-structures';
+import './modules/structures';
+import './modules/webpack';
