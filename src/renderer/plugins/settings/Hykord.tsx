@@ -26,7 +26,7 @@ export default ErrorBoundary.wrap(() => {
                     {
                       HykordNative.getManagers()
                         .getSettings()
-                        .getSync('hykord.enabled.plugins', []).length
+                        .getSync('hykord.enabled.plugins', new Set()).size
                     }
                     /{plugins.length}
                     <br />
@@ -34,7 +34,7 @@ export default ErrorBoundary.wrap(() => {
                     {
                       HykordNative.getManagers()
                         .getSettings()
-                        .getSync('hykord.enabled.themes', []).length
+                        .getSync('hykord.enabled.themes', new Set()).size
                     }
                     /{themes.length}
                     <br />

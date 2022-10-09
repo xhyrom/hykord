@@ -63,7 +63,7 @@ export class SettingsManager {
     name: KnownSettings,
     value: PossibleSettingValue
   ): Map<KnownSettings, PossibleSettingValue> {
-    const currentValue = this.getSetting(name, []) as Set<string>;
+    const currentValue = this.getSetting(name, new Set()) as Set<string>;
     currentValue.delete(value as string);
 
     this.setSetting(name, currentValue);
