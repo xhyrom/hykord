@@ -28,7 +28,7 @@ export default ErrorBoundary.wrap(() => {
                         .getSettings()
                         .getSync('hykord.enabled.plugins', new Set()).size
                     }
-                    /{plugins.length}
+                    /{plugins.size}
                     <br />
                     Themes:{' '}
                     {
@@ -36,7 +36,7 @@ export default ErrorBoundary.wrap(() => {
                         .getSettings()
                         .getSync('hykord.enabled.themes', new Set()).size
                     }
-                    /{themes.length}
+                    /{themes.size}
                     <br />
                   </Forms.FormText>
                   <div>
