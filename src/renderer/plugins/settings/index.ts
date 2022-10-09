@@ -46,7 +46,7 @@ export class Settings extends Plugin {
 
           if (res.props.children && res.props.children.length === 4) {
             res.props.children.push(
-              ...Object.entries(HykordNative.getVersions()).map(([name, value]) => {
+              ...[['Hykord', Hykord.version], ...Object.entries(HykordNative.getVersions())].map(([name, value]) => {
                 return Object.assign({}, res.props.children[0], {
                   props: Object.assign({}, res.props.children[0].props, {
                     children: [ name, ' ', React.createElement('span', {

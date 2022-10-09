@@ -82,6 +82,9 @@ Promise.all([
         generateInternalTheme,
         alias(aliases)
       ],
+      define: {
+        $HYKORD_VERSION: `'${require('../package.json').version}'`,
+      },
       external: ['electron'],
       globalName: 'Hykord',
     })

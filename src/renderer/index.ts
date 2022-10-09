@@ -9,6 +9,10 @@ import { checkForUpdates } from './utils/updater';
 Logger.info('In renderer');
 checkForUpdates();
 
+// Declared in scripts/build.ts
+declare const $HYKORD_VERSION: string;
+
+export const version = $HYKORD_VERSION;
 export const directory = HykordNative.getDirectory();
 
 export * as Utils from './utils';
