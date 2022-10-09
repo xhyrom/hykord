@@ -83,6 +83,9 @@ export const init = () => {
 export const addTheme = async (theme: Theme) => {
   theme.$cleanName = theme.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   themes.add(theme);
+
+  // Put internal theme top
+  themes.sort((a, b) => (a.$internal || b.$internal) ? Number(b.$internal) - Number(a.$internal) : a.name.localeCompare(b.name));
 };
 
 export const enableTheme = (theme: Theme) => {

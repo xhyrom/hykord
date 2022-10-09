@@ -2,6 +2,7 @@ import { Plugin } from '@hykord/structures';
 import { React, waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 import { Logger as RealLogger } from '@common';
+import { Settings as SettingsApi } from '@hykord/apis';
 
 const Logger = new RealLogger('Settings');
 
@@ -13,6 +14,7 @@ export class Settings extends Plugin {
   author = 'Hykord';
   version = '0.0.0';
   description = 'Inject hykord specific settings into the settings panel';
+  dependsOn = ['Settings API'];
   $toggleable = false;
   $internal = true;
   public start(): void {
@@ -22,24 +24,13 @@ export class Settings extends Plugin {
   public async fullStart(): Promise<void> {
     const userSettings: any = (await this.getSettings());
     
-    this.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default);
-    this.registerSection('HYKORD_MAIN_UPDATER', 'Updater', (await import('./Updater')).default);
-    this.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default);
-    this.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default);
+    SettingsApi.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default);
+    SettingsApi.registerSection('HYKORD_MAIN_UPDATER', 'Updater', (await import('./Updater')).default);
+    SettingsApi.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default);
+    SettingsApi.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default);
 
     this.unpatch = after('getPredicateSections', userSettings.prototype, (_, sects) => {
-      const location = sects.findIndex((c: any) => c.section.toLowerCase() === 'friend requests') + 1;
       const debugInfo = sects[sects.findIndex((c: any) => c.section.toLowerCase() === 'custom') + 1];
-
-      if (location) {
-        sects.splice(
-          location,
-          0,
-          { section: 'DIVIDER' },
-          { section: 'HEADER', label: 'Hykord' },
-          ...this.sections,
-        );
-      }
 
       if (debugInfo) {
         debugInfo.element = (element => () => {
@@ -72,16 +63,6 @@ export class Settings extends Plugin {
 
   public stop(): void {
     this.unpatch();
-  }
-
-  private registerSection(id: string, name: string, component: any) {
-    const section = { section: id, label: name, element: component };
-    this.sections.push(section);
-  
-    return () => {
-      const i = this.sections.indexOf(section);
-      if (i !== -1) this.sections.splice(i, 1);
-    };
   }
 
   private async getSettings() {

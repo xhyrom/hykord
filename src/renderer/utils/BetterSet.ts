@@ -14,4 +14,16 @@ export class BetterSet<T> extends Set<T> {
 
         return arr;
     }
+
+    sort(fn: (a: T, b: T) => number): void {
+        const arr = this.map((v) => v);
+
+        arr.sort(fn);
+
+        this.clear();
+
+        for (const value of arr) {
+            this.add(value);
+        }
+    }
 }

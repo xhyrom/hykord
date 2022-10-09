@@ -50,6 +50,8 @@ export const init = async () => {
 export const addPlugin = async (plugin: Plugin) => {
   plugin.$cleanName = plugin.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   plugins.add(plugin);
+
+  plugins.sort((a, b) => a.name.localeCompare(b.name));
 };
 
 export const enablePlugin = async (plugin: Plugin) => {

@@ -92,14 +92,14 @@ export default ErrorBoundary.wrap((props: Props) => {
 
   if (!addon) return null;
 
-  const [disabled, setDisabled] = React.useState(!addon!.$toggleable!);
+  const [disabled, setDisabled] = React.useState(
+    props.type === 'plugin'
+      ? plugins.find((p) => p.dependsOn?.includes(addon!.name!))
+        ? true
+        : !addon!.$toggleable!
+      : !addon!.$toggleable!,
+  );
   const [checked, setChecked] = React.useState(addon!.$enabled!);
-
-  if (
-    props.type === 'plugin' &&
-    plugins.find((p) => p.dependsOn?.includes(addon!.name!))
-  )
-    setDisabled(true);
 
   return (
     <Card
