@@ -12,6 +12,7 @@ interface Details {
 const Updates = (details: Details) => {
   return (
     <Card
+      type={Card.Types.PRIMARY}
       body={
         <>
           {Updater.changes.map((commit) => (
