@@ -1,4 +1,4 @@
-import type { ModuleExports } from '../@common';
+import type { ModuleExports } from '@common';
 
 export const byProps = (...props: string[]) => (m: ModuleExports) => {
     return m && props.every(p => Object.keys(m).includes(p));
