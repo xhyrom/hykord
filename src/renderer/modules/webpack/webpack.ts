@@ -45,16 +45,16 @@ export const getAllModules = (filter?: Filter | undefined): ModuleExports[] => {
 export const getModule = (filter?: Filter | undefined): ModuleExports | null => getAllModules(filter)[0] ?? null;
 
 // By properties
-export const getAllByProps = (...props: string[]): ModuleExports[] => getAllModules(byProps(...props));
-export const getByProps = (...props: string[]): ModuleExports | null => getAllByProps(...props)[0] ?? null;
+export const findAllByProps = (...props: string[]): ModuleExports[] => getAllModules(byProps(...props));
+export const findByProps = (...props: string[]): ModuleExports | null => findAllByProps(...props)[0] ?? null;
 
 // By prototype fields/properties
-export const getAllByPrototypeFields = (...protos: string[]): ModuleExports[] => getAllModules(byProtos(...protos));
-export const getByPrototypeFields = (...protos: string[]): ModuleExports | null => getAllByPrototypeFields(...protos)[0] ?? null;
+export const findAllByPrototypeFields = (...protos: string[]): ModuleExports[] => getAllModules(byProtos(...protos));
+export const findByPrototypeFields = (...protos: string[]): ModuleExports | null => findAllByPrototypeFields(...protos)[0] ?? null;
 
 // By code
-export const getAllByCode = (...code: string[]): ModuleExports[] => getAllModules(byCode(...code));
-export const getByCode = (...code: string[]): ModuleExports | null => getAllByCode(...code)[0] ?? null;
+export const findAllByCode = (...code: string[]): ModuleExports[] => getAllModules(byCode(...code));
+export const findByCode = (...code: string[]): ModuleExports | null => findAllByCode(...code)[0] ?? null;
 
 export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void {
   if (typeof filter === 'string') filter = byProps(filter);

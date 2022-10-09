@@ -25,12 +25,12 @@ declare module '@hykord/webpack' {
     export const getRawModules: () => RawModule[];
     export const getAllModules: (filter?: Filter | undefined) => ModuleExports[];
     export const getModule: (filter?: Filter | undefined) => ModuleExports | null;
-    export const getAllByProps: (...props: string[]) => ModuleExports[];
-    export const getByProps: (...props: string[]) => ModuleExports | null;
-    export const getAllByPrototypeFields: (...protos: string[]) => ModuleExports[];
-    export const getByPrototypeFields: (...protos: string[]) => ModuleExports | null;
-    export const getAllByCode: (...code: string[]) => ModuleExports[];
-    export const getByCode: (...code: string[]) => ModuleExports | null;
+    export const findAllByProps: (...props: string[]) => ModuleExports[];
+    export const findByProps: (...props: string[]) => ModuleExports | null;
+    export const findAllByPrototypeFields: (...protos: string[]) => ModuleExports[];
+    export const findByPrototypeFields: (...protos: string[]) => ModuleExports | null;
+    export const findAllByCode: (...code: string[]) => ModuleExports[];
+    export const findByCode: (...code: string[]) => ModuleExports | null;
     export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void;
 
     namespace Filters {
