@@ -1,4 +1,4 @@
-import { SendListener, EditListener, ReceiveListener, Message, APIMessage } from "@common";
+import { SendListener, EditListener, ReceiveListener, Message, APIMessage } from '@common';
 
 const sendListeners = new Set<SendListener>();
 const editListeners = new Set<EditListener>();
