@@ -22,9 +22,21 @@ export default ErrorBoundary.wrap(() => {
                   <Forms.FormText>
                     Directory: {Hykord.directory}
                     <br />
-                    Plugins: {HykordNative.getManagers().getSettings().getSync('hykord.enabled.plugins', []).length}/{plugins.length}
+                    Plugins:{' '}
+                    {
+                      HykordNative.getManagers()
+                        .getSettings()
+                        .getSync('hykord.enabled.plugins', []).length
+                    }
+                    /{plugins.length}
                     <br />
-                    Themes: {HykordNative.getManagers().getSettings().getSync('hykord.enabled.themes', []).length}/{themes.length}
+                    Themes:{' '}
+                    {
+                      HykordNative.getManagers()
+                        .getSettings()
+                        .getSync('hykord.enabled.themes', []).length
+                    }
+                    /{themes.length}
                     <br />
                   </Forms.FormText>
                   <div>

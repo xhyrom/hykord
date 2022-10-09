@@ -32,7 +32,6 @@ export class SettingsManager {
     const config = requireAndIfNotExistsCreate(this.location, {});
 
     this.settings = convertToMap(config);
-    console.log(this.settings);
   }
 
   public getSetting(

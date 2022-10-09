@@ -11,7 +11,10 @@ export const deepen = (map: Map<any, any>) => {
       target = target[part] = target[part] || {};
     }
 
-    target[parts[0]] = object[objectPath] instanceof Set ? [...object[objectPath]] : object[objectPath];
+    target[parts[0]] =
+      object[objectPath] instanceof Set
+        ? [...object[objectPath]]
+        : object[objectPath];
   }
 
   return result;
