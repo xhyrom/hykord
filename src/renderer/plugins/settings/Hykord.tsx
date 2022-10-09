@@ -1,5 +1,4 @@
 import { Forms, Inputs, Button, Card, Flex } from '@hykord/components';
-import { React } from '@hykord/webpack';
 import { ErrorBoundary } from '@hykord/components/ErrorBoundary';
 import { shell } from 'electron';
 import { loadQuickCss, themes } from '@loader/theme';

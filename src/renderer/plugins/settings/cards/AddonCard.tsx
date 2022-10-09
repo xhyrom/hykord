@@ -1,4 +1,3 @@
-import { React } from '@hykord/webpack';
 import {
   Alerts,
   Card,
@@ -9,6 +8,7 @@ import {
   Inputs,
   Tooltip,
 } from '@hykord/components';
+import { React } from '@hykord/webpack/common';
 import { plugins, togglePlugin } from '@loader/plugin';
 import { themes, toggleTheme } from '@loader/theme';
 import { Plugin, PluginSetting, Theme } from '@hykord/structures';

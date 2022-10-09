@@ -1,4 +1,4 @@
-import { React } from '@hykord/webpack';
+import { React } from '@hykord/webpack/common';
 import { Switch as OriginalSwitch } from '..';
 
 interface Props {

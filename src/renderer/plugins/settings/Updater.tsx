@@ -1,5 +1,5 @@
 import { Button, Card, Flex, Forms, Link } from '@hykord/components';
-import { React } from '@hykord/webpack';
+import { React } from '@hykord/webpack/common';
 import { ErrorBoundary } from '@hykord/components';
 import { Updater } from '../../utils';
 
