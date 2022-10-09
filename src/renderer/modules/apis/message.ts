@@ -1,13 +1,4 @@
-import type { APIMessage, APIEmoji } from 'discord-api-types/v10';
-
-interface Message {
-    content: string;
-    validNonShortcutEmojis: APIEmoji[];
-}
-
-type SendListener = (channelId: string, message: Message, extra: any) => void;
-type EditListener = (channelId: string, messageId: string, message: Message) => void;
-type ReceiveListener = (channelId: string, message: APIMessage) => void;
+import { SendListener, EditListener, ReceiveListener, Message, APIMessage } from "@common";
 
 const sendListeners = new Set<SendListener>();
 const editListeners = new Set<EditListener>();
