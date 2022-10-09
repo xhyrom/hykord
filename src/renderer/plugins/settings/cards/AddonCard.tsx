@@ -151,7 +151,10 @@ export default ErrorBoundary.wrap((props: Props) => {
 
                   await HykordNative.getManagers()
                     .getSettings()
-                    .addValue(`hykord.enabled.${props.type}s`, addon!.$cleanName!);
+                    .addValue(
+                      `hykord.enabled.${props.type}s`,
+                      addon!.$cleanName!,
+                    );
                   setChecked(addon!.$enabled!);
                 })}
               />

@@ -8,16 +8,6 @@ import { PreloadLogger as Logger } from '@common';
 Logger.info('Exposing HykordNative');
 contextBridge.exposeInMainWorld('HykordNative', HykordNative);
 
-// TODO: keep it????
-// Add Hykord modules
-//require('module').globalPaths.push(join(__dirname, 'modules'));
-// ELECTRON 17:
-/**
- *   const nodeModulePaths = Module._nodeModulePaths
-  Module._nodeModulePaths = (from) =>
-    nodeModulePaths(from).concat([PATH_APP_NODE_MODULES])
- */
-
 Logger.info('Executing renderer');
 webFrame.executeJavaScript(
   readFileSync(join(__dirname, 'renderer.js'), 'utf-8'),

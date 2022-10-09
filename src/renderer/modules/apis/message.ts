@@ -1,62 +1,13 @@
-interface Emoji {
-    require_colons: boolean;
-    originalName: string;
-    animated: boolean;
-    guildId: string;
-    name: string;
-    url: string;
-    id: string;
-}
+import type { APIMessage, APIEmoji } from 'discord-api-types/v10';
 
 interface Message {
     content: string;
-    validNonShortcutEmojis: Emoji[];
-}
-
-interface User {
-    id: string;
-    username: string;
-    disciminator: string;
-    avatar: string;
-    bot?: boolean;
-    system?: boolean;
-    mfa_enabled?: boolean;
-    banner?: string;
-    accent_color?: number;
-    locale?: string;
-    verified?: boolean;
-    email?: string;
-    flags?: number;
-    premium_type?: number;
-    public_flags?: number;
-}
-
-// TODO: Finish types - https://discord.com/developers/docs/resources/channel#message-object
-// TODO: use discord-api-types
-interface ReceivedMessage {
-    id: string;
-    attachments: [];
-    author: User;
-    channel_id: string;
-    components: [];
-    content: string;
-    edited_timestamp?: string;
-    embeds: [];
-    flags: number;
-    mention_everyone: boolean;
-    mentions_roles: [];
-    mentions: User[];
-    nonce: string;
-    pinned: boolean;
-    referenced_message?: string;
-    timestamp: string;
-    tts: boolean;
-    type: number;
+    validNonShortcutEmojis: APIEmoji[];
 }
 
 type SendListener = (channelId: string, message: Message, extra: any) => void;
 type EditListener = (channelId: string, messageId: string, message: Message) => void;
-type ReceiveListener = (channelId: string, message: ReceivedMessage) => void;
+type ReceiveListener = (channelId: string, message: APIMessage) => void;
 
 const sendListeners = new Set<SendListener>();
 const editListeners = new Set<EditListener>();
@@ -75,7 +26,7 @@ export const $handleEditMessage = (channelId: string, messageId: string, message
     }
 };
 
-export const $handleReceiveMessage = (channelId: string,  message: ReceivedMessage) => {
+export const $handleReceiveMessage = (channelId: string,  message: APIMessage) => {
     for (const listener of receiveListeners) {
         listener(channelId, message);
     }
