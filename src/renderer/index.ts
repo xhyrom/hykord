@@ -11,8 +11,10 @@ checkForUpdates();
 
 // Declared in scripts/build.ts
 declare const $HYKORD_VERSION: string;
+declare const $HYKORD_GIT_HASH: string;
 
 export const version = $HYKORD_VERSION;
+export const gitHash = $HYKORD_GIT_HASH;
 export const directory = HykordNative.getDirectory();
 
 export * as Utils from './utils';

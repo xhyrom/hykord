@@ -1,6 +1,7 @@
 import esbuild from 'esbuild';
 import alias from 'esbuild-plugin-alias';
 import { join, resolve } from 'node:path';
+import { execSync } from 'node:child_process';
 import { readFileSync, rmSync, existsSync } from 'node:fs';
 import { generateInternalTheme } from './plugins/generate-internal-theme';
 
@@ -84,6 +85,7 @@ Promise.all([
       ],
       define: {
         $HYKORD_VERSION: `'${require('../package.json').version}'`,
+        $HYKORD_GIT_HASH: `'${execSync('git rev-parse HEAD').toString().trim()}'`,
       },
       external: ['electron'],
       globalName: 'Hykord',
