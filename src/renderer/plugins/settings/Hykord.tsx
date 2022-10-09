@@ -9,7 +9,7 @@ export default ErrorBoundary.wrap(() => {
     <>
       <Forms.FormSection tag="h1" title="Hykord">
         <Forms.FormSection>
-        <Card
+          <Card
             className="hykord-card"
             type={Card.Types.PRIMARY}
             body={
@@ -20,14 +20,18 @@ export default ErrorBoundary.wrap(() => {
                   }}
                 >
                   <div>
-                    <Forms.FormText>Directory: {Hykord.directory}</Forms.FormText>
+                    <Forms.FormText>
+                      Directory: {Hykord.directory}
+                    </Forms.FormText>
                     <Forms.FormText>Version: {Hykord.version}</Forms.FormText>
                     <Forms.FormText>Git hash: {Hykord.gitHash}</Forms.FormText>
                   </div>
-                  <div style={{
-                    display: 'grid',
-                    gap: '10px'
-                  }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gap: '10px',
+                    }}
+                  >
                     <Button
                       color={Button.Colors.BRAND_NEW}
                       size={Button.Sizes.TINY}

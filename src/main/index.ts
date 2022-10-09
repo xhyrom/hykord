@@ -4,7 +4,6 @@ import BrowserWindow from './patches/BrowserWindow';
 import installExt, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { CoreLogger as Logger } from '@common';
 import SettingsManager from './api/SettingsManager';
-import { settings } from 'cluster';
 
 Logger.info('Patching...');
 
