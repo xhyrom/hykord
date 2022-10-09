@@ -31,6 +31,10 @@ ipcMain.on(HykordIpcEvents.SET_SETTING_SYNC, (e, settingName, value) => {
   e.returnValue = value;
 });
 
+ipcMain.on(HykordIpcEvents.DELETE_SETTING, (e, settingName) => {
+  e.returnValue = SettingManager.deleteSetting(settingName);
+})
+
 // ADD VALUE TO SETTING
 // USED FOR ARRAY
 

@@ -48,6 +48,18 @@ export class SettingsManager {
     return this.settings.set(name, value);
   }
 
+  public deleteSetting(
+    name: KnownSettings,
+  ): void {
+    this.settings.delete(name);
+    
+    for (const key of Object.keys(this.settings)) {
+      if (key.includes(name)) this.settings.delete(key);
+    }
+
+    return;
+  }
+
   public addToSetting(
     name: KnownSettings,
     value: PossibleSettingValue

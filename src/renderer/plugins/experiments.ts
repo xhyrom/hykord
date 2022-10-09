@@ -12,6 +12,7 @@ export class Experiments extends Plugin {
   author = 'Hykord';
   version = '0.0.0';
   description = 'Enable discord experiments';
+  $internal = true;
   public start(): void {
     this.fullStart();
   }

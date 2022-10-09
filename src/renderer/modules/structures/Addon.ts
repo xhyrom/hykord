@@ -13,7 +13,9 @@ export interface IAddon {
     // DONT TOUCH
     $enabled?: boolean;
     $toggleable?: boolean;
+    $internal?: boolean;
     $cleanName?: string;
+    $fileName?: string;
 }
 
 export abstract class Addon {
@@ -28,5 +30,7 @@ export abstract class Addon {
     // DONT TOUCH
     public $enabled?: boolean = false;
     public $toggleable?: boolean = true;
+    public $internal?: boolean = false;
     public $cleanName?: string;
+    public $fileName?: string;
 }

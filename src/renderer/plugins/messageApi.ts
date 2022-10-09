@@ -34,7 +34,8 @@ export class MessageAPI extends Plugin {
             description: 'allow receive',
             defaultValue: false,
         },
-    ]
+    ];
+    $internal = true;
     public start(): void {
         this.fullStart();
     }

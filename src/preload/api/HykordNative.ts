@@ -28,14 +28,16 @@ export default {
         ipcRenderer.sendSync(HykordIpcEvents.SET_SETTING_SYNC, name, value),
       set: (name: KnownSettings, value: any) =>
         ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
+      delete: (name: KnownSettings) =>
+        ipcRenderer.sendSync(HykordIpcEvents.DELETE_SETTING, name),
       addValueSync: (name: KnownSettings, value: any) =>
-          ipcRenderer.sendSync(HykordIpcEvents.ADD_VALUE_TO_SETTING_SYNC, name, value),
+        ipcRenderer.sendSync(HykordIpcEvents.ADD_VALUE_TO_SETTING_SYNC, name, value),
       addValue: (name: KnownSettings, value: any) =>
-          ipcRenderer.invoke(HykordIpcEvents.ADD_VALUE_TO_SETTING, name, value),
+        ipcRenderer.invoke(HykordIpcEvents.ADD_VALUE_TO_SETTING, name, value),
       removeValueSync: (name: KnownSettings, value: any) =>
-          ipcRenderer.invoke(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING_SYNC, name, value),
+        ipcRenderer.invoke(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING_SYNC, name, value),
       removeValue: (name: KnownSettings, value: any) =>
-          ipcRenderer.invoke(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING, name, value),
+        ipcRenderer.invoke(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING, name, value),
       save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS),
     }),
     getGit: () => ({

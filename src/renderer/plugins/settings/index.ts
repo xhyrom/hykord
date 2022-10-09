@@ -14,6 +14,7 @@ export class Settings extends Plugin {
   version = '0.0.0';
   description = 'Inject hykord specific settings into the settings panel';
   $toggleable = false;
+  $internal = true;
   public start(): void {
     this.fullStart();
   }

@@ -1,6 +1,6 @@
 import { Theme } from '@hykord/structures';
 import { LoaderLogger as Logger } from '@common';
-import { quickCss, getMetadata } from '../utils';
+import { quickCss, getMetadata, BetterSet } from '../utils';
 import { patchCss, unpatchCss } from '@hykord/patcher';
 import type { ITheme } from '@hykord/structures/Theme';
 const { join } = window.require<typeof import('path')>('path');
@@ -9,7 +9,8 @@ const { readdir, exists, mkdir, readAndIfNotExistsCreate, readFile } =
     'fs/promises'
   );
 
-export const themes: ITheme[] = [];
+export const themes: BetterSet<ITheme> = new BetterSet();
+export const directory = join(HykordNative.getDirectory(), 'themes');
 
 export const loadQuickCss = async () => {
   quickCss.load(
@@ -26,7 +27,6 @@ const load = async () => {
     await loadQuickCss();
 
   // Load external themes
-  const directory = join(HykordNative.getDirectory(), 'themes');
   if (!(await exists(directory))) await mkdir(directory);
 
   for (const file of await readdir(directory)) {
@@ -46,6 +46,7 @@ const load = async () => {
           license: metadata.license,
           cssId: metadata.cssId,
           $toggleable: true,
+          $fileName: file,
           start: () => css.toString(),
         });
       } catch (error: any) {
@@ -81,7 +82,7 @@ export const init = () => {
 
 export const addTheme = async (theme: Theme) => {
   theme.$cleanName = theme.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  themes.push(theme);
+  themes.add(theme);
 };
 
 export const enableTheme = (theme: Theme) => {
@@ -100,6 +101,10 @@ export const disableTheme = (theme: Theme) => {
   unpatchCss(theme.cssId ?? theme.name);
 
   Logger.info('Theme', theme.name, 'has been unloaded!');
+};
+
+export const removeTheme = async (theme: Theme) => {
+  themes.delete(theme);
 };
 
 export const toggleTheme = (theme: Theme) => {

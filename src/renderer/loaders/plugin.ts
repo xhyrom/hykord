@@ -1,19 +1,20 @@
 import { Plugin } from '@hykord/structures';
 import { LoaderLogger as Logger } from '@common';
+import { BetterSet } from '../utils';
 const { join } = window.require<typeof import('path')>('path');
 const { readdir, readFile, exists, mkdir } =
   window.require<typeof import('../../preload/polyfill/fs/promises')>(
     'fs/promises'
   );
 
-export const plugins: Plugin[] = [];
+export const plugins: BetterSet<Plugin> = new BetterSet();
+export const directory = join(HykordNative.getDirectory(), 'plugins');
 
 export const load = async () => {
   // Load internal plugins
   await import('../plugins');
 
   // Load external plugins
-  const directory = join(HykordNative.getDirectory(), 'plugins');
   if (!(await exists(directory))) await mkdir(directory);
 
   for (const file of await readdir(directory)) {
@@ -24,7 +25,10 @@ export const load = async () => {
       const fn = new Function('require', 'module', 'exports', '__filename', '__dirname', fileContent);
       fn(window.require, module, module.exports, module.filename, directory, fileContent);
 
-      addPlugin(new module.exports());
+      const pl = new module.exports();
+      pl.$fileName = file;
+
+      addPlugin(pl);
     } catch (error: any) {
       Logger.err(`Failed to load plugin ${file}: ${error.message}`);
     }
@@ -45,7 +49,7 @@ export const init = async () => {
 
 export const addPlugin = async (plugin: Plugin) => {
   plugin.$cleanName = plugin.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  plugins.push(plugin);
+  plugins.add(plugin);
 };
 
 export const enablePlugin = async (plugin: Plugin) => {
@@ -72,6 +76,10 @@ export const disablePlugin = async (plugin: Plugin) => {
   } catch (error: any) {
     Logger.err(`Failed to stop plugin ${plugin.name}: ${error.message}`);
   }
+};
+
+export const removePlugin = async (plugin: Plugin) => {
+  plugins.delete(plugin);
 };
 
 export const togglePlugin = async (plugin: Plugin) => {

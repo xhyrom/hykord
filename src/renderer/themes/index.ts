@@ -8,5 +8,6 @@ addTheme({
   version: '0.0.0',
   author: 'Hykord',
   $toggleable: false,
+  $internal: true,
   start: () => $generated,
 });
