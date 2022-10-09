@@ -13,9 +13,30 @@ interface Message {
     validNonShortcutEmojis: Emoji[];
 }
 
+interface User {
+    id: string;
+    username: string;
+    disciminator: string;
+    avatar: string;
+    bot?: boolean;
+    system?: boolean;
+    mfa_enabled?: boolean;
+    banner?: string;
+    accent_color?: number;
+    locale?: string;
+    verified?: boolean;
+    email?: string;
+    flags?: number;
+    premium_type?: number;
+    public_flags?: number;
+}
+
+// TODO: Finish types - https://discord.com/developers/docs/resources/channel#message-object
+// TODO: use discord-api-types
 interface ReceivedMessage {
     id: string;
     attachments: [];
+    author: User;
     channel_id: string;
     components: [];
     content: string;
@@ -24,7 +45,7 @@ interface ReceivedMessage {
     flags: number;
     mention_everyone: boolean;
     mentions_roles: [];
-    mentions: [];
+    mentions: User[];
     nonce: string;
     pinned: boolean;
     referenced_message?: string;
