@@ -4,6 +4,7 @@ import BrowserWindow from './patches/BrowserWindow';
 import installExt, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { CoreLogger as Logger } from '@common';
 import SettingsManager from './api/SettingsManager';
+import { settings } from 'cluster';
 
 Logger.info('Patching...');
 
@@ -16,17 +17,16 @@ process.env.DISCORD_APP_PATH = discordPath;
 BrowserWindow(electronPath);
 
 // Patch settings
+let fakeAppSettings: typeof global.appSettings;
 Object.defineProperty(global, 'appSettings', {
-  set: (settings: typeof global.appSettings) => {
-    settings!.set(
-      'DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING',
-      true,
-    );
-
-    delete global.appSettings;
-    global.appSettings = settings;
-  },
-  configurable: true,
+    get() {
+        return fakeAppSettings;
+    },
+    set(settings: typeof global.appSettings) {
+        settings!.set('DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING', true);
+        
+        fakeAppSettings = settings;
+    },
 });
 
 electron.app.whenReady().then(() => {
