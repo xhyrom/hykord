@@ -11,13 +11,13 @@ export default {
   getDirectory: getDirectory,
   getManagers: () => ({
     getSettings: () => ({
-      getSync: (name: KnownSettings, defaultValue?: any) =>
+      getSync: <T>(name: KnownSettings, defaultValue?: T): T =>
         ipcRenderer.sendSync(
           HykordIpcEvents.GET_SETTING_SYNC,
           name,
           defaultValue
         ),
-      get: (name: KnownSettings, defaultValue?: any) =>
+      get: <T>(name: KnownSettings, defaultValue?: T): Promise<T> =>
         ipcRenderer.invoke(HykordIpcEvents.GET_SETTING, name, defaultValue),
       /**
        * Doesn't save the settings, just adds to the cache
@@ -28,6 +28,10 @@ export default {
         ipcRenderer.sendSync(HykordIpcEvents.SET_SETTING_SYNC, name, value),
       set: (name: KnownSettings, value: any) =>
         ipcRenderer.invoke(HykordIpcEvents.SET_SETTING, name, value),
+      addValueSync: (name: KnownSettings, value: any) =>
+          ipcRenderer.sendSync(HykordIpcEvents.ADD_VALUE_TO_SETTING_SYNC, name, value),
+      addValue: (name: KnownSettings, value: any) =>
+          ipcRenderer.invoke(HykordIpcEvents.ADD_VALUE_TO_SETTING, name, value),
       save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS),
     }),
     getGit: () => ({

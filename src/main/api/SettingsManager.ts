@@ -47,6 +47,15 @@ export class SettingsManager {
     return this.settings.set(name, value);
   }
 
+  public addToSetting(
+    name: KnownSettings,
+    value: PossibleSettingValue
+  ): Map<KnownSettings, PossibleSettingValue> {
+    const currentValue = this.getSetting(name, []) as string[];
+    this.setSetting(name, [...currentValue, value as string]);
+    return this.settings;
+  }
+
   public async save() {
     return await writeFile(
       this.location,

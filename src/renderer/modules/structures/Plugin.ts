@@ -15,14 +15,14 @@ export abstract class Plugin {
     // Optional properties
     public description?: string;
     public license?: string;
-    public toggleable?: boolean = true;
     public settings?: PluginSetting[];
     public dependsOn?: string[] = [];
     public stop?(): void;
 
     // DONT TOUCH
     public $enabled?: boolean = false;
+    public $toggleable?: boolean = true;
     public $cleanName?: string;
-    public getSetting = (name: string, defaultValue?: any) => HykordNative.getManagers().getSettings().get(`plugins.${this.$cleanName}.${name}`, defaultValue);
-    public getSettingSync = (name: string, defaultValue?: any) => HykordNative.getManagers().getSettings().getSync(`plugins.${this.$cleanName}.${name}`, defaultValue);
+    public getSetting = <T>(name: string, defaultValue?: any): Promise<T> => HykordNative.getManagers().getSettings().get<T>(`plugins.${this.$cleanName}.${name}`, defaultValue);
+    public getSettingSync = <T>(name: string, defaultValue?: any): T => HykordNative.getManagers().getSettings().getSync<T>(`plugins.${this.$cleanName}.${name}`, defaultValue);
 }

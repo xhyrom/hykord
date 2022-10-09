@@ -45,7 +45,7 @@ const load = async () => {
           author: metadata.author,
           license: metadata.license,
           cssId: metadata.cssId,
-          toggleable: true,
+          $toggleable: true,
           start: () => css.toString(),
         });
       } catch (error: any) {
@@ -64,6 +64,8 @@ const load = async () => {
   }
 
   for (const theme of themes) {
+    if (theme.$toggleable && !(await HykordNative.getManagers().getSettings().get<string[]>('enabled-themes', [])).includes(theme.$cleanName!)) break;
+
     toggleTheme(theme);
   }
 

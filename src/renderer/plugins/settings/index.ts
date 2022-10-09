@@ -13,7 +13,7 @@ export class Settings extends Plugin {
   author = 'Hykord';
   version = '0.0.0';
   description = 'Inject hykord specific settings into the settings panel';
-  toggleable = false;
+  $toggleable = false;
   public start(): void {
     this.fullStart();
   }

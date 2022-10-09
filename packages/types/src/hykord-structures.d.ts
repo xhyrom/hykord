@@ -14,13 +14,13 @@ declare module '@hykord/structures' {
         // Optional properties
         public description?: string;
         public license?: string;
-        public toggleable?: boolean;
         public settings?: Setting[];
         public dependsOn?: string[];
         public stop?(): void;
 
         // DONT TOUCH
         public $enabled?: boolean;
+        public $toggleable?: boolean;
     }
 
     export interface Theme {
@@ -33,10 +33,10 @@ declare module '@hykord/structures' {
         // Optional properties
         description?: string;
         license?: string;
-        toggleable?: boolean;
         cssId?: string;
 
         // DONT TOUCH
         $enabled?: boolean;
+        $toggleable?: boolean;
     }
 }

@@ -2,8 +2,9 @@ import { Forms, Inputs, Button, Card, Flex } from '@hykord/components';
 import { React } from '@hykord/webpack';
 import { ErrorBoundary } from '@hykord/components/ErrorBoundary';
 import { shell } from 'electron';
-import { loadQuickCss } from '@loader/theme';
+import { loadQuickCss, themes } from '@loader/theme';
 import { quickCss } from '../../utils';
+import { plugins } from '@loader/plugin';
 
 export default ErrorBoundary.wrap(() => {
   return (
@@ -20,10 +21,9 @@ export default ErrorBoundary.wrap(() => {
                   }}
                 >
                   <Forms.FormText>
-                    Directory: {Hykord.directory}
-                    <br />
-                    Enabled plugins: X<br />
-                    Enabled Themes: X<br />
+                    Directory: {Hykord.directory}<br />
+                    Plugins: {0}/{plugins.length}<br />
+                    Themes: {0}/{themes.length}<br />
                   </Forms.FormText>
                   <div>
                     <Button

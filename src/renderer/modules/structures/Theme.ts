@@ -8,11 +8,11 @@ export interface ITheme {
     // Optional properties
     description?: string;
     license?: string;
-    toggleable?: boolean;
     cssId?: string;
 
     // DONT TOUCH
     $enabled?: boolean;
+    $toggleable?: boolean;
     $cleanName?: string;
 }
 
@@ -26,10 +26,10 @@ export abstract class Theme implements ITheme {
     // Optional properties
     public description?: string | undefined = undefined;
     public license?: string | undefined = undefined;
-    public toggleable?: boolean = true;
     public cssId?: string | undefined = undefined;
 
     // DONT TOUCH
     public $enabled?: boolean = false;
+    public $toggleable?: boolean = true;
     public $cleanName?: string;
 }

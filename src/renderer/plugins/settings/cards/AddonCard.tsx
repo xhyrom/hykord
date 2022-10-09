@@ -24,7 +24,7 @@ const withDispatcher = (
   action: () => any,
 ) => {
   return async () => {
-    addon.toggleable = false;
+    addon.$toggleable = false;
     dispatcher(true);
 
     try {
@@ -33,7 +33,7 @@ const withDispatcher = (
       console.log(e);
       // TODO: Handle error
     } finally {
-      addon.toggleable = true;
+      addon.$toggleable = true;
       dispatcher(false);
     }
   };
@@ -49,7 +49,7 @@ const Settings = (props: { settings: PluginSetting[]; addon: Plugin }) => {
     >
       {props.settings.map((setting) => (
         <Inputs.Switch
-          value={props.addon.getSettingSync(setting.name, setting.defaultValue)}
+          value={props.addon.getSettingSync<boolean>(setting.name, setting.defaultValue)}
           note={setting.description}
           onChange={(value: boolean) =>
             HykordNative.getManagers()
@@ -71,7 +71,7 @@ export default ErrorBoundary.wrap((props: Props) => {
 
   if (!addon) return null;
 
-  const [disabled, setDisabled] = React.useState(!addon!.toggleable!);
+  const [disabled, setDisabled] = React.useState(!addon!.$toggleable!);
   const [checked, setChecked] = React.useState(addon!.$enabled!);
 
   if (
@@ -146,6 +146,7 @@ export default ErrorBoundary.wrap((props: Props) => {
                     await toggleTheme(addon as Theme);
                   }
 
+                  await HykordNative.getManagers().getSettings().addValue(`enabled-${props.type}s`, addon!.$cleanName!);
                   setChecked(addon!.$enabled!);
                 })}
               />
