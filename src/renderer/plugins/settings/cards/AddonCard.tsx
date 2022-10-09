@@ -149,12 +149,22 @@ export default ErrorBoundary.wrap((props: Props) => {
                     await toggleTheme(addon as Theme);
                   }
 
-                  await HykordNative.getManagers()
-                    .getSettings()
-                    .addValue(
-                      `hykord.enabled.${props.type}s`,
-                      addon!.$cleanName!,
-                    );
+                  if (addon!.$enabled) {
+                    await HykordNative.getManagers()
+                      .getSettings()
+                      .addValue(
+                        `hykord.enabled.${props.type}s`,
+                        addon!.$cleanName!,
+                      );
+                  } else {
+                    await HykordNative.getManagers()
+                      .getSettings()
+                      .removeValue(
+                        `hykord.enabled.${props.type}s`,
+                        addon!.$cleanName!,
+                      );
+                  }
+
                   setChecked(addon!.$enabled!);
                 })}
               />

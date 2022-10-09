@@ -22,9 +22,9 @@ export default ErrorBoundary.wrap(() => {
                   <Forms.FormText>
                     Directory: {Hykord.directory}
                     <br />
-                    Plugins: {0}/{plugins.length}
+                    Plugins: {HykordNative.getManagers().getSettings().getSync('hykord.enabled.plugins', []).length}/{plugins.length}
                     <br />
-                    Themes: {0}/{themes.length}
+                    Themes: {HykordNative.getManagers().getSettings().getSync('hykord.enabled.themes', []).length}/{themes.length}
                     <br />
                   </Forms.FormText>
                   <div>

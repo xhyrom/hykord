@@ -50,6 +50,25 @@ ipcMain.handle(HykordIpcEvents.ADD_VALUE_TO_SETTING, async (_, settingName, valu
   return value;
 });
 
+// REMOVE VALUE FROM SETTING
+// USED FOR ARRAY
+
+/**
+ * Doesn't save the settings, just removes from cache
+ *
+ * @deprecated Use ADD_VALUE_TO_SETTING instead
+ */
+ ipcMain.on(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING_SYNC, (e, settingName, value) => {
+  SettingManager.removeFromSetting(settingName, value);
+  e.returnValue = value;
+});
+
+ipcMain.handle(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING, async (_, settingName, value) => {
+  SettingManager.removeFromSetting(settingName, value);
+  await SettingManager.save();
+  return value;
+});
+
 // Save settings
 ipcMain.handle(HykordIpcEvents.SAVE_SETTINGS, async () => {
   return await SettingManager.save();

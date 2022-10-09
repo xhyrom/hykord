@@ -16,6 +16,7 @@ export type PossibleSettingValue =
   | boolean
   | number
   | string[]
+  | Set<string>
   | undefined
   | null;
 
@@ -31,6 +32,7 @@ export class SettingsManager {
     const config = requireAndIfNotExistsCreate(this.location, {});
 
     this.settings = convertToMap(config);
+    console.log(this.settings);
   }
 
   public getSetting(
@@ -51,8 +53,21 @@ export class SettingsManager {
     name: KnownSettings,
     value: PossibleSettingValue
   ): Map<KnownSettings, PossibleSettingValue> {
-    const currentValue = this.getSetting(name, []) as string[];
-    this.setSetting(name, [...currentValue, value as string]);
+    const currentValue = this.getSetting(name, new Set()) as Set<string>;
+    currentValue.add(value as string);
+
+    this.setSetting(name, currentValue);
+    return this.settings;
+  }
+
+  public removeFromSetting(
+    name: KnownSettings,
+    value: PossibleSettingValue
+  ): Map<KnownSettings, PossibleSettingValue> {
+    const currentValue = this.getSetting(name, []) as Set<string>;
+    currentValue.delete(value as string);
+
+    this.setSetting(name, currentValue);
     return this.settings;
   }
 

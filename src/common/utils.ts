@@ -11,7 +11,7 @@ export const deepen = (map: Map<any, any>) => {
       target = target[part] = target[part] || {};
     }
 
-    target[parts[0]] = object[objectPath];
+    target[parts[0]] = object[objectPath] instanceof Set ? [...object[objectPath]] : object[objectPath];
   }
 
   return result;
@@ -28,7 +28,7 @@ export const convertToMap = (
     const value = v as string | boolean;
 
     if (typeof value !== 'object' || Array.isArray(value))
-      map.set(key + name, value);
+      map.set(key + name, Array.isArray(value) ? new Set(value) : value);
     else convertToMap(value, `${key ? `${key}` : ''}${name}.`, map);
   }
 
