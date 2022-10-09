@@ -1,11 +1,11 @@
 import type { ModuleExports } from '@common';
 
 export const byProps = (...props: string[]) => (m: ModuleExports) => {
-    return m && props.every(p => Object.keys(m).includes(p));
+    return m && props.every(p => (m as Record<string, unknown>)?.[p] !== undefined);
 };
 
 export const byProtos = (...protos: string[]) => (m: ModuleExports | any) => {
-    return m.prototype && protos.every(p => Object.keys(m.prototype).includes(p));
+    return m.prototype && protos.every(p => m.prototype?.[p] !== undefined);
 };
 
 export const byCode = (...code: string[]) => (m: ModuleExports) => {

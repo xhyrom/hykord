@@ -7,4 +7,6 @@ export let React: typeof import('react');
 export let FluxDispatcher: Other.FluxDispatcher;
 
 waitFor('useState', m => React = m as any);
-waitFor(['dispatch', 'subscribe'], m => FluxDispatcher = m as any);
+waitFor(['dispatch', 'subscribe', '_actionHandlers'], m => {
+    FluxDispatcher = m as any;
+});
