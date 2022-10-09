@@ -20,4 +20,6 @@ export type KnownSettings =
   | 'hykord.react-devtools'
   | 'hykord.disable-science-requests'
   | 'hykord.unsafe-require'
+  | 'hykord.enabled.themes'
+  | 'hykord.enabled.plugins'
   | string;

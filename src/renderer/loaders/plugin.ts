@@ -30,7 +30,7 @@ export const load = async () => {
   }
 
   for (const plugin of plugins) {
-    if (plugin.$toggleable && !(await HykordNative.getManagers().getSettings().get<string[]>('enabled-plugins', [])).includes(plugin.$cleanName!)) break;
+    if (plugin.$toggleable && !(await HykordNative.getManagers().getSettings().get<string[]>('hykord.enabled.plugins', [])).includes(plugin.$cleanName!)) continue;
 
     togglePlugin(plugin);
   }

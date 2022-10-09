@@ -64,7 +64,7 @@ const load = async () => {
   }
 
   for (const theme of themes) {
-    if (theme.$toggleable && !(await HykordNative.getManagers().getSettings().get<string[]>('enabled-themes', [])).includes(theme.$cleanName!)) break;
+    if (theme.$toggleable && !(await HykordNative.getManagers().getSettings().get<string[]>('hykord.enabled.themes', [])).includes(theme.$cleanName!)) continue;
 
     toggleTheme(theme);
   }
