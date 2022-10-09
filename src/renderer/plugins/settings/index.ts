@@ -28,12 +28,12 @@ export class Settings extends Plugin {
     this.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default);
 
     this.unpatch = after('getPredicateSections', userSettings.prototype, (_, sects) => {
-      const changelog = sects.find((c: any) => c.section.toLowerCase() === 'changelog');
+      const location = sects.findIndex((c: any) => c.section.toLowerCase() === 'friend requests') + 1;
       const debugInfo = sects[sects.findIndex((c: any) => c.section.toLowerCase() === 'custom') + 1];
 
-      if (changelog) {
+      if (location) {
         sects.splice(
-          sects.indexOf(changelog) - 1,
+          location,
           0,
           { section: 'DIVIDER' },
           { section: 'HEADER', label: 'Hykord' },
