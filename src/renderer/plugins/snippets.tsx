@@ -59,4 +59,8 @@ export class Snippets extends Plugin {
       }),
     );
   }
+
+  public stop(): void {
+    Settings.unregisterSection('HYKORD_SNIPPETS');
+  }
 }
