@@ -33,6 +33,7 @@ const { rm } =
 interface Props {
   type: 'plugin' | 'theme';
   name: string;
+  forceUpdate: React.DispatchWithoutAction;
 }
 
 const withDispatcher = (
@@ -180,6 +181,8 @@ export default ErrorBoundary.wrap((props: Props) => {
                                 await removeTheme(addon as Theme);
                                 rm(join(themeDirectory, addon!.$fileName!));
                               }
+
+                              props.forceUpdate();
                             },
                           });
                         }}
