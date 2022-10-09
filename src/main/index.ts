@@ -17,16 +17,17 @@ process.env.DISCORD_APP_PATH = discordPath;
 BrowserWindow(electronPath);
 
 // Patch settings
-let fakeAppSettings: typeof global.appSettings;
 Object.defineProperty(global, 'appSettings', {
-    get() {
-        return fakeAppSettings;
-    },
-    set(settings: typeof global.appSettings) {
-        settings!.set('DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING', true);
-        
-        fakeAppSettings = settings;
-    },
+  set: (settings: typeof global.appSettings) => {
+    settings!.set(
+      'DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING',
+      true,
+    );
+
+    delete global.appSettings;
+    global.appSettings = settings;
+  },
+  configurable: true,
 });
 
 electron.app.whenReady().then(() => {
