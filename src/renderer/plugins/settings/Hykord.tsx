@@ -1,16 +1,15 @@
-import { Forms, Inputs, Button, Card, Flex } from '@hykord/components';
+import { Button, Card, Flex, Forms, Inputs } from '@hykord/components';
 import { ErrorBoundary } from '@hykord/components/ErrorBoundary';
+import { loadQuickCss } from '@loader/theme';
 import { shell } from 'electron';
-import { loadQuickCss, themes } from '@loader/theme';
 import { quickCss } from '../../utils';
-import { plugins } from '@loader/plugin';
 
 export default ErrorBoundary.wrap(() => {
   return (
     <>
       <Forms.FormSection tag="h1" title="Hykord">
         <Forms.FormSection>
-          <Card
+        <Card
             className="hykord-card"
             type={Card.Types.PRIMARY}
             body={
@@ -20,27 +19,15 @@ export default ErrorBoundary.wrap(() => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Forms.FormText>
-                    Directory: {Hykord.directory}
-                    <br />
-                    Plugins:{' '}
-                    {
-                      HykordNative.getManagers()
-                        .getSettings()
-                        .getSync('hykord.enabled.plugins', new Set()).size
-                    }
-                    /{plugins.size}
-                    <br />
-                    Themes:{' '}
-                    {
-                      HykordNative.getManagers()
-                        .getSettings()
-                        .getSync('hykord.enabled.themes', new Set()).size
-                    }
-                    /{themes.size}
-                    <br />
-                  </Forms.FormText>
                   <div>
+                    <Forms.FormText>Directory: {Hykord.directory}</Forms.FormText>
+                    <Forms.FormText>Version: {Hykord.version}</Forms.FormText>
+                    <Forms.FormText>Git hash: {Hykord.gitHash}</Forms.FormText>
+                  </div>
+                  <div style={{
+                    display: 'grid',
+                    gap: '10px'
+                  }}>
                     <Button
                       color={Button.Colors.BRAND_NEW}
                       size={Button.Sizes.TINY}
@@ -50,7 +37,6 @@ export default ErrorBoundary.wrap(() => {
                       Open Folder
                     </Button>
                     <Button
-                      style={{ marginTop: '10px' }}
                       color={Button.Colors.YELLOW}
                       size={Button.Sizes.TINY}
                       look={Button.Looks.FILLED}
@@ -63,7 +49,6 @@ export default ErrorBoundary.wrap(() => {
               </>
             }
           />
-
           <br />
           <Forms.FormTitle>Options</Forms.FormTitle>
           <Inputs.Switch
