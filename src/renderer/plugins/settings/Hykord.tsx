@@ -21,9 +21,12 @@ export default ErrorBoundary.wrap(() => {
                   }}
                 >
                   <Forms.FormText>
-                    Directory: {Hykord.directory}<br />
-                    Plugins: {0}/{plugins.length}<br />
-                    Themes: {0}/{themes.length}<br />
+                    Directory: {Hykord.directory}
+                    <br />
+                    Plugins: {0}/{plugins.length}
+                    <br />
+                    Themes: {0}/{themes.length}
+                    <br />
                   </Forms.FormText>
                   <div>
                     <Button
