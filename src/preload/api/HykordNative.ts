@@ -1,7 +1,7 @@
 import * as polyfill from '../polyfill';
 import { join } from 'path';
 import { ipcRenderer } from 'electron';
-import { HykordIpcEvents, KnownSettings } from '@hypes';
+import { HykordIpcEvents, KnownSettings } from '@common';
 import { PreloadLogger as Logger } from '@common';
 
 const getDirectory = () =>

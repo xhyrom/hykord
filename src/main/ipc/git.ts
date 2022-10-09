@@ -1,4 +1,4 @@
-import { HykordIpcEvents } from '@hypes';
+import { HykordIpcEvents } from '@common';
 import { ipcMain } from 'electron';
 import { execFile } from 'child_process';
 import { promisify } from 'util';

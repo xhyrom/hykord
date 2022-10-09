@@ -1,4 +1,4 @@
-import { HykordIpcEvents } from '@hypes';
+import { HykordIpcEvents } from '@common';
 import { app, ipcMain } from 'electron';
 
 import './settings';

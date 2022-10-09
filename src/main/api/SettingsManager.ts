@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { KnownSettings } from '@hypes';
+import { KnownSettings } from '@common';
 import { deepen, convertToMap, CoreLogger as Logger } from '@common';
 import { writeFile } from 'fs/promises';
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-var */
 
 declare global {
-  export var HykordNative: typeof import('../preload/api/HykordNative').default;
-  export var Hykord: typeof import('../renderer/index');
+  export var HykordNative: typeof import('../../preload/api/HykordNative').default;
+  export var Hykord: typeof import('../../renderer/index');
   export var appSettings:
     | {
         set(setting: string, v: any): void;
