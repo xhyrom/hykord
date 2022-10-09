@@ -1,5 +1,4 @@
 import { Forms } from '@hykord/components';
-import { React } from '@hykord/webpack';
 import { ErrorBoundary } from '@hykord/components';
 import AddonCard from './cards/AddonCard';
 import { themes } from '@loader/theme';

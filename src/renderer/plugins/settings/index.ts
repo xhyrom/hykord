@@ -1,5 +1,5 @@
 import { Plugin } from '@hykord/structures';
-import { waitFor, Filters } from '@hykord/webpack';
+import { React, waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 import { Logger as RealLogger } from '@common';
 

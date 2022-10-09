@@ -1,4 +1,4 @@
-import { React } from '@hykord/webpack/common';
+import { React } from '@hykord/webpack';
 import { CoreLogger as Logger } from '@common';
 import { Card, Forms } from '.';
 
