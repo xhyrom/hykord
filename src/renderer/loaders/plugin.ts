@@ -1,7 +1,7 @@
 import { Plugin } from '@hykord/structures';
 import { LoaderLogger as Logger } from '@common';
 const { join } = window.require<typeof import('path')>('path');
-const { readdir, exists, mkdir } =
+const { readdir, readFile, exists, mkdir } =
   window.require<typeof import('../../preload/polyfill/fs/promises')>(
     'fs/promises'
   );
@@ -18,12 +18,13 @@ export const load = async () => {
 
   for (const file of await readdir(directory)) {
     try {
-      const pluginExports = await import(join(directory, file));
-      addPlugin(
-        pluginExports.default
-          ? new pluginExports.default()
-          : new pluginExports()
-      );
+      const module = { filename: file, exports: {} as any };
+      const fileContent = await readFile(join(directory, file), 'utf-8');
+      
+      const fn = new Function('require', 'module', 'exports', '__filename', '__dirname', fileContent);
+      fn(window.require, module, module.exports, module.filename, directory, fileContent);
+
+      addPlugin(new module.exports());
     } catch (error: any) {
       Logger.err(`Failed to load plugin ${file}: ${error.message}`);
     }

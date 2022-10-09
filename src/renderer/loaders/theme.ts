@@ -53,10 +53,13 @@ const load = async () => {
       }
     } else {
       try {
-        const themeExports = await import(join(directory, file));
-        addTheme(
-          themeExports.default ? new themeExports.default() : new themeExports()
-        );
+        const module = { filename: file, exports: {} as any };
+        const fileContent = await readFile(join(directory, file), 'utf-8');
+        
+        const fn = new Function('require', 'module', 'exports', '__filename', '__dirname', fileContent);
+        fn(window.require, module, module.exports, module.filename, directory, fileContent);
+  
+        addTheme(new module.exports());
       } catch (error: any) {
         Logger.err(`Failed to load theme ${file}: ${error.message}`);
       }
