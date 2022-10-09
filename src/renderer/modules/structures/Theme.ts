@@ -1,26 +1,15 @@
-export interface ITheme {
+import { Addon, IAddon } from './Addon';
+
+export interface ITheme extends IAddon {
     // Required properties
-    readonly name: string;
-    readonly version: string;
-    readonly author: string;
     start(): string;
 
     // Optional properties
-    description?: string;
-    license?: string;
     cssId?: string;
-
-    // DONT TOUCH
-    $enabled?: boolean;
-    $toggleable?: boolean;
-    $cleanName?: string;
 }
 
-export abstract class Theme implements ITheme {
+export abstract class Theme extends Addon implements ITheme {
     // Required properties
-    public abstract readonly name: string;
-    public abstract readonly version: string;
-    public abstract readonly author: string;
     public abstract start(): string;
 
     // Optional properties

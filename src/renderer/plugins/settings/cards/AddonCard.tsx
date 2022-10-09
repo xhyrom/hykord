@@ -11,7 +11,7 @@ import {
 import { React } from '@hykord/webpack';
 import { plugins, togglePlugin } from '@loader/plugin';
 import { themes, toggleTheme } from '@loader/theme';
-import { Plugin, PluginSetting, Theme } from '@hykord/structures';
+import { Addon, Plugin, PluginSetting, Theme } from '@hykord/structures';
 
 interface Props {
   type: 'plugin' | 'theme';
@@ -67,7 +67,7 @@ const Settings = (props: { settings: PluginSetting[]; addon: Plugin }) => {
 };
 
 export default ErrorBoundary.wrap((props: Props) => {
-  const addon: Plugin | Theme | undefined =
+  const addon: Addon | undefined =
     props.type === 'plugin'
       ? plugins.find((p) => p.name === props.name)
       : themes.find((t) => t.name === props.name);
@@ -142,31 +142,35 @@ export default ErrorBoundary.wrap((props: Props) => {
               <Checkbox
                 disabled={disabled}
                 checked={checked}
-                onChange={withDispatcher(setDisabled, addon, async () => {
-                  if (props.type === 'plugin') {
-                    await togglePlugin(addon as Plugin);
-                  } else {
-                    await toggleTheme(addon as Theme);
-                  }
+                onChange={withDispatcher(
+                  setDisabled,
+                  addon as Plugin,
+                  async () => {
+                    if (props.type === 'plugin') {
+                      await togglePlugin(addon as Plugin);
+                    } else {
+                      await toggleTheme(addon as Theme);
+                    }
 
-                  if (addon!.$enabled) {
-                    await HykordNative.getManagers()
-                      .getSettings()
-                      .addValue(
-                        `hykord.enabled.${props.type}s`,
-                        addon!.$cleanName!,
-                      );
-                  } else {
-                    await HykordNative.getManagers()
-                      .getSettings()
-                      .removeValue(
-                        `hykord.enabled.${props.type}s`,
-                        addon!.$cleanName!,
-                      );
-                  }
+                    if (addon!.$enabled) {
+                      await HykordNative.getManagers()
+                        .getSettings()
+                        .addValue(
+                          `hykord.enabled.${props.type}s`,
+                          addon!.$cleanName!,
+                        );
+                    } else {
+                      await HykordNative.getManagers()
+                        .getSettings()
+                        .removeValue(
+                          `hykord.enabled.${props.type}s`,
+                          addon!.$cleanName!,
+                        );
+                    }
 
-                  setChecked(addon!.$enabled!);
-                })}
+                    setChecked(addon!.$enabled!);
+                  },
+                )}
               />
             </div>
           </Flex>
