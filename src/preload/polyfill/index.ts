@@ -5,7 +5,7 @@ import Module from 'module';
 // Allow import discord modules
 // @ts-expect-error no typings
 Module.globalPaths.push(
-  path.resolve(process.env.DISCORD_APP_PATH, '..', 'app.asar', 'node_modules')
+  path.resolve(process.env.DISCORD_APP_PATH!, '..', 'app.asar', 'node_modules')
 );
 
 // @ts-expect-error no typings
