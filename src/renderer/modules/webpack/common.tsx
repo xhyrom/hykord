@@ -11,6 +11,8 @@ export const Stores = {} as {
     GuildStore: StoreTypes.GuildStore;
     SelectedGuildStore: StoreTypes2.SelectedGuildStore;
     UserStore: StoreTypes.UserStore;
+    RelationshipStore: StoreTypes.RelationshipStore;
+    InviteStore: StoreTypes2.InviteStore;
     ChannelStore: StoreTypes.ChannelStore;
     SelectedChannelStore: StoreTypes.SelectedChannelStore;
 }
@@ -23,3 +25,5 @@ waitFor('getSortedPrivateChannels', m => Stores.ChannelStore = m as any);
 waitFor('getCurrentlySelectedChannelId', m => Stores.SelectedChannelStore = m as any);
 waitFor('getGuildCount', m => Stores.GuildStore = m as any);
 waitFor('getLastSelectedGuildId', m => Stores.SelectedGuildStore = m as any);
+waitFor('isBlocked', m => Stores.RelationshipStore = m as any);
+waitFor('getInvites', m => Stores.InviteStore = m as any);
