@@ -18,8 +18,8 @@ export class Experiments extends Plugin {
   }
 
   public async fullStart(): Promise<void> {
-    const currentUser: any = await this.getCurrentUser();
-    const dispatcher: any = await this.getDispatcher();
+    const currentUser: any = await waitFor(Filters.byProps('getCurrentUser'));
+    const dispatcher: any = await waitFor(Filters.byProps('_dispatcher'));
 
     const actions = await this.getConnectionOpen(dispatcher);
     const user = currentUser.getCurrentUser();
@@ -46,22 +46,6 @@ export class Experiments extends Plugin {
 
   public stop(): void {
     this.unpatch();
-  }
-
-  private async getCurrentUser() {
-    return new Promise((resolve) => {
-      waitFor(Filters.byProps('getCurrentUser'), (s) => {
-        resolve(s);
-      });
-    });
-  }
-
-  private async getDispatcher() {
-    return new Promise((resolve) => {
-      waitFor(Filters.byProps('_dispatcher'), (s) => {
-        resolve(s);
-      });
-    });
   }
 
   private async getConnectionOpen(dispatcher: any) {

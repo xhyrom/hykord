@@ -3,7 +3,7 @@
 // Some components from https://github.com/Vendicated/Vencord/blob/main/src/webpack/common.tsx
 
 import type Components from 'discord-types/components';
-import { Filters, waitFor } from '@hykord/webpack';
+import { Filters, waitForSync } from '@hykord/webpack';
 
 export const Forms = {} as {
     FormTitle: Components.FormTitle;
@@ -77,38 +77,34 @@ export let Flex: typeof import('./Flex').Flex;
 export let ErrorBoundary: typeof import('./ErrorBoundary').ErrorBoundary;
 export let Link: typeof import('./Link').Link;
 
-waitFor('useState', () => {
+waitForSync('useState', () => {
     ErrorBoundary = require('./ErrorBoundary').ErrorBoundary;
     Flex = require('./Flex').Flex;
     Link = require('./Link').Link;
 });
 
-waitFor(m => m.Tags && Filters.byCode('errorSeparator')(m), m => Forms.FormTitle = m);
-waitFor(m => m.Tags && Filters.byCode('titleClassName', 'sectionTitle')(m), m => Forms.FormSection = m);
-waitFor(m => m.Types?.INPUT_PLACEHOLDER, m => Forms.FormText = m);
+waitForSync(m => m.Tags && Filters.byCode('errorSeparator')(m), m => Forms.FormTitle = m);
+waitForSync(m => m.Tags && Filters.byCode('titleClassName', 'sectionTitle')(m), m => Forms.FormSection = m);
+waitForSync(m => m.Types?.INPUT_PLACEHOLDER, m => Forms.FormText = m);
+waitForSync(Filters.byCode('().divider', 'style'), m => {
+    console.log('ríly??', m);
+    Forms.FormDivider = m;
+}, 1);
 
-waitFor(m => {
-    if (typeof m !== 'function') return false;
-    
-    const s = m?.toString?.();
-    if (!s) return false;
-    return s.length < 200 && s.includes('divider')
-}, m => Forms.FormDivider = m);
-
-waitFor(['Hovers', 'Looks', 'Sizes'], m => Button = m);
-waitFor(Filters.byCode('helpdeskArticleId'), m => {
+waitForSync(['Hovers', 'Looks', 'Sizes'], m => Button = m);
+waitForSync(Filters.byCode('helpdeskArticleId'), m => {
     Switch = m;
     Inputs.Switch = require('./inputs/Switch').Switch;
 });
 
-waitFor(Filters.byCode('input', 'createElement', 'checkbox'), m => Checkbox = m);
+waitForSync(Filters.byCode('input', 'createElement', 'checkbox'), m => Checkbox = m);
 
-waitFor(['Positions', 'Colors'], m => Tooltip = m);
-waitFor(m => m.Types?.PRIMARY === 'cardPrimary', m => Card = m);
+waitForSync(['Positions', 'Colors'], m => Tooltip = m);
+waitForSync(m => m.Types?.PRIMARY === 'cardPrimary', m => Card = m);
 
 // Alerts
-waitFor(['show', 'close'], m => Alerts = m);
+waitForSync(['show', 'close'], m => Alerts = m);
 
 // Toasts
-waitFor(Filters.byCode('currentToast?'), m => Toasts.show = m);
-waitFor(Filters.byCode('currentToast:null'), m => Toasts.pop = m);
+waitForSync(Filters.byCode('currentToast?'), m => Toasts.show = m);
+waitForSync(Filters.byCode('currentToast:null'), m => Toasts.pop = m);

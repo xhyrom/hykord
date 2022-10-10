@@ -3,9 +3,9 @@
 // Temporary solution
 
 import { byCode, byProps, byProtos } from './filters';
-import { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback } from '@common';
+import { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback, LazyModule } from '@common';
 
-export const subscriptions = new Map<Filter, LazyCallback>();
+export const subscriptions = new Map<Filter, LazyModule>();
 
 let instance: WebpackRequire;
 
@@ -56,7 +56,7 @@ export const findByPrototypeFields = (...protos: string[]): ModuleExports | null
 export const findAllByCode = (...code: string[]): ModuleExports[] => getAllModules(byCode(...code));
 export const findByCode = (...code: string[]): ModuleExports | null => findAllByCode(...code)[0] ?? null;
 
-export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void {
+export const waitForSync = (filter: string | string[] | Filter, callback: LazyCallback, allowed = -1): void => {
   if (typeof filter === 'string') filter = byProps(filter);
   else if (Array.isArray(filter)) filter = byProps(...filter);
   else if (typeof filter !== 'function') filter = byProps(filter);
@@ -64,5 +64,17 @@ export function waitFor(filter: string | string[] | Filter, callback: LazyCallba
   const existing = getModule(filter!);
   if (existing) return void callback(existing);
 
-  subscriptions.set(filter, callback);
+  subscriptions.set(filter, {
+    callback,
+    allowed,
+    tries: 0
+  });
+}
+
+export const waitFor = async(filter: string | string[] | Filter, allowed = -1): Promise<ModuleExports> => {
+  return new Promise((resolve) => {
+    waitForSync(filter, (module) => {
+      resolve(module);
+    }, allowed);
+  })
 }

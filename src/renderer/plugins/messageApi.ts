@@ -41,7 +41,7 @@ export class MessageAPI extends Plugin {
     }
 
     public async fullStart(): Promise<void> {
-        const Messages: any = await this.getMessages();
+        const Messages: any = await waitFor(Filters.byProps('sendMessage'));
 
         if (await this.getSetting('Send', true)) {
             this.unpatchSendMessage = after('sendMessage', Messages, (args, res) => {
@@ -83,13 +83,5 @@ export class MessageAPI extends Plugin {
         this.unpatchSendMessage?.();
         this.unpatchEditMessage?.();
         this.unpatchReceiveMessage?.();
-    }
-
-    private async getMessages() {
-        return new Promise((resolve) => {
-            waitFor(Filters.byProps('sendMessage'), (s) => {
-                resolve(s);
-            });
-        });
     }
 }

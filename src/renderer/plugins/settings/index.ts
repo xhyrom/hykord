@@ -22,7 +22,7 @@ export class Settings extends Plugin {
   }
 
   public async fullStart(): Promise<void> {
-    const userSettings: any = (await this.getSettings());
+    const userSettings: any = await waitFor(Filters.byProtos('getPredicateSections'));
     
     SettingsApi.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default, 1);
     SettingsApi.registerSection('HYKORD_MAIN_UPDATER', 'Updater', (await import('./Updater')).default, 2);
@@ -63,13 +63,5 @@ export class Settings extends Plugin {
 
   public stop(): void {
     this.unpatch();
-  }
-
-  private async getSettings() {
-    return new Promise((resolve) => {
-      waitFor(Filters.byProtos('getPredicateSections'), (s) => {
-        resolve(s);
-      });
-    })
   }
 }

@@ -34,3 +34,8 @@ export type RawModule = Record<string, unknown> & {
 export type Filter = (module: ModuleExports) => boolean | ModuleExports;
 
 export type LazyCallback = (module: ModuleExports) => void;
+export type LazyModule = {
+  callback: LazyCallback;
+  allowed: number;
+  tries: number;
+};

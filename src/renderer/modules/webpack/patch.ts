@@ -29,15 +29,23 @@ function patchPush () {
         modules[id] = function (m, exports, require) {
           mod(m, exports, require);
   
-          for (const [ filter, callback ] of subscriptions) {
+          for (const [ filter, lazyModule ] of subscriptions) {
+            const { callback, allowed, tries } = lazyModule;
+            if (allowed !== -1 && tries >= allowed) {
+              subscriptions.delete(filter);
+              continue;
+            };
+
             if (m.exports && filter(m.exports)) {
                 callback(m.exports);
+                lazyModule.tries++;
                 continue;
             }
             if (typeof m.exports !== 'object') continue;
 
             if (m.exports?.default && filter(m.exports?.default as ModuleExports)) {
                 callback(m.exports.default as ModuleExports);
+                lazyModule.tries++;
                 continue;
             }
       
@@ -46,6 +54,7 @@ function patchPush () {
 
               if (nested && filter(nested)) {
                 callback(nested);
+                lazyModule.tries++;
                 continue;
               }
             }
