@@ -86,10 +86,7 @@ waitForSync('useState', () => {
 waitForSync(m => m.Tags && Filters.byCode('errorSeparator')(m), m => Forms.FormTitle = m);
 waitForSync(m => m.Tags && Filters.byCode('titleClassName', 'sectionTitle')(m), m => Forms.FormSection = m);
 waitForSync(m => m.Types?.INPUT_PLACEHOLDER, m => Forms.FormText = m);
-waitForSync(Filters.byCode('().divider', 'style'), m => {
-    console.log('ríly??', m);
-    Forms.FormDivider = m;
-}, 1);
+waitForSync(Filters.byCode('().divider', 'style'), m => Forms.FormDivider = m, 1);
 
 waitForSync(['Hovers', 'Looks', 'Sizes'], m => Button = m);
 waitForSync(Filters.byCode('helpdeskArticleId'), m => {

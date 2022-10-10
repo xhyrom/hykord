@@ -55,7 +55,7 @@ electron.app.whenReady().then(() => {
       );
   }
 
-  if (SettingsManager.getSetting('hykord.disable-science-requests', false)) {
+  if (SettingsManager.getSetting('hykord.disable-tracking', false)) {
     electron.session.defaultSession.webRequest.onBeforeRequest(
       { urls: ['https://*/api/v*/science'] },
       (_, callback) => callback({ cancel: true }),

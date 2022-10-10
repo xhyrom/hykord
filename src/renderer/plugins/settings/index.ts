@@ -18,6 +18,7 @@ export class Settings extends Plugin {
   $toggleable = false;
   $internal = true;
   public start(): void {
+    import('./utils');
     this.fullStart();
   }
 

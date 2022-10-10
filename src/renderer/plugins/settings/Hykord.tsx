@@ -74,14 +74,14 @@ export default ErrorBoundary.wrap(() => {
           <Inputs.Switch
             value={HykordNative.getManagers()
               .getSettings()
-              .getSync('hykord.disable-science-requests', false)}
-            note={"Disable discord's science requests and tracking"}
+              .getSync('hykord.disable-tracking', false)}
+            note={"Disable science requests and sentry"}
             onChange={(value: boolean) =>
               HykordNative.getManagers()
                 .getSettings()
-                .set('hykord.disable-science-requests', value)
+                .set('hykord.disable-tracking', value)
             }
-            label="Disable science requests"
+            label="Disable tracking"
           />
           <Inputs.Switch
             value={HykordNative.getManagers()
