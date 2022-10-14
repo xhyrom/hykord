@@ -11,19 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v2
+      - name: Use Bun for pkg manager
+        uses: xhyrom/setup-bun@v0.1.7
+        with:
+          bun-version: latest
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
           node-version: 18
-          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install
 
       - name: Build
-        run: pnpm build
+        run: bun run build
 
       - name: Get SHA
         id: vars
