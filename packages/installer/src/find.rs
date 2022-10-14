@@ -1,4 +1,5 @@
 use home::home_dir;
+use std::path::Path;
 
 fn get_homedir() -> String {
     match home_dir() {
@@ -12,7 +13,7 @@ pub fn find_discord() -> Option<String> {
     let discord: [&str; 5] = ["/usr/share/discord", "/usr/lib64/discord", "/opt/discord", "/opt/Discord", &(get_homedir() + "/.local/bin/Discord")];
 
     for ele in discord {
-        if std::path::Path::new(ele).exists() {
+        if Path::new(ele).exists() {
             return Some(ele.to_string());
         }
     }
