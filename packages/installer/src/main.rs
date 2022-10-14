@@ -1,9 +1,11 @@
+use args::ReleaseChannel;
+
 mod args;
 mod find;
 
 fn main() {
     let args = args::parse();
-    let discord = find::find_discord();
+    let discord = find::find_discord(args.release_channel.unwrap_or(ReleaseChannel::stable));
 
     if discord.is_none() {
         println!("Could not find Discord");

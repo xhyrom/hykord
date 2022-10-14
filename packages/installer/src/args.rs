@@ -10,6 +10,15 @@ pub enum Action {
     repair
 }
 
+#[allow(non_camel_case_types)]
+#[derive(clap::ValueEnum, Clone, Debug)]
+pub enum ReleaseChannel {
+    stable,
+    ptb,
+    canary,
+    dev
+}
+
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
@@ -29,6 +38,12 @@ pub struct Args {
         required=false
     )]
     pub discord_path: Option<String>,
+
+    #[arg(
+        value_enum,
+        required=false
+    )]
+    pub release_channel: Option<ReleaseChannel>,
 }
 
 pub fn parse() -> Args {
