@@ -22,56 +22,7 @@ const load = async () => {
   // Load internal themes
   await import('../themes');
 
-  // Load quickCss
-  if (await HykordNative.getManagers().getSettings().get('hykord.quick-css'))
-    await loadQuickCss();
-
-  // Load external themes
-  if (!(await exists(directory))) await mkdir(directory);
-
-  for (const file of await readdir(directory)) {
-    if (file.endsWith('.css')) {
-      try {
-        const css = await readFile(join(directory, file), {
-          encoding: 'utf-8',
-        });
-        const metadata = getMetadata(css);
-
-        // Parse metadata
-        addTheme({
-          name: metadata.name,
-          description: metadata.description,
-          version: metadata.version,
-          author: metadata.author,
-          license: metadata.license,
-          cssId: metadata.cssId,
-          $toggleable: true,
-          $fileName: file,
-          start: () => css.toString(),
-        });
-      } catch (error: any) {
-        Logger.err(`Failed to load theme ${file}: ${error.message}`);
-      }
-    } else {
-      try {
-        const module = { filename: file, exports: {} as any };
-        const fileContent = await readFile(join(directory, file), 'utf-8');
-        
-        const fn = new Function('require', 'module', 'exports', '__filename', '__dirname', fileContent);
-        fn(window.require, module, module.exports, module.filename, directory, fileContent);
-  
-        addTheme(new module.exports());
-      } catch (error: any) {
-        Logger.err(`Failed to load theme ${file}: ${error.message}`);
-      }
-    }
-  }
-
-  for (const theme of themes) {
-    if (theme.$toggleable && !(await HykordNative.getManagers().getSettings().get('hykord.enabled.themes', new Set())).has(theme.$cleanName!)) continue;
-
-    toggleTheme(theme);
-  }
+  await loadThemes();
 
   document.removeEventListener('DOMContentLoaded', load);
 };
@@ -114,3 +65,51 @@ export const toggleTheme = (theme: Theme) => {
   if (theme.$enabled) disableTheme(theme);
   else enableTheme(theme);
 };
+
+export const loadThemes = async() => {
+  // Create themes folder if not exists
+  if (!(await exists(directory))) await mkdir(directory);
+
+  if (await HykordNative.getManagers().getSettings().get('hykord.quick-css')) {
+    quickCss.unload();
+    await loadQuickCss();
+  }
+
+  // Can't use clear because Internal theme
+  for (const theme of themes.values()) {
+    if (theme.$internal) continue;
+    
+    disableTheme(theme);
+    removeTheme(theme);
+  }
+
+  for (const file of await readdir(directory)) {
+    try {
+      const css = await readFile(join(directory, file), {
+        encoding: 'utf-8',
+      });
+      // Parse metadata
+      const metadata = getMetadata(css);
+
+      addTheme({
+        name: metadata.name,
+        description: metadata.description,
+        version: metadata.version,
+        author: metadata.author,
+        license: metadata.license,
+        cssId: metadata.cssId,
+        $toggleable: true,
+        $fileName: file,
+        start: () => css.toString(),
+      });
+    } catch (error: any) {
+      Logger.err(`Failed to load theme ${file}: ${error.message}`);
+    }
+  }
+
+  for (const theme of themes) {
+    if (theme.$toggleable && !(await HykordNative.getManagers().getSettings().get('hykord.enabled.themes', new Set())).has(theme.$cleanName!)) continue;
+
+    enableTheme(theme);
+  }
+}
