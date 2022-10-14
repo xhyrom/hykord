@@ -23,7 +23,12 @@ pub struct Args {
     #[arg(
         required=false
     )]
-    pub path: Option<String>,
+    pub hykord_path: Option<String>,
+
+    #[arg(
+        required=false
+    )]
+    pub discord_path: Option<String>,
 }
 
 pub fn parse() -> Args {
