@@ -28,5 +28,6 @@
     "lint": "eslint src/ --fix && prettier --write src/**/*.{ts,tsx}",
     "inject": "tsx packages/injector/index.ts"
   },
-  "type": "commonjs"
+  "type": "commonjs",
+  "packageManager": "pnpm@7.13.4"
 }
