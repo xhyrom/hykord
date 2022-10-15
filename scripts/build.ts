@@ -14,7 +14,7 @@ const tsconfig = JSON.parse(readFileSync(join(__dirname, '..', 'tsconfig.json'))
 
 // converts tsconfig aliases (paths)
 const aliases = Object.fromEntries(
-  // @ts-expect-error
+  // @ts-expect-error target issues
   Object.entries(tsconfig.compilerOptions.paths).map(([alias, [target]]) => [
     alias,
     resolve(target),
@@ -22,12 +22,14 @@ const aliases = Object.fromEntries(
 );
 
 // Add this dependencies to the bundle
+const blacklist = ['node-fetch'];
 const makeAllPackagesExternalPlugin: esbuild.Plugin = {
   name: 'make-all-packages-external',
   setup(build) {
-    let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/; // Must not start with '/' or './' or '../'
+    // eslint-disable-next-line
+    const filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/; // Must not start with '/' or './' or '../'
     build.onResolve({ filter }, args => {
-      return { path: args.path, external: true };
+      if (!blacklist.includes(args.path)) return { path: args.path, external: true };
     });
   },
 };
@@ -40,6 +42,9 @@ const common: esbuild.BuildOptions = {
   sourcemap: dev,
   format: 'cjs' as esbuild.Format,
   watch: watch,
+  define: {
+    $HYKORD_GIT_HASH: `'${execSync('git rev-parse HEAD').toString().trim()}'`,
+  },
   plugins: [
     alias(aliases),
     makeAllPackagesExternalPlugin

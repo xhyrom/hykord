@@ -42,11 +42,11 @@ export default ErrorBoundary.wrap(() => {
 
   React.useEffect(() => {
     (async () => {
-      const repo = await HykordNative.getManagers().getGit().getRepository();
+      const repo = await HykordNative.getManagers().getUpdater().getRepository();
       setDetails({
         repositoryName: repo.name,
         repositoryUrl: repo.url,
-        hash: await HykordNative.getManagers().getGit().getLatestCommitHash(),
+        hash: await HykordNative.getManagers().getUpdater().getLatestCommitHash(),
       });
     })();
   }, []);

@@ -4,6 +4,7 @@
   "main": "dist/main/index.js",
   "module": "index.ts",
   "devDependencies": {
+    "@types/node-fetch": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "clean-css": "^5.3.1",
@@ -26,7 +27,10 @@
     "build": "tsx scripts/build.ts",
     "watch": "tsx scripts/build.ts --dev --watch",
     "lint": "eslint src/ --fix && prettier --write src/**/*.{ts,tsx}",
-    "inject": "tsx packages/injector/index.ts"
+    "inject": "cd packages/installer && cargo run inject"
   },
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "node-fetch": "2.6.7"
+  }
 }

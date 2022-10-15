@@ -18,7 +18,7 @@ declare var HykordNative: {
             removeValue: (name: string, value: any) => Promise<any>;
             save: () => Promise<any>;
         };
-        getGit: () => {
+        getUpdater: () => {
             getRepository: () => Promise<any>;
             getLatestCommitHash: () => Promise<any>;
             checkForUpdates: () => Promise<any>;

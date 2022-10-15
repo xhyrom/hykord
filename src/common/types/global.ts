@@ -8,6 +8,7 @@ declare global {
         set(setting: string, v: any): void;
       }
     | undefined;
+  export var $HYKORD_GIT_HASH: string;
 
   interface Window {
     webpackChunkdiscord_app: {

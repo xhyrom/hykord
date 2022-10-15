@@ -38,7 +38,7 @@ fn main() {
 
     match args.action {
         args::Action::install => {
-            println!("Downloading Hykord from github releases...");
+            println!("Downloading Hykord from github releases into {}", &hykord_path);
             if !github::download_release(&hykord_path) {
                 println!("Could not download Hykord");
                 return;

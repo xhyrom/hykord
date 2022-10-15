@@ -40,7 +40,7 @@ export default {
         ipcRenderer.invoke(HykordIpcEvents.REMOVE_VALUE_FROM_SETTING, name, value),
       save: () => ipcRenderer.invoke(HykordIpcEvents.SAVE_SETTINGS),
     }),
-    getGit: () => ({
+    getUpdater: () => ({
       getRepository: () => ipcRenderer.invoke(HykordIpcEvents.GET_REPOSITORY),
       getLatestCommitHash: () =>
         ipcRenderer.invoke(HykordIpcEvents.GET_LATEST_COMMIT_HASH),
