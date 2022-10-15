@@ -1,7 +1,6 @@
 import { dirname, join } from 'path';
 import electron from 'electron';
 import BrowserWindow from './patches/BrowserWindow';
-import installExt, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { CoreLogger as Logger } from '@common';
 import SettingsManager from './api/SettingsManager';
 
@@ -29,7 +28,7 @@ Object.defineProperty(global, 'appSettings', {
   configurable: true,
 });
 
-electron.app.whenReady().then(() => {
+electron.app.whenReady().then(async() => {
   electron.session.defaultSession.webRequest.onHeadersReceived(
     ({ responseHeaders, url }, cb) => {
       if (responseHeaders) {
@@ -48,11 +47,16 @@ electron.app.whenReady().then(() => {
   if (SettingsManager.getSetting('hykord.react-devtools', false)) {
     Logger.info('Installing React Developer Tools...');
 
-    installExt(REACT_DEVELOPER_TOOLS)
-      .then((name) => Logger.info(`Added Extension:  ${name}`))
-      .catch((err) =>
-        Logger.err('An error occurred while installing React Dev Tools: ', err),
-      );
+    try {
+      const electronDevToolsInstaller = await (await import('electron-devtools-installer'));
+      electronDevToolsInstaller.default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
+        .then((name) => Logger.info(`Added Extension:  ${name}`))
+        .catch((err) =>
+          Logger.err('An error occurred while installing React Dev Tools: ', err),
+        );
+    } catch(e) {
+      Logger.err('Failed to install React Developer Tools: ' + e);
+    }
   }
 
   if (SettingsManager.getSetting('hykord.disable-tracking', false)) {
