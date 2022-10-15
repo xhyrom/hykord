@@ -1,5 +1,6 @@
 use home::home_dir;
 use std::path::Path;
+use std::fs;
 
 use crate::args::ReleaseChannel;
 
@@ -48,7 +49,7 @@ pub fn get_discord_resources(directory: &String) -> Option<String> {
     return Some(directory);
 }
 
-pub fn find_discord(release_channel: ReleaseChannel) -> Option<String> {
+pub fn find_discord(release_channel: &ReleaseChannel) -> Option<String> {
     #[cfg(target_os = "linux")]
     let discord: [[&str; 5]; 4] = [
         [
@@ -122,4 +123,33 @@ pub fn find_discord(release_channel: ReleaseChannel) -> Option<String> {
     }
 
     return None;
+}
+
+pub fn inject(discord_path: &String, hykord_path: &String) {
+    let discord_path = Path::new(discord_path);
+    let hykord_path = Path::new(hykord_path);
+
+    match fs::create_dir(&discord_path) {
+        Ok(_) => println!("Created app directory"),
+        Err(e) => println!("Error: {}", e),
+    };
+
+    match fs::write(
+        &discord_path.join("index.js"),
+        format!(
+            "require(\"{}\");\nrequire(\"../app.asar\");",
+            hykord_path.join("main.js").to_str().unwrap().replace(r"\", r"\\")
+        )
+    ) {
+        Ok(_) => println!("Created app/index.js file"),
+        Err(e) => println!("Error: {}", e),
+    };
+
+    match fs::write(
+        &discord_path.join("package.json"),
+        "{\"name\": \"discord\", \"main\": \"index.js\"}"
+    ) {
+        Ok(_) => println!("Created app/package.json file"),
+        Err(e) => println!("Error: {}", e),
+    };
 }
