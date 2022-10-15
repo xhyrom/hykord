@@ -30,17 +30,19 @@ pub struct Args {
     pub action: Action,
 
     #[arg(
+        long,
         required=false
     )]
     pub hykord_path: Option<String>,
 
     #[arg(
+        long,
         required=false
     )]
     pub discord_path: Option<String>,
 
     #[arg(
-        value_enum,
+        short, long,
         required=false
     )]
     pub release_channel: Option<ReleaseChannel>,

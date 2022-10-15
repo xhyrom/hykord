@@ -17,6 +17,37 @@ fn get_local_appdata() -> String {
     path
 }
 
+#[cfg(target_os = "windows")]
+pub fn get_discord_resources(directory: &String) -> Option<String> {
+    let path = Path::new(directory);
+    let mut known: Option<String> = None;
+
+    for entry in path.read_dir().unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+
+        if path.is_dir() {
+            let dir_name = path.file_name().unwrap().to_str().unwrap();
+
+            if dir_name.starts_with("app-") {
+                let mut resources = path.to_str().unwrap().to_string();
+                resources.push_str(r"\resources\app");
+                known = Some(resources);
+            }
+        }
+    }
+
+    return known;
+}
+
+#[cfg(target_os = "linux")]
+pub fn get_discord_resources(directory: &String) -> Option<String> {
+    let mut directory = directory.to_string();
+    directory.push_str(r"/resources/app");
+
+    return Some(directory);
+}
+
 pub fn find_discord(release_channel: ReleaseChannel) -> Option<String> {
     #[cfg(target_os = "linux")]
     let discord: [[&str; 5]; 4] = [
