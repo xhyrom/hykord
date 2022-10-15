@@ -16,7 +16,7 @@
 1. You must have [node.js](https://nodejs.org/en/) installed (also bun for pkg manager, optional)
 2. Clone this repo into any folder
 3. Install dependencies `npm install`
-4. Run patcher `npm run patch`
+4. Run injector `npm run inject`
    1. You can also add `app/index.js` and `app/package.json` to discord app resources/ folder
  ```js
  // index.js
