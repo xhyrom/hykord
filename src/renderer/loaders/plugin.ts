@@ -1,6 +1,7 @@
 import { Plugin } from '@hykord/structures';
 import { LoaderLogger as Logger } from '@common';
 import { BetterSet } from '../utils';
+import { Patch } from '@hykord/structures/Plugin';
 const { join } = window.require<typeof import('path')>('path');
 const { readdir, readFile, exists, mkdir } =
   window.require<typeof import('../../preload/polyfill/fs/promises')>(
@@ -8,6 +9,8 @@ const { readdir, readFile, exists, mkdir } =
   );
 
 export const plugins: BetterSet<Plugin> = new BetterSet();
+export const patches: Patch[] = [];
+
 export const directory = join(HykordNative.getDirectory(), 'plugins');
 
 export const load = async () => {
@@ -49,6 +52,13 @@ export const init = async () => {
 
 export const addPlugin = async (plugin: Plugin) => {
   plugin.$cleanName = plugin.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  if (plugin.patches) {
+    for (const patch of plugin.patches) {
+      patch.plugin = plugin.name!;
+      if (!Array.isArray(patch.replacement)) patch.replacement = [patch.replacement];
+      patches.push(patch);
+    }
+  }
   plugins.add(plugin);
 
   plugins.sort((a, b) => a.name.localeCompare(b.name));

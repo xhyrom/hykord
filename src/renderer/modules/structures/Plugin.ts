@@ -1,5 +1,18 @@
 import { Addon } from './Addon';
 
+// https://github.com/Vendicated/Vencord/blob/main/src/utils/types.ts#L8-L18
+export interface PatchReplacement {
+    match: string | RegExp;
+    replace: string | ((match: string, ...groups: string[]) => string);
+}
+
+export interface Patch {
+    plugin?: string;
+    find: string;
+    replacement: PatchReplacement | PatchReplacement[];
+    all?: boolean;
+}
+
 export interface PluginSetting {
     type: string;
     name: string;
@@ -12,6 +25,7 @@ export abstract class Plugin extends Addon {
     public abstract start(): void;
 
     // Optional properties
+    public patches?: Patch[];
     public settings?: PluginSetting[];
     public dependsOn?: string[] = [];
     public stop?(): void;

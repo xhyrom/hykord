@@ -1,4 +1,5 @@
 import { ModuleExports, WebpackChunk, WebpackChunkGlobal } from '@common';
+import { PatchReplacement } from '@hykord/structures/Plugin';
 import { _initWebpack } from './webpack';
 
 let webpackChunk: WebpackChunkGlobal | undefined;
@@ -23,9 +24,14 @@ function patchPush () {
     function handlePush (chunk: WebpackChunk) {
       const modules = chunk[1];
       const { subscriptions } = Hykord.Webpack;
+      const { patches } = Hykord.Loaders.Plugins;
   
       for (const id in modules) {
-        const mod = modules[id];
+        let mod = modules[id];
+        let code = mod.toString().replaceAll('\n', '');
+        const originalMod = mod;
+        const patchedBy = new Set();
+
         modules[id] = function (m, exports, require) {
           mod(m, exports, require);
   
@@ -60,6 +66,46 @@ function patchPush () {
             }
           }
         };
+        modules[id].toString = () => mod.toString();
+        // @ts-expect-error just keep
+        modules[id].original = originalMod;
+
+        for (let i = 0; i < patches.length; i++) {
+          const patch = patches[i];
+          if (code.includes(patch.find)) {
+            patchedBy.add(patch.plugin);
+
+            // this is from Vencord, thanks - https://github.com/Vendicated/Vencord/blob/main/src/webpack/patchWebpack.ts
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore look into loaders/plugin.ts
+            for (const replacement of patch.replacement) {
+              const lastMod = mod;
+              const lastCode = code;
+              try {
+                  const newCode = code.replace(replacement.match, replacement.replace);
+                  if (newCode === code) {
+                      //logger.warn(`Patch by ${patch.plugin} had no effect: ${replacement.match}`);
+                      //logger.debug('Function Source:\n', code);
+                  } else {
+                      code = newCode;
+                      mod = (0, eval)(`// Webpack Module ${id} - Patched by ${[...patchedBy].join(', ')}\n${newCode}\n//# sourceURL=WebpackModule${id}`);
+                  }
+              } catch (err) {
+                  // TODO - More meaningful errors. This probably means moving away from string.replace
+                  // in favour of manual matching. Then cut out the context and log some sort of
+                  // diff
+                  //logger.error('Failed to apply patch of', patch.plugin, err);
+                  //logger.debug('Original Source\n', lastCode);
+                  //logger.debug('Patched Source\n', code);
+                  code = lastCode;
+                  mod = lastMod;
+                  patchedBy.delete(patch.plugin);
+              }
+            }
+            
+            if (!patch.all) patches.splice(i--, 1);
+          }
+        }
       }
 
       return handlePush.original.call(webpackChunk, chunk);
