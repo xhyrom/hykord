@@ -28,7 +28,7 @@ Object.defineProperty(global, 'appSettings', {
   configurable: true,
 });
 
-electron.app.whenReady().then(async() => {
+electron.app.whenReady().then(async () => {
   electron.session.defaultSession.webRequest.onHeadersReceived(
     ({ responseHeaders, url }, cb) => {
       if (responseHeaders) {
@@ -48,13 +48,19 @@ electron.app.whenReady().then(async() => {
     Logger.info('Installing React Developer Tools...');
 
     try {
-      const electronDevToolsInstaller = await (await import('electron-devtools-installer'));
-      electronDevToolsInstaller.default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
+      const electronDevToolsInstaller = await await import(
+        'electron-devtools-installer'
+      );
+      electronDevToolsInstaller
+        .default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
         .then((name) => Logger.info(`Added Extension:  ${name}`))
         .catch((err) =>
-          Logger.err('An error occurred while installing React Dev Tools: ', err),
+          Logger.err(
+            'An error occurred while installing React Dev Tools: ',
+            err,
+          ),
         );
-    } catch(e) {
+    } catch (e) {
       Logger.err('Failed to install React Developer Tools: ' + e);
     }
   }

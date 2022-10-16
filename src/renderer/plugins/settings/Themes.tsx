@@ -14,7 +14,7 @@ export default ErrorBoundary.wrap(() => {
         color={Button.Colors.BRAND_NEW}
         size={Button.Sizes.TINY}
         look={Button.Looks.FILLED}
-        onClick={async() => {
+        onClick={async () => {
           await loadThemes();
           forceUpdate();
         }}

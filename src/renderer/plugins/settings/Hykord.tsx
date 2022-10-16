@@ -75,7 +75,7 @@ export default ErrorBoundary.wrap(() => {
             value={HykordNative.getManagers()
               .getSettings()
               .getSync('hykord.disable-tracking', false)}
-            note={"Disable science requests and sentry"}
+            note={'Disable science requests and sentry'}
             onChange={(value: boolean) =>
               HykordNative.getManagers()
                 .getSettings()
