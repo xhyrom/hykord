@@ -222,7 +222,6 @@ function findModuleByPrototypes(...protos) {
  * @memberof BdApi
  */
 function findModuleByDisplayName(name) {
-    // USE BY PROPS & CODE
     return Hykord.Webpack.findByDisplayName(name);
 }
 

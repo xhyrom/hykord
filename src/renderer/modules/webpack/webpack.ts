@@ -57,8 +57,7 @@ export const findAllByCode = (...code: string[]): ModuleExports[] => getAllModul
 export const findByCode = (...code: string[]): ModuleExports | null => findAllByCode(...code)[0] ?? null;
 
 // By displayName
-export const findAllByDisplayName = (name: string): ModuleExports[] => getAllModules(byDisplayName(name));
-export const findByDisplayName = (name: string): ModuleExports | null => findAllByDisplayName(name)[0] ?? null;
+export const findByDisplayName = (name: string): ModuleExports | null => getModule(byDisplayName(name));
 
 export const waitForSync = (filter: string | string[] | Filter, callback: LazyCallback, allowed = -1): void => {
   if (typeof filter === 'string') filter = byProps(filter);
