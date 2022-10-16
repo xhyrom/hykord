@@ -5,6 +5,7 @@
 import type Components from 'discord-types/components';
 import { Filters, waitForSync } from '@hykord/webpack';
 
+export * as Styles from './styles';
 export const Forms = {} as {
     FormTitle: Components.FormTitle;
     FormSection: any;
@@ -17,6 +18,7 @@ export let Button: any;
 export let Switch: any;
 export let Checkbox: any
 export let Tooltip: Components.Tooltip;
+export let TextInput: Components.TextInput;
 
 // Alerts
 export let Alerts: {
@@ -97,6 +99,8 @@ waitForSync(Filters.byCode('helpdeskArticleId'), m => {
 waitForSync(Filters.byCode('input', 'createElement', 'checkbox'), m => Checkbox = m);
 
 waitForSync(['Positions', 'Colors'], m => Tooltip = m);
+waitForSync(['defaultProps', 'Sizes', 'contextType'], m => TextInput = m);
+
 waitForSync(m => m.Types?.PRIMARY === 'cardPrimary', m => Card = m);
 
 // Alerts

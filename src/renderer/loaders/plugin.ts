@@ -13,7 +13,7 @@ export const patches: Patch[] = [];
 
 export const directory = join(HykordNative.getDirectory(), 'plugins');
 
-export const load = async () => {
+const load = async () => {
   // Load internal plugins
   await import('../plugins');
 

@@ -5,7 +5,7 @@ export const Flex = (
     flexDirection?: React.CSSProperties['flexDirection'];
     style?: React.CSSProperties;
     className?: string;
-  }>,
+  } & React.HTMLProps<HTMLDivElement>>,
 ) => {
   props.style ??= {};
   props.style.flexDirection ||= props.flexDirection;

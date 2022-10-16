@@ -5,6 +5,16 @@ export class BetterSet<T> extends Set<T> {
         }
     }
 
+    filter(fn: (value: T) => boolean): T[] {
+        const arr = [];
+
+        for (const value of this.values()) {
+            if (fn(value)) arr.push(value);
+        }
+
+        return arr;
+    }
+
     map<U>(fn: (value: T) => U): U[] {
         const arr: U[] = [];
 

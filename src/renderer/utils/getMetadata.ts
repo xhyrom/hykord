@@ -1,6 +1,6 @@
-import { ITheme } from '@hykord/structures/Theme';
+import { Theme } from '@hykord/structures/Theme';
 
-export const getMetadata = (content: string): ITheme => {
+export const getMetadata = (content: string): Theme => {
   return parseJsDoc(content);
 };
 
