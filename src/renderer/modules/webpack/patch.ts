@@ -1,5 +1,4 @@
 import { ModuleExports, WebpackChunk, WebpackChunkGlobal } from '@common';
-import { PatchReplacement } from '@hykord/structures/Plugin';
 import { _initWebpack } from './webpack';
 
 let webpackChunk: WebpackChunkGlobal | undefined;

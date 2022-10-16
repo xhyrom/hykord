@@ -99,6 +99,7 @@ export default ErrorBoundary.wrap((props: Props) => {
         : !addon!.$toggleable!
       : !addon!.$toggleable!,
   );
+
   const [checked, setChecked] = React.useState(addon!.$enabled!);
 
   return (

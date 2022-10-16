@@ -3,5 +3,12 @@ import { themes } from '@loader/theme';
 import Addon from './Addon';
 
 export default ErrorBoundary.wrap(() => {
-  return <Addon addons={themes} type='theme' placeholder='Search a theme by name' title='Here you can see installed theme' />
+  return (
+    <Addon
+      addons={themes}
+      type="theme"
+      placeholder="Search a theme by name"
+      title="Here you can see installed theme"
+    />
+  );
 });
