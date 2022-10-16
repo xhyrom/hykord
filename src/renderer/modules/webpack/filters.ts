@@ -15,3 +15,5 @@ export const byCode = (...code: string[]) => (m: ModuleExports) => {
 
     return code.every(c => functionCode.includes(c));
 };
+
+export const byDisplayName = (name: string) => (m: ModuleExports) => (m as Record<string, unknown>).displayName === name;

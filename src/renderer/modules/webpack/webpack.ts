@@ -2,7 +2,7 @@
 // Thanks, Replugged!
 // Temporary solution
 
-import { byCode, byProps, byProtos } from './filters';
+import { byCode, byDisplayName, byProps, byProtos } from './filters';
 import { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback, LazyModule } from '@common';
 
 export const subscriptions = new Map<Filter, LazyModule>();
@@ -55,6 +55,10 @@ export const findByPrototypeFields = (...protos: string[]): ModuleExports | null
 // By code
 export const findAllByCode = (...code: string[]): ModuleExports[] => getAllModules(byCode(...code));
 export const findByCode = (...code: string[]): ModuleExports | null => findAllByCode(...code)[0] ?? null;
+
+// By displayName
+export const findAllByDisplayName = (name: string): ModuleExports[] => getAllModules(byDisplayName(name));
+export const findByDisplayName = (name: string): ModuleExports | null => findAllByDisplayName(name)[0] ?? null;
 
 export const waitForSync = (filter: string | string[] | Filter, callback: LazyCallback, allowed = -1): void => {
   if (typeof filter === 'string') filter = byProps(filter);

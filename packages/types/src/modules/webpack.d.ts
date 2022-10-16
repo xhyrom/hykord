@@ -31,6 +31,8 @@ declare module '@hykord/webpack' {
     export const findByPrototypeFields: (...protos: string[]) => ModuleExports | null;
     export const findAllByCode: (...code: string[]) => ModuleExports[];
     export const findByCode: (...code: string[]) => ModuleExports | null;
+    export const findAllByDisplayName: (name: string) => ModuleExports[];
+    export const findByDisplayName: (name: string) => ModuleExports | null;
     export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void;
 
     namespace Filters {

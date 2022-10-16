@@ -223,7 +223,7 @@ function findModuleByPrototypes(...protos) {
  */
 function findModuleByDisplayName(name) {
     // USE BY PROPS & CODE
-    return Hykord.Webpack.findByProps(name) || Hykord.Webpack.findByCode(name);
+    return Hykord.Webpack.findByDisplayName(name);
 }
 
 /**
