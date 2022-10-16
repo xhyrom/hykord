@@ -36,7 +36,8 @@ declare var Hykord: {
     version: string;
     gitHash: string;
     directory: string;
-    Webpack: typeof import('@hykord/webpack')
-    Structures: typeof import('@hykord/structures')
-    Apis: typeof import('@hykord/apis')
+    Webpack: typeof import('@hykord/webpack');
+    Structures: typeof import('@hykord/structures');
+    Apis: typeof import('@hykord/apis');
+    Patcher: typeof import('@hykord/patcher');
 }

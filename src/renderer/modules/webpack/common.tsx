@@ -6,6 +6,7 @@ import { Stores as StoreTypes2 } from '@common';
 import { waitForSync } from './webpack';
 
 export let React: typeof import('react');
+export let ReactDOM: import('react').ReactDOM;
 export let FluxDispatcher: Other.FluxDispatcher;
 export const Stores = {} as {
   GuildStore: StoreTypes.GuildStore;
@@ -18,6 +19,7 @@ export const Stores = {} as {
 };
 
 waitForSync('useState', (m) => (React = m as any));
+waitForSync(['render', 'findDOMNode'], (m) => (ReactDOM = m as any));
 waitForSync(
   ['dispatch', 'subscribe', '_actionHandlers'],
   (m) => (FluxDispatcher = m as any),

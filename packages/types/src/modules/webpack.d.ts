@@ -34,12 +34,15 @@ declare module '@hykord/webpack' {
     export function waitFor(filter: string | string[] | Filter, callback: LazyCallback): void;
 
     namespace Filters {
-        export const byProps: (...props: string[]) => (m: ModuleExports) => boolean | "";
+        export const byProps: (...props: string[]) => (m: ModuleExports) => boolean | '';
         export const byProtos: (...protos: string[]) => (m: ModuleExports | any) => any;
         export const byCode: (...code: string[]) => (m: ModuleExports) => boolean;
     }
 
     namespace Common {
         export let React: typeof import('react');
+        export let ReactDOM: import('react').ReactDOM;
     }
+
+    export const React: typeof Common.React;
 }
