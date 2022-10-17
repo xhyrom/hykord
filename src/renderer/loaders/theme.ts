@@ -24,7 +24,7 @@ const load = async () => {
   // Create themes folder if not exists
   if (!(await exists(directory))) await mkdir(directory);
 
-  if (await HykordNative.getManagers().getSettings().get('hykord.quick-css')) await loadQuickCss();
+  if (await Hykord.Settings.get('hykord.quick-css')) await loadQuickCss();
 
   for (const file of await readdir(directory)) {
     try {
@@ -51,7 +51,7 @@ const load = async () => {
   }
 
   for (const theme of themes) {
-    if (theme.$toggleable && !(await HykordNative.getManagers().getSettings().get('hykord.enabled.themes', new Set())).has(theme.$cleanName!)) continue;
+    if (theme.$toggleable && !(await Hykord.Settings.get('hykord.enabled.themes', new Set())).has(theme.$cleanName!)) continue;
 
     enableTheme(theme);
   }

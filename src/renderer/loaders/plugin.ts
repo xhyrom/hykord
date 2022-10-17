@@ -38,7 +38,7 @@ const load = async () => {
   }
 
   for (const plugin of plugins) {
-    if (plugin.$toggleable && !(await HykordNative.getManagers().getSettings().get('hykord.enabled.plugins', new Set())).has(plugin.$cleanName!)) continue;
+    if (plugin.$toggleable && !(await Hykord.Settings.get('hykord.enabled.plugins', new Set())).has(plugin.$cleanName!)) continue;
 
     togglePlugin(plugin);
   }
@@ -51,7 +51,10 @@ export const init = async () => {
 };
 
 export const addPlugin = async (plugin: PluginInfo) => {
-  if (plugin.patches) {
+  if (
+    plugin.patches &&
+    (await Hykord.Settings.get('hykord.enabled.plugins', new Set())).has(plugin.$cleanName!)
+  ) {
     for (const patch of plugin.patches) {
       patch.plugin = plugin.name!;
       if (!Array.isArray(patch.replacement)) patch.replacement = [patch.replacement];

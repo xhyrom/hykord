@@ -18,7 +18,7 @@ const ReactDOM = Hykord.Webpack.Common.ReactDOM;
  * @deprecated
  * @memberof BdApi
  */
-const settings = HykordNative.getManagers().getSettings();
+const settings = Hykord.Settings;
 
 /** 
  * A reference object for BD's emotes.
@@ -360,7 +360,7 @@ function testJSON(data) {
  * @memberof BdApi
  */
 function isSettingEnabled(collection, category, id) {
-    return !!HykordNative.getManagers().getSettings().getSync(`${collection}.${category}.${id}`);
+    return !!Hykord.Settings.getSync(`${collection}.${category}.${id}`);
 }
 
 /**
@@ -373,7 +373,7 @@ function isSettingEnabled(collection, category, id) {
  * @memberof BdApi
  */
 function enableSetting(collection, category, id) {
-    return HykordNative.getManagers().getSettings().set(`${collection}.${category}.${id}`, true);
+    return Hykord.Settings.set(`${collection}.${category}.${id}`, true);
 }
 
 /**
@@ -386,7 +386,7 @@ function enableSetting(collection, category, id) {
  * @memberof BdApi
  */
 function disableSetting(collection, category, id) {
-    return HykordNative.getManagers().getSettings().set(`${collection}.${category}.${id}`, false);
+    return Hykord.Settings.set(`${collection}.${category}.${id}`, false);
 }
 
 /**
@@ -399,7 +399,7 @@ function disableSetting(collection, category, id) {
  * @memberof BdApi
  */
 function toggleSetting(collection, category, id) {
-    return HykordNative.getManagers().getSettings().set(`${collection}.${category}.${id}`, !isSettingEnabled(collection, category, id));
+    return Hykord.Settings.set(`${collection}.${category}.${id}`, !isSettingEnabled(collection, category, id));
 }
 
 /**

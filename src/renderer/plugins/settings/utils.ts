@@ -1,7 +1,5 @@
-const SettingsManager = HykordNative.getManagers().getSettings();
-
 (async() => {
-    if (await SettingsManager.get('hykord.disable-tracking')) {
+    if (await Hykord.Settings.get('hykord.disable-tracking')) {
         window.DiscordSentry.getCurrentHub().getClient().close();
         return;
     }
