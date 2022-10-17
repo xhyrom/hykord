@@ -31,4 +31,5 @@ export interface PluginInfo extends Addon {
     patches?: Patch[];
     settings?: PluginSetting[];
     dependsOn?: string[];
+    restartRequired?: boolean;
 }

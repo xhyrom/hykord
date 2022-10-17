@@ -1,7 +1,4 @@
 import { $plugin } from '@hykord/hooks';
-import { Logger as RealLogger } from '@common';
-
-const Logger = new RealLogger('Commands API');
 
 export default $plugin({
     name: 'Commands API',
@@ -19,9 +16,6 @@ export default $plugin({
             ]
         }
     ],
-    $internal: true,
-
-    start(): void {
-        Logger.info('Plugin successfully injected everything needed');
-    }
+    restartRequired: true,
+    $internal: true
 });

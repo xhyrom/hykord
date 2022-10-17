@@ -228,6 +228,17 @@ export default ErrorBoundary.wrap((props: Props) => {
                       );
                   }
 
+                  if (props.type === 'plugin' && (addon as PluginInfo).restartRequired) {
+                    Alerts.show({
+                      title: 'Restart Required',
+                      body: 'This plugin requires a restart to take effect.',
+                      confirmText: 'Restart',
+                      onConfirm: () => {
+                        HykordNative.relaunchApp();
+                      }
+                    })
+                  }
+
                   setChecked(addon!.$enabled!);
                 })}
               />

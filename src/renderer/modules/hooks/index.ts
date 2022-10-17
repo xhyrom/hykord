@@ -8,8 +8,8 @@ export interface Addon {
     readonly author: string;
 
     // Optional properties
-    description?: string;
-    license?: string;
+    readonly description?: string;
+    readonly license?: string;
 
     // DONT TOUCH
     $enabled?: boolean;
