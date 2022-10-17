@@ -8,12 +8,10 @@ export default $plugin({
     patches: [
         {
             find: '"giphy","tenor"',
-            replacement: [
-                {
-                    match: /(?<=\w=)(\w)(\.filter\(.{0,30}giphy)/,
-                    replace: 'Hykord.Apis.Commands._init($1)$2',
-                }
-            ]
+            replacement: {
+                match: /(?<=\w=)(\w)(\.filter\(.{0,30}giphy)/,
+                replace: 'Hykord.Apis.Commands._init($1)$2',
+            }
         }
     ],
     restartRequired: true,
