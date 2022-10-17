@@ -1,6 +1,6 @@
-import { Theme } from '@hykord/structures/Theme';
+import { ThemeInfo } from '@hykord/hooks';
 
-export const getMetadata = (content: string): Theme => {
+export const getMetadata = (content: string): ThemeInfo => {
   return parseJsDoc(content);
 };
 
