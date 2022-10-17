@@ -1,5 +1,5 @@
 import { getModule } from '@hykord/webpack';
-import { Filter, ModuleExports } from '@hykord/webpack/types';
+import { Filter } from '@hykord/webpack/types';
 
 import { proxyLazy } from './proxyLazy';
 export { proxyLazy };
