@@ -1,14 +1,14 @@
-import { Plugin } from '@hykord/structures';
+import { $plugin } from '@hykord/hooks';
 import { Logger as RealLogger } from '@common';
 
 const Logger = new RealLogger('Commands API');
 
-export class CommandsAPI extends Plugin {
-    name = 'Commands API';
-    author = 'Hykord';
-    version = '0.0.0';
-    description = 'Allows to create custom commands';
-    patches = [
+export default $plugin({
+    name: 'Commands API',
+    author: 'Hykord',
+    version: '0.0.0',
+    description: 'Allows to create custom commands',
+    patches: [
         {
             find: '"giphy","tenor"',
             replacement: [
@@ -18,10 +18,10 @@ export class CommandsAPI extends Plugin {
                 }
             ]
         }
-    ]
-    $internal = true;
+    ],
+    $internal: true,
 
-    public start(): void {
+    start(): void {
         Logger.info('Plugin successfully injected everything needed');
     }
-}
+});

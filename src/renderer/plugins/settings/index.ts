@@ -1,4 +1,4 @@
-import { Plugin } from '@hykord/structures';
+import { $plugin } from '@hykord/hooks';
 import { React, waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 import { Logger as RealLogger } from '@common';
@@ -6,23 +6,17 @@ import { Settings as SettingsApi } from '@hykord/apis';
 
 const Logger = new RealLogger('Settings');
 
-export class Settings extends Plugin {
-  unpatch: any;
-  sections: { section: string; label: string; element: any }[] = [];
-
-  name = 'Settings';
-  author = 'Hykord';
-  version = '0.0.0';
-  description = 'Inject hykord specific settings into the settings panel';
-  dependsOn = ['Settings API'];
-  $toggleable = false;
-  $internal = true;
-  public start(): void {
+let unpatch: () => void;
+export default $plugin({
+  name: 'Settings',
+  author: 'Hykord',
+  version:  '0.0.0',
+  description: 'Inject hykord specific settings into the settings panel',
+  dependsOn: ['Settings API'],
+  $toggleable: false,
+  $internal: true,
+  async start(): Promise<void> {
     import('./utils');
-    this.fullStart();
-  }
-
-  public async fullStart(): Promise<void> {
     const userSettings: any = await waitFor(Filters.byProtos('getPredicateSections'));
     
     SettingsApi.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default, 1);
@@ -30,7 +24,7 @@ export class Settings extends Plugin {
     SettingsApi.registerSection('HYKORD_MAIN_PLUGINS', 'Plugins', (await import('./Plugins')).default, 3);
     SettingsApi.registerSection('HYKORD_MAIN_THEMES', 'Themes', (await import('./Themes')).default, 4);
 
-    this.unpatch = after('getPredicateSections', userSettings.prototype, (_, sects) => {
+    unpatch = after('getPredicateSections', userSettings.prototype, (_, sects) => {
       const debugInfo = sects[sects.findIndex((c: any) => c.section.toLowerCase() === 'custom') + 1];
 
       if (debugInfo) {
@@ -60,9 +54,9 @@ export class Settings extends Plugin {
     });
 
     Logger.info('Plugin successfully injected everything needed');
-  }
+  },
 
-  public stop(): void {
-    this.unpatch();
+  stop(): void {
+    unpatch?.();
   }
-}
+});

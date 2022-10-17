@@ -1,4 +1,4 @@
-import { Plugin } from '@hykord/structures';
+import { $plugin } from '@hykord/hooks';
 import { waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 import { Logger as RealLogger } from '@common';
@@ -6,23 +6,18 @@ import { Settings as SettingsApi } from '@hykord/apis';
 
 const Logger = new RealLogger('Settings API');
 
-export class SettingsAPI extends Plugin {
-  unpatch: any;
-
-  name = 'Settings API';
-  author = 'Hykord';
-  version = '0.0.0';
-  description = 'API for injecting content into settings';
-  $toggleable = false;
-  $internal = true;
-  public start(): void {
-    this.fullStart();
-  }
-
-  public async fullStart(): Promise<void> {
+let unpatch: () => void;
+export default $plugin({
+  name: 'Settings API',
+  author: 'Hykord',
+  version: '0.0.0',
+  description: 'API for injecting content into settings',
+  $toggleable: false,
+  $internal: true,
+  async start(): Promise<void> {
     const Settings: any = await waitFor(Filters.byProtos('getPredicateSections'));
 
-    this.unpatch = after('getPredicateSections', Settings.prototype, (_, sects) => {
+    unpatch = after('getPredicateSections', Settings.prototype, (_, sects) => {
         const location = sects.findIndex((c: any) => c.section.toLowerCase() === 'friend requests') + 1;
   
         if (location) {
@@ -39,9 +34,8 @@ export class SettingsAPI extends Plugin {
     });
 
     Logger.info('Plugin successfully injected everything needed');
+  },
+  stop(): void {
+    unpatch?.();
   }
-
-  public stop(): void {
-    this.unpatch?.();
-  }
-}
+});

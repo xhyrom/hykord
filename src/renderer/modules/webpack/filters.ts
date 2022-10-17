@@ -1,4 +1,4 @@
-import type { ModuleExports } from '@common';
+import type { ModuleExports } from './types';
 
 export const byProps = (...props: string[]) => (m: ModuleExports) => {
     return m && props.every(p => (m as Record<string, unknown>)?.[p] !== undefined);

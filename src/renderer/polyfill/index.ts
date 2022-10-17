@@ -1,5 +1,5 @@
 import * as HykordPatcher from '@hykord/patcher';
-import * as HykordStructures from '@hykord/structures';
+import * as HykordHooks from '@hykord/hooks';
 import * as HykordWebpack from '@hykord/webpack';
 import * as HykordComponents from '@hykord/components';
 import * as HykordApis from '@hykord/apis';
@@ -15,8 +15,8 @@ const createRequire = () => {
         return Hykord;
       case '@hykord/patcher':
         return HykordPatcher;
-      case '@hykord/structures':
-        return HykordStructures;
+      case '@hykord/hooks':
+        return HykordHooks;
       case '@hykord/webpack':
         return HykordWebpack;
       case '@hykord/components':

@@ -1,4 +1,4 @@
-import { Plugin } from '@hykord/structures';
+import { $plugin, PluginSettingType } from '@hykord/hooks';
 import { waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 import { Logger as RealLogger } from '@common';
@@ -6,45 +6,40 @@ import { Message } from '@hykord/apis';
 
 const Logger = new RealLogger('Message API');
 
-export class MessageAPI extends Plugin {
-    unpatchSendMessage: any;
-    unpatchEditMessage: any;
-    unpatchReceiveMessage: any;
-
-    name = 'Message API';
-    author = 'Hykord';
-    version = '0.0.0';
-    description = 'Allows to listen for messages';
-    settings = [
+let unpatchSendMessage: () => void;
+let unpatchEditMessage: () => void;
+let unpatchReceiveMessage: () => void;
+export default $plugin({
+    name: 'Message API',
+    author: 'Hykord',
+    version: '0.0.0',
+    description: 'Allows to listen for messages',
+    settings: [
         {
-            type: 'switch',
+            type: PluginSettingType.Boolean,
             name: 'Send',
             description: 'allow send',
             defaultValue: true,
         },
         {
-            type: 'switch',
+            type: PluginSettingType.Boolean,
             name: 'Edit',
             description: 'allow edit',
             defaultValue: true,
         },
         {
-            type: 'switch',
+            type: PluginSettingType.Boolean,
             name: 'Receive',
             description: 'allow receive',
             defaultValue: false,
         },
-    ];
-    $internal = true;
-    public start(): void {
-        this.fullStart();
-    }
-
-    public async fullStart(): Promise<void> {
+    ],
+    $internal: true,
+    async start(): Promise<void> {
         const Messages: any = await waitFor(Filters.byProps('sendMessage'));
 
-        if (await this.getSetting('Send', true)) {
-            this.unpatchSendMessage = after('sendMessage', Messages, (args, res) => {
+        if (await Hykord.Settings.get('plugins.message_api.send', true)) {
+            unpatchSendMessage = after('sendMessage', Messages, (args, res) => {
                 const [ channelId, message, ...extra ] = args;
                 Message.$handleSendMessage(channelId, message, extra);
     
@@ -54,8 +49,8 @@ export class MessageAPI extends Plugin {
             Logger.info('Send injected');
         }
 
-        if (await this.getSetting('Edit', true)) {
-            this.unpatchEditMessage = after('editMessage', Messages, (args, res) => {
+        if (await Hykord.Settings.get('plugins.message_api.edit', true)) {
+            unpatchEditMessage = after('editMessage', Messages, (args, res) => {
                 const [ channelId, messageId, message ] = args;
                 Message.$handleEditMessage(channelId, messageId, message);
     
@@ -65,8 +60,8 @@ export class MessageAPI extends Plugin {
             Logger.info('Edit injected');
         }
 
-        if (await this.getSetting('Receive', false)) {
-            this.unpatchReceiveMessage = after('receiveMessage', Messages, (args, res) => {
+        if (await Hykord.Settings.get('plugins.message_api.receive', true)) {
+            unpatchReceiveMessage = after('receiveMessage', Messages, (args, res) => {
                 const [ channelId, message ] = args;
                 Message.$handleReceiveMessage(channelId, message);
 
@@ -77,11 +72,11 @@ export class MessageAPI extends Plugin {
         }
 
         Logger.info('Plugin successfully injected everything needed');
-    }
+    },
 
-    public stop(): void {
-        this.unpatchSendMessage?.();
-        this.unpatchEditMessage?.();
-        this.unpatchReceiveMessage?.();
+    stop(): void {
+        unpatchSendMessage?.();
+        unpatchEditMessage?.();
+        unpatchReceiveMessage?.();
     }
-}
+});

@@ -1,3 +1,15 @@
+export interface PatchReplacement {
+    match: string | RegExp;
+    replace: string | ((match: string, ...groups: string[]) => string);
+}
+
+export interface Patch {
+    plugin?: string;
+    find: string;
+    replacement: PatchReplacement | PatchReplacement[];
+    all?: boolean;
+}
+
 export type ModuleExports =
   | Record<string, unknown>
   | ((...args: unknown[]) => unknown)

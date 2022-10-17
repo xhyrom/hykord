@@ -1,23 +1,18 @@
-import { Plugin } from '@hykord/structures';
+import { $plugin } from '@hykord/hooks';
 import { waitFor, Filters } from '@hykord/webpack';
 import { after } from '@hykord/patcher';
 import { Logger as RealLogger } from '@common';
 
 const Logger = new RealLogger('Experiments');
 
-export class Experiments extends Plugin {
-  unpatch: any;
-
-  name = 'Experiments';
-  author = 'Hykord';
-  version = '0.0.0';
-  description = 'Enable discord experiments';
-  $internal = true;
-  public start(): void {
-    this.fullStart();
-  }
-
-  public async fullStart(): Promise<void> {
+let unpatch: () => void;
+export default $plugin({
+  name: 'Experiments',
+  author: 'Hykord',
+  version: '0.0.0',
+  description: 'Enable discord experiments',
+  $internal: true,
+  async start(): Promise<void> {
     const currentUser: any = await waitFor(Filters.byProps('getCurrentUser'));
     const dispatcher: any = await waitFor(Filters.byProps('_dispatcher'));
 
@@ -36,19 +31,19 @@ export class Experiments extends Plugin {
       .find((n: any) => n.name === 'DeveloperExperimentStore')
       .actionHandler();
 
-    this.unpatch = after('getCurrentUser', currentUser, (_, res) => {
+    unpatch = after('getCurrentUser', currentUser, (_, res) => {
       res.flags |= 1;
       return res;
     });
 
     Logger.info('Plugin successfully injected everything needed');
-  }
+  },
 
-  public stop(): void {
-    this.unpatch();
-  }
+  stop(): void {
+    unpatch();
+  },
 
-  private async getConnectionOpen(dispatcher: any) {
+  async getConnectionOpen(dispatcher: any) {
     let found =
       dispatcher._dispatcher._actionHandlers._orderedActionHandlers[
         'CONNECTION_OPEN'
@@ -64,4 +59,4 @@ export class Experiments extends Plugin {
 
     return found;
   }
-}
+});

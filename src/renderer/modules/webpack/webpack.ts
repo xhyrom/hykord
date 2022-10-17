@@ -3,7 +3,7 @@
 // Temporary solution
 
 import { byCode, byDisplayName, byProps, byProtos } from './filters';
-import { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback, LazyModule } from '@common';
+import type { ModuleExports, WebpackRequire, WebpackChunkGlobal, RawModule, Filter, LazyCallback, LazyModule } from './types';
 
 export const subscriptions = new Map<Filter, LazyModule>();
 

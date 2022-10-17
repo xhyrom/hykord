@@ -1,4 +1,4 @@
-import type { Theme } from '@hykord/structures';
+import { ThemeInfo } from '@hykord/hooks';
 import { LoaderLogger as Logger } from '@common';
 import { quickCss, getMetadata, BetterSet } from '../utils';
 import { patchCss, unpatchCss } from '@hykord/patcher';
@@ -8,7 +8,7 @@ const { readdir, exists, mkdir, readAndIfNotExistsCreate, readFile } =
     'fs/promises'
   );
 
-export const themes: BetterSet<Theme> = new BetterSet();
+export const themes: BetterSet<ThemeInfo> = new BetterSet();
 export const directory = join(HykordNative.getDirectory(), 'themes');
 
 export const loadQuickCss = async () => {
@@ -63,7 +63,7 @@ export const init = () => {
   document.addEventListener('DOMContentLoaded', load);
 };
 
-export const addTheme = async (theme: Theme) => {
+export const addTheme = async (theme: ThemeInfo) => {
   theme.$cleanName = theme.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   themes.add(theme);
 
@@ -71,7 +71,7 @@ export const addTheme = async (theme: Theme) => {
   themes.sort((a, b) => (a.$internal || b.$internal) ? Number(b.$internal) - Number(a.$internal) : a.name.localeCompare(b.name));
 };
 
-export const enableTheme = (theme: Theme) => {
+export const enableTheme = (theme: ThemeInfo) => {
   Logger.info('Loading theme', theme.name);
 
   theme!.$enabled = true;
@@ -80,7 +80,7 @@ export const enableTheme = (theme: Theme) => {
   Logger.info('Theme', theme.name, 'has been loaded!');
 };
 
-export const disableTheme = (theme: Theme) => {
+export const disableTheme = (theme: ThemeInfo) => {
   Logger.info('Unloading theme', theme.name);
 
   theme!.$enabled = false;
@@ -89,11 +89,11 @@ export const disableTheme = (theme: Theme) => {
   Logger.info('Theme', theme.name, 'has been unloaded!');
 };
 
-export const removeTheme = async (theme: Theme) => {
+export const removeTheme = async (theme: ThemeInfo) => {
   themes.delete(theme);
 };
 
-export const toggleTheme = (theme: Theme) => {
+export const toggleTheme = (theme: ThemeInfo) => {
   if (theme.$enabled) disableTheme(theme);
   else enableTheme(theme);
 };

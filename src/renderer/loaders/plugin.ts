@@ -1,14 +1,14 @@
-import { Plugin } from '@hykord/structures';
+import { PluginInfo } from '@hykord/hooks';
+import { Patch } from '@hykord/webpack/types';
 import { LoaderLogger as Logger } from '@common';
 import { BetterSet } from '../utils';
-import { Patch } from '@hykord/structures/Plugin';
 const { join } = window.require<typeof import('path')>('path');
 const { readdir, readFile, exists, mkdir } =
   window.require<typeof import('../../preload/polyfill/fs/promises')>(
     'fs/promises'
   );
 
-export const plugins: BetterSet<Plugin> = new BetterSet();
+export const plugins: BetterSet<PluginInfo> = new BetterSet();
 export const patches: Patch[] = [];
 
 export const directory = join(HykordNative.getDirectory(), 'plugins');
@@ -50,8 +50,7 @@ export const init = async () => {
   document.addEventListener('DOMContentLoaded', load);
 };
 
-export const addPlugin = async (plugin: Plugin) => {
-  plugin.$cleanName = plugin.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+export const addPlugin = async (plugin: PluginInfo) => {
   if (plugin.patches) {
     for (const patch of plugin.patches) {
       patch.plugin = plugin.name!;
@@ -59,16 +58,17 @@ export const addPlugin = async (plugin: Plugin) => {
       patches.push(patch);
     }
   }
+  
   plugins.add(plugin);
 
   plugins.sort((a, b) => a.name.localeCompare(b.name));
 };
 
-export const enablePlugin = async (plugin: Plugin) => {
+export const enablePlugin = async (plugin: PluginInfo) => {
   Logger.info('Loading plugin', plugin.name);
 
   try {
-    await plugin.start();
+    await plugin.start?.();
     plugin!.$enabled = true;
 
     Logger.info('Plugin', plugin.name, 'has been loaded!');
@@ -77,7 +77,7 @@ export const enablePlugin = async (plugin: Plugin) => {
   }
 };
 
-export const disablePlugin = async (plugin: Plugin) => {
+export const disablePlugin = async (plugin: PluginInfo) => {
   Logger.info('Disabling plugin', plugin.name);
 
   try {
@@ -90,11 +90,11 @@ export const disablePlugin = async (plugin: Plugin) => {
   }
 };
 
-export const removePlugin = async (plugin: Plugin) => {
+export const removePlugin = async (plugin: PluginInfo) => {
   plugins.delete(plugin);
 };
 
-export const togglePlugin = async (plugin: Plugin) => {
+export const togglePlugin = async (plugin: PluginInfo) => {
   if (plugin.$enabled) await disablePlugin(plugin);
   else await enablePlugin(plugin);
 };

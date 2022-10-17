@@ -15,11 +15,12 @@ declare const $HYKORD_VERSION: string;
 export const version = $HYKORD_VERSION;
 export const gitHash = $HYKORD_GIT_HASH;
 export const directory = HykordNative.getDirectory();
+export const Settings = HykordNative.getManagers().getSettings();
 
 export * as Utils from './utils';
 export * as Webpack from '@hykord/webpack';
 export * as Components from '@hykord/components';
-export * as Structures from '@hykord/structures';
+export * as Hooks from '@hykord/hooks';
 export * as Apis from '@hykord/apis';
 export * as Patcher from '@hykord/patcher';
 export * as Loaders from './loaders';

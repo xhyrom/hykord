@@ -23,7 +23,12 @@ import {
   directory as themeDirectory,
   removeTheme,
 } from '@loader/theme';
-import { Addon, Plugin, PluginSetting, Theme } from '@hykord/structures';
+import {
+  type Addon,
+  PluginInfo,
+  PluginSetting,
+  ThemeInfo,
+} from '@hykord/hooks';
 const { join } = window.require<typeof import('path')>('path');
 const { rm } =
   window.require<typeof import('../../../../preload/polyfill/fs/promises')>(
@@ -38,7 +43,7 @@ interface Props {
 
 const withDispatcher = (
   dispatcher: React.Dispatch<React.SetStateAction<boolean>>,
-  addon: Plugin | Theme,
+  addon: PluginInfo | ThemeInfo,
   action: () => any,
 ) => {
   return async () => {
@@ -57,7 +62,7 @@ const withDispatcher = (
   };
 };
 
-const Settings = (props: { settings: PluginSetting[]; addon: Plugin }) => {
+const Settings = (props: { settings: PluginSetting[]; addon: PluginInfo }) => {
   return (
     <div
       style={{
@@ -67,8 +72,8 @@ const Settings = (props: { settings: PluginSetting[]; addon: Plugin }) => {
     >
       {props.settings.map((setting) => (
         <Inputs.Switch
-          value={props.addon.getSettingSync<boolean>(
-            setting.name,
+          value={Hykord.Settings.getSync<boolean>(
+            `plugins.${props.addon.$cleanName}.${setting.name}`,
             setting.defaultValue,
           )}
           note={setting.description}
@@ -123,7 +128,7 @@ export default ErrorBoundary.wrap((props: Props) => {
 
             <div className="hykord-card-right">
               <div className="hykord-card-buttons">
-                {(addon as Plugin).settings && (
+                {(addon as PluginInfo).settings && (
                   <Tooltip
                     position={Tooltip.Positions.RIGHT}
                     text="Open Settings"
@@ -137,8 +142,8 @@ export default ErrorBoundary.wrap((props: Props) => {
                             title: `Settings for ${addon!.name}`,
                             body: (
                               <Settings
-                                settings={(addon as Plugin)!.settings!}
-                                addon={addon as Plugin}
+                                settings={(addon as PluginInfo)!.settings!}
+                                addon={addon as PluginInfo}
                               />
                             ),
                             confirmText: '',
@@ -174,12 +179,12 @@ export default ErrorBoundary.wrap((props: Props) => {
                                 .getSettings()
                                 .delete(`plugins.${addon!.$cleanName}`);
                               if (props.type === 'plugin') {
-                                await disablePlugin(addon as Plugin);
-                                await removePlugin(addon as Plugin);
+                                await disablePlugin(addon as PluginInfo);
+                                await removePlugin(addon as PluginInfo);
                                 rm(join(pluginDirectory, addon!.$fileName!));
                               } else {
-                                await disableTheme(addon as Theme);
-                                await removeTheme(addon as Theme);
+                                await disableTheme(addon as ThemeInfo);
+                                await removeTheme(addon as ThemeInfo);
                                 rm(join(themeDirectory, addon!.$fileName!));
                               }
 
@@ -200,35 +205,31 @@ export default ErrorBoundary.wrap((props: Props) => {
               <Checkbox
                 disabled={disabled}
                 checked={checked}
-                onChange={withDispatcher(
-                  setDisabled,
-                  addon as Plugin,
-                  async () => {
-                    if (props.type === 'plugin') {
-                      await togglePlugin(addon as Plugin);
-                    } else {
-                      await toggleTheme(addon as Theme);
-                    }
+                onChange={withDispatcher(setDisabled, addon, async () => {
+                  if (props.type === 'plugin') {
+                    await togglePlugin(addon as PluginInfo);
+                  } else {
+                    await toggleTheme(addon as ThemeInfo);
+                  }
 
-                    if (addon!.$enabled) {
-                      await HykordNative.getManagers()
-                        .getSettings()
-                        .addValue(
-                          `hykord.enabled.${props.type}s`,
-                          addon!.$cleanName!,
-                        );
-                    } else {
-                      await HykordNative.getManagers()
-                        .getSettings()
-                        .removeValue(
-                          `hykord.enabled.${props.type}s`,
-                          addon!.$cleanName!,
-                        );
-                    }
+                  if (addon!.$enabled) {
+                    await HykordNative.getManagers()
+                      .getSettings()
+                      .addValue(
+                        `hykord.enabled.${props.type}s`,
+                        addon!.$cleanName!,
+                      );
+                  } else {
+                    await HykordNative.getManagers()
+                      .getSettings()
+                      .removeValue(
+                        `hykord.enabled.${props.type}s`,
+                        addon!.$cleanName!,
+                      );
+                  }
 
-                    setChecked(addon!.$enabled!);
-                  },
-                )}
+                  setChecked(addon!.$enabled!);
+                })}
               />
             </div>
           </Flex>

@@ -2,7 +2,6 @@
 
 import type Other from 'discord-types/other';
 import type StoreTypes from 'discord-types/stores';
-import { Stores as StoreTypes2 } from '@common';
 import { waitForSync } from './webpack';
 
 export let React: typeof import('react');
@@ -10,10 +9,28 @@ export let ReactDOM: import('react').ReactDOM;
 export let FluxDispatcher: Other.FluxDispatcher;
 export const Stores = {} as {
   GuildStore: StoreTypes.GuildStore;
-  SelectedGuildStore: StoreTypes2.SelectedGuildStore;
+  SelectedGuildStore: {
+    getGuildId(): string;
+    getLastSelectedGuildId(): string;
+    getLastSelectedTimestamp(): number;
+    getState(): {
+      selectedGuildTimestampMillis: Record<string, number>;
+    };
+  };
   UserStore: StoreTypes.UserStore;
   RelationshipStore: StoreTypes.RelationshipStore;
-  InviteStore: StoreTypes2.InviteStore;
+  InviteStore: {
+    getCategory(): any;
+    getChannel(): any;
+    getFormState(): any;
+    getInvites(): any;
+    getProps(): any;
+    getSection(): any;
+    hasChanges(): any;
+    initialize(): any;
+    isOpen(): any;
+    showNotice(): any;
+  };
   ChannelStore: StoreTypes.ChannelStore;
   SelectedChannelStore: StoreTypes.SelectedChannelStore;
 };

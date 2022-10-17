@@ -1,4 +1,4 @@
-import { ModuleExports, WebpackChunk, WebpackChunkGlobal } from '@common';
+import type { ModuleExports, WebpackChunk, WebpackChunkGlobal } from './types';
 import { _initWebpack } from './webpack';
 
 let webpackChunk: WebpackChunkGlobal | undefined;
