@@ -1,6 +1,6 @@
 import { ErrorBoundary } from '@hykord/components';
 import { plugins } from '@loader/plugin';
-import Addon from './Addon';
+import Addon from './addon/Addon';
 
 export default ErrorBoundary.wrap(() => {
   return (

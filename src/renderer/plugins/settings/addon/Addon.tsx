@@ -1,9 +1,9 @@
 import { React } from '@hykord/webpack';
 import { Forms, TextInput } from '@hykord/components';
 import { ErrorBoundary } from '@hykord/components';
-import AddonCard from './cards/AddonCard';
+import AddonCard from './AddonCard';
 import type { Addon } from '@hykord/hooks';
-import { BetterSet } from '../@hykord/utils';
+import { BetterSet } from '@hykord/utils';
 
 interface Props {
   addons: BetterSet<Addon>;

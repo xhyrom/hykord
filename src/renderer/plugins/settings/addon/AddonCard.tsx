@@ -4,10 +4,12 @@ import {
   Checkbox,
   ErrorBoundary,
   Flex,
+  Inputs,
   Forms,
   Text,
   Modals,
   Tooltip,
+  Button,
 } from '@hykord/components';
 import { React } from '@hykord/webpack';
 import {
@@ -63,43 +65,51 @@ const withDispatcher = (
   };
 };
 
-const Settings = (props: { settings: PluginSetting[]; addon: PluginInfo }) => {
+const Settings = (props: {
+  settings: PluginSetting[];
+  addon: PluginInfo;
+  modalProps: Record<string, any>;
+}) => {
   return (
-    <Modals.ModalRoot size={Modals.ModalSize.MEDIUM}>
+    <Modals.ModalRoot {...props.modalProps} size={Modals.ModalSize.MEDIUM}>
       <Modals.ModalHeader>
-      < Text variant="heading-md/bold">TEST</Text>
+        <Text variant="heading-md/bold">
+          {props.addon.name} ({props.addon.$cleanName})
+        </Text>
       </Modals.ModalHeader>
-      <Modals.ModalContent>
+      <Modals.ModalContent style={{ marginBottom: 8, marginTop: 8 }}>
         <Forms.FormSection>
-          <Forms.FormTitle>Settings</Forms.FormTitle> 
+          <Forms.FormTitle>Settings</Forms.FormTitle>
+          {props.settings.map((setting) => (
+            <Inputs.Switch
+              value={Hykord.Settings.getSync<boolean>(
+                `plugins.${props.addon.$cleanName}.${setting.name}`,
+                setting.defaultValue,
+              )}
+              note={setting.description}
+              onChange={(value: boolean) =>
+                HykordNative.getManagers()
+                  .getSettings()
+                  .set(
+                    `plugins.${props.addon.$cleanName}.${setting.name}`,
+                    value,
+                  )
+              }
+              label={setting.name}
+            />
+          ))}
         </Forms.FormSection>
       </Modals.ModalContent>
       <Modals.ModalFooter>
-
+        <Button
+          onClick={() => Modals.closeModal('addon-settings')}
+          size={Button.Sizes.SMALL}
+          color={Button.Colors.RED}
+        >
+          Exit
+        </Button>
       </Modals.ModalFooter>
     </Modals.ModalRoot>
-    // <div
-    //   style={{
-    //     display: 'inline',
-    //     textAlign: 'left',
-    //   }}
-    // >
-    //   {props.settings.map((setting) => (
-    //     <Inputs.Switch
-    //       value={Hykord.Settings.getSync<boolean>(
-    //         `plugins.${props.addon.$cleanName}.${setting.name}`,
-    //         setting.defaultValue,
-    //       )}
-    //       note={setting.description}
-    //       onChange={(value: boolean) =>
-    //         HykordNative.getManagers()
-    //           .getSettings()
-    //           .set(`plugins.${props.addon.$cleanName}.${setting.name}`, value)
-    //       }
-    //       label={setting.name}
-    //     />
-    //   ))}
-    // </div>
   );
 };
 
@@ -152,10 +162,16 @@ export default ErrorBoundary.wrap((props: Props) => {
                       <svg
                         {...tooltipProps}
                         onClick={() => {
-                          Modals.openModal(() => <Settings
-                            settings={(addon as PluginInfo)!.settings!}
-                            addon={addon as PluginInfo}
-                          />);
+                          Modals.openModal(
+                            (props) => (
+                              <Settings
+                                modalProps={props}
+                                settings={(addon as PluginInfo)!.settings!}
+                                addon={addon as PluginInfo}
+                              />
+                            ),
+                            'addon-settings',
+                          );
                         }}
                         className="hykord-tooltip"
                         viewBox="0 0 24 24"
