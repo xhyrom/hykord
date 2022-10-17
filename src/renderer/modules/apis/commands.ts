@@ -1,7 +1,7 @@
 import { APIApplicationCommandOption, ApplicationCommandType } from 'discord-api-types/v10';
 import { Channel, Guild } from 'discord-types/general';
 import { Awaitable } from '../../../common/types';
-import { generateSnowflake } from '../../utils/discord';
+import { generateSnowflake } from '@hykord/utils/discord';
 
 export enum CommandInputType {
     BUILT_IN = 0,

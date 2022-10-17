@@ -16,7 +16,7 @@ export default $plugin({
   $toggleable: false,
   $internal: true,
   async start(): Promise<void> {
-    import('./utils');
+    import('@hykord/utils');
     const userSettings: any = await waitFor(Filters.byProtos('getPredicateSections'));
     
     SettingsApi.registerSection('HYKORD_MAIN', 'Hykord', (await import('./Hykord')).default, 1);

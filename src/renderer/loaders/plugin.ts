@@ -1,7 +1,7 @@
 import { PluginInfo } from '@hykord/hooks';
 import { Patch } from '@hykord/webpack/types';
 import { LoaderLogger as Logger } from '@common';
-import { BetterSet } from '../utils';
+import { BetterSet } from '@hykord/utils';
 const { join } = window.require<typeof import('path')>('path');
 const { readdir, readFile, exists, mkdir } =
   window.require<typeof import('../../preload/polyfill/fs/promises')>(

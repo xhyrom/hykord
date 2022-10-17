@@ -1,6 +1,6 @@
 import { ThemeInfo } from '@hykord/hooks';
 import { LoaderLogger as Logger } from '@common';
-import { quickCss, getMetadata, BetterSet } from '../utils';
+import { quickCss, getMetadata, BetterSet } from '@hykord/utils';
 import { patchCss, unpatchCss } from '@hykord/patcher';
 const { join } = window.require<typeof import('path')>('path');
 const { readdir, exists, mkdir, readAndIfNotExistsCreate, readFile } =

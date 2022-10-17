@@ -3,7 +3,7 @@ import { Forms, TextInput } from '@hykord/components';
 import { ErrorBoundary } from '@hykord/components';
 import AddonCard from './cards/AddonCard';
 import type { Addon } from '@hykord/hooks';
-import { BetterSet } from '../../utils';
+import { BetterSet } from '../@hykord/utils';
 
 interface Props {
   addons: BetterSet<Addon>;

@@ -1,7 +1,7 @@
 import { file, write } from "bun";
 import { mkdirSync } from "fs";
 import { join, resolve } from "path";
-import { getDotTsFiles } from "./utils/getDotFiles";
+import { getDotTsFiles } from "@hykord/utils/getDotFiles";
 
 const folder = join(import.meta.dir, "..", "dist");
 

@@ -1,7 +1,7 @@
 import { Button, Card, Flex, Forms, Link } from '@hykord/components';
 import { React } from '@hykord/webpack';
 import { ErrorBoundary } from '@hykord/components';
-import { Updater } from '../../utils';
+import { Updater } from '@hykord/utils';
 
 interface Details {
   repositoryName: string;

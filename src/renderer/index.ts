@@ -4,7 +4,7 @@ import { CoreLogger as Logger } from '@common';
 import './modules/webpack/patch';
 import './polyfill';
 import './loaders';
-import { checkForUpdates } from './utils/updater';
+import { checkForUpdates } from '@hykord/utils/updater';
 
 Logger.info('In renderer');
 checkForUpdates();
@@ -17,7 +17,7 @@ export const gitHash = $HYKORD_GIT_HASH;
 export const directory = HykordNative.getDirectory();
 export const Settings = HykordNative.getManagers().getSettings();
 
-export * as Utils from './utils';
+export * as Utils from '@hykord/utils';
 export * as Webpack from '@hykord/webpack';
 export * as Components from '@hykord/components';
 export * as Hooks from '@hykord/hooks';

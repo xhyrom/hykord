@@ -2,7 +2,7 @@ import { Button, Card, Flex, Forms, Inputs } from '@hykord/components';
 import { ErrorBoundary } from '@hykord/components/ErrorBoundary';
 import { loadQuickCss } from '@loader/theme';
 import { shell } from 'electron';
-import { quickCss } from '../../utils';
+import { quickCss } from '@hykord/utils';
 
 export default ErrorBoundary.wrap(() => {
   return (
