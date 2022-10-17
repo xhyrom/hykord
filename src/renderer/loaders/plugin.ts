@@ -55,7 +55,10 @@ export const addPlugin = async (plugin: PluginInfo) => {
     for (const patch of plugin.patches) {
       patch.plugin = plugin.name!;
       if (!Array.isArray(patch.replacement)) patch.replacement = [patch.replacement];
-      patches.push(patch);
+      
+      if (patch.condition) {
+        if (await patch.condition()) patches.push(patch);
+      } else patches.push(patch);
     }
   }
   

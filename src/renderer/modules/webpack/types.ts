@@ -1,3 +1,5 @@
+import { Awaitable } from '@common';
+
 export interface PatchReplacement {
     match: string | RegExp;
     replace: string | ((match: string, ...groups: string[]) => string);
@@ -8,6 +10,7 @@ export interface Patch {
     find: string;
     replacement: PatchReplacement | PatchReplacement[];
     all?: boolean;
+    condition?: () => Awaitable<boolean>;
 }
 
 export type ModuleExports =
