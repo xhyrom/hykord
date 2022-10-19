@@ -65,10 +65,54 @@ const withDispatcher = (
   };
 };
 
+const Informations = (props: {
+  requiredBy: PluginInfo[];
+  addon: Addon;
+  modalProps: Record<string, unknown>;
+}) => {
+  return (
+    <Modals.ModalRoot {...props.modalProps} size={Modals.ModalSize.MEDIUM}>
+      <Modals.ModalHeader>
+        <Text variant="heading-md/bold">
+          {props.addon.name} ({props.addon.$cleanName})
+        </Text>
+      </Modals.ModalHeader>
+      <Modals.ModalContent style={{ marginBottom: 8, marginTop: 8 }}>
+        <Forms.FormSection>
+          <Forms.FormTitle>About</Forms.FormTitle>
+          {props.requiredBy.length > 0 && (
+            <>
+              <Forms.FormText>
+                <b>
+                  This addon is required by{' '}
+                  {props.requiredBy.map((p) => p.name).join(', ')}.
+                </b>
+              </Forms.FormText>
+              <br />
+            </>
+          )}
+          <Forms.FormText>
+            {props.addon.description || 'No description provided.'}
+          </Forms.FormText>
+        </Forms.FormSection>
+      </Modals.ModalContent>
+      <Modals.ModalFooter>
+        <Button
+          onClick={() => Modals.closeModal('addon-informations')}
+          size={Button.Sizes.SMALL}
+          color={Button.Colors.RED}
+        >
+          Exit
+        </Button>
+      </Modals.ModalFooter>
+    </Modals.ModalRoot>
+  );
+};
+
 const Settings = (props: {
   settings: PluginSetting[];
   addon: PluginInfo;
-  modalProps: Record<string, any>;
+  modalProps: Record<string, unknown>;
 }) => {
   return (
     <Modals.ModalRoot {...props.modalProps} size={Modals.ModalSize.MEDIUM}>
@@ -121,9 +165,12 @@ export default ErrorBoundary.wrap((props: Props) => {
 
   if (!addon) return null;
 
+  const requiredBy = plugins.filter(
+    (p) => p.dependsOn?.includes(addon!.name!) as boolean,
+  );
   const [disabled, setDisabled] = React.useState(
     props.type === 'plugin'
-      ? plugins.find((p) => p.dependsOn?.includes(addon!.name!))
+      ? requiredBy.length > 0
         ? true
         : !addon!.$toggleable!
       : !addon!.$toggleable!,
@@ -152,6 +199,34 @@ export default ErrorBoundary.wrap((props: Props) => {
 
             <div className="hykord-card-right">
               <div className="hykord-card-buttons">
+                <Tooltip
+                  position={Tooltip.Positions.RIGHT}
+                  text="Informations"
+                  align="center"
+                >
+                  {(tooltipProps: any) => (
+                    <svg
+                      {...tooltipProps}
+                      onClick={() => {
+                        Modals.openModal(
+                          (props) => (
+                            <Informations
+                              modalProps={props}
+                              requiredBy={requiredBy}
+                              addon={addon}
+                            />
+                          ),
+                          'addon-informations',
+                        );
+                      }}
+                      className="hykord-tooltip"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z" />
+                    </svg>
+                  )}
+                </Tooltip>
+
                 {(addon as PluginInfo).settings && (
                   <Tooltip
                     position={Tooltip.Positions.RIGHT}
