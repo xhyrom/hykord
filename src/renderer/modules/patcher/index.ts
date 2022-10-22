@@ -21,7 +21,7 @@ export const unpatchCss = (id: string) => {
     css.remove();
 }
 
-export const patchPlaintext = async(patches: Patch[], plugin: string) => {
+export const patchPlaintext = async(plugin: string, patches: Patch[]) => {
   for (const patch of patches) {
     patch.plugin = plugin;
 
