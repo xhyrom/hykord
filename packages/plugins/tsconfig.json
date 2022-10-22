@@ -1,17 +1,15 @@
 {
-    "compilerOptions": {
-      "module": "CommonJS",
-      "lib": ["es2019", "DOM"],
-      "jsxFactory": "Hykord.Webpack.Common.React.createElement",
-      "jsxFragmentFactory": "Hykord.Webpack.Common.React.Fragment",
-      "jsx": "react",
-      "moduleResolution": "node",
-      "skipLibCheck": true,
-      "strict": true,
-      "allowSyntheticDefaultImports": true,
-      "downlevelIteration": true,
-      "experimentalDecorators": true,
-      "types": ["dist"],
-      "typeRoots": ["../types"]
-    }
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": ["es2019", "DOM"],
+    "jsxFactory": "Hykord.Webpack.Common.React.createElement",
+    "jsxFragmentFactory": "Hykord.Webpack.Common.React.Fragment",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+  }
 }  

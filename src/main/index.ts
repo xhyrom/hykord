@@ -62,9 +62,9 @@ electron.app.whenReady().then(async () => {
       const electronDevToolsInstaller = await await import(
         'electron-devtools-installer'
       );
-      electronDevToolsInstaller
-        // @ts-expect-error heh
-        .default.default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
+      electronDevToolsInstaller// @ts-expect-error heh
+      .default
+        .default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
         .then((name: string) => Logger.info(`Added Extension:  ${name}`))
         .catch((err: any) =>
           Logger.err(

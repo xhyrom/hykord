@@ -1,5 +1,4 @@
 import { PluginInfo } from '@hykord/hooks';
-import { Patch } from '@hykord/webpack/types';
 import { LoaderLogger as Logger } from '@common';
 import { BetterSet } from '@hykord/utils';
 import { webpackPatches } from '@hykord/patcher';

@@ -93,9 +93,9 @@ function patchPush () {
                   // TODO - More meaningful errors. This probably means moving away from string.replace
                   // in favour of manual matching. Then cut out the context and log some sort of
                   // diff
-                  //logger.error('Failed to apply patch of', patch.plugin, err);
-                  //logger.debug('Original Source\n', lastCode);
-                  //logger.debug('Patched Source\n', code);
+                  console.error('Failed to apply patch of', patch.plugin, err);
+                  console.debug('Original Source\n', lastCode);
+                  console.debug('Patched Source\n', code);
                   code = lastCode;
                   mod = lastMod;
                   patchedBy.delete(patch.plugin);
