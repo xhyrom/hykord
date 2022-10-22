@@ -3,11 +3,13 @@ import electron from 'electron';
 import BrowserWindow from './patches/BrowserWindow';
 import { CoreLogger as Logger } from '@common';
 import SettingsManager from './api/SettingsManager';
+import getDirectory from './utils/getDirectory';
 
 Logger.info('Patching...');
 
 const electronPath = require.resolve('electron');
 const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
+const dotHykordPath = getDirectory();
 
 process.env.DISCORD_APP_PATH = discordPath;
 
@@ -43,6 +45,15 @@ electron.app.whenReady().then(async () => {
       cb({ cancel: false, responseHeaders });
     },
   );
+
+  electron.protocol.registerFileProtocol('hykord', (request, cb) => {
+    const reqUrl = new URL(request.url);
+    switch (reqUrl.hostname) {
+      case 'plugin':
+        cb(join(dotHykordPath, 'plugins', reqUrl.pathname));
+        break;
+    }
+  });
 
   if (SettingsManager.getSetting('hykord.react-devtools', false)) {
     Logger.info('Installing React Developer Tools...');

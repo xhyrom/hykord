@@ -2,33 +2,19 @@ import { PluginInfo } from '@hykord/hooks';
 import { Patch } from '@hykord/webpack/types';
 import { LoaderLogger as Logger } from '@common';
 import { BetterSet } from '@hykord/utils';
-const { join } = window.require<typeof import('path')>('path');
-const { readdir, readFile, exists, mkdir } =
-  window.require<typeof import('../../preload/polyfill/fs/promises')>(
-    'fs/promises'
-  );
 
 export const plugins: BetterSet<PluginInfo> = new BetterSet();
 export const patches: Patch[] = [];
 
-export const directory = join(HykordNative.getDirectory(), 'plugins');
+export const directory = HykordNative.getAddons().getPlugins().directory;
 
 const load = async () => {
   // Load internal plugins
   await import('../plugins');
 
-  // Load external plugins
-  if (!(await exists(directory))) await mkdir(directory);
-
-  for (const file of await readdir(directory)) {
+  for (const file of await HykordNative.getAddons().getPlugins().list()) {
     try {
-      const module = { filename: file, exports: {} as any };
-      const fileContent = await readFile(join(directory, file), 'utf-8');
-      
-      const fn = new Function('require', 'module', 'exports', '__filename', '__dirname', fileContent);
-      fn(window.require, module, module.exports, module.filename, directory, fileContent);
-
-      const pl = new module.exports();
+      const pl = (await import(`hykord://plugin/${file}`)).default;
       pl.$fileName = file;
 
       addPlugin(pl);

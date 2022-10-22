@@ -49,6 +49,20 @@ export default {
       downloadUpdate: () => ipcRenderer.invoke(HykordIpcEvents.DOWNLOAD_UPDATE),
     }),
   }),
+  getAddons: () => ({
+    getPlugins: () => ({
+      list: () => ipcRenderer.invoke(HykordIpcEvents.LIST_PLUGINS),
+      remove: (name: string) => ipcRenderer.invoke(HykordIpcEvents.DELETE_PLUGIN, name),
+      directory: join(getDirectory(), 'plugins'),
+    }),
+    getThemes: () => ({
+      list: () => ipcRenderer.invoke(HykordIpcEvents.LIST_THEMES),
+      get: (name: string) => ipcRenderer.invoke(HykordIpcEvents.GET_THEME, name),
+      remove: (name: string) => ipcRenderer.invoke(HykordIpcEvents.DELETE_THEME, name),
+      getQuickCss: () => ipcRenderer.invoke(HykordIpcEvents.GET_QUICKCSS),
+      directory: join(getDirectory(), 'themes'),
+    }),
+  }),
   getDirname: () => __dirname,
   getVersions: () => process.versions,
   getPolyfillRemote: () => polyfill,

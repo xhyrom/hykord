@@ -5,6 +5,7 @@ import * as HykordComponents from '@hykord/components';
 import * as HykordApis from '@hykord/apis';
 import * as HykordUtils from '@hykord/utils';
 
+// TODO: remove
 /**
  * Creates require for plugins
  */

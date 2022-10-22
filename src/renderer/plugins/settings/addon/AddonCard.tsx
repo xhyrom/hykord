@@ -16,14 +16,12 @@ import {
   plugins,
   togglePlugin,
   disablePlugin,
-  directory as pluginDirectory,
   removePlugin,
 } from '@loader/plugin';
 import {
   themes,
   toggleTheme,
   disableTheme,
-  directory as themeDirectory,
   removeTheme,
 } from '@loader/theme';
 import {
@@ -32,11 +30,6 @@ import {
   PluginSetting,
   ThemeInfo,
 } from '@hykord/hooks';
-const { join } = window.require<typeof import('path')>('path');
-const { rm } =
-  window.require<typeof import('../../../../preload/polyfill/fs/promises')>(
-    'fs/promises',
-  );
 
 interface Props {
   type: 'plugin' | 'theme';
@@ -280,11 +273,11 @@ export default ErrorBoundary.wrap((props: Props) => {
                               if (props.type === 'plugin') {
                                 await disablePlugin(addon as PluginInfo);
                                 await removePlugin(addon as PluginInfo);
-                                rm(join(pluginDirectory, addon!.$fileName!));
+                                HykordNative.getAddons().getPlugins().remove(addon!.$fileName!);
                               } else {
                                 await disableTheme(addon as ThemeInfo);
                                 await removeTheme(addon as ThemeInfo);
-                                rm(join(themeDirectory, addon!.$fileName!));
+                                HykordNative.getAddons().getThemes().remove(addon!.$fileName!);
                               }
 
                               props.forceUpdate();

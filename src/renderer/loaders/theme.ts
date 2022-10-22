@@ -2,35 +2,23 @@ import { ThemeInfo } from '@hykord/hooks';
 import { LoaderLogger as Logger } from '@common';
 import { quickCss, getMetadata, BetterSet } from '@hykord/utils';
 import { patchCss, unpatchCss } from '@hykord/patcher';
-const { join } = window.require<typeof import('path')>('path');
-const { readdir, exists, mkdir, readAndIfNotExistsCreate, readFile } =
-  window.require<typeof import('../../preload/polyfill/fs/promises')>(
-    'fs/promises'
-  );
 
 export const themes: BetterSet<ThemeInfo> = new BetterSet();
-export const directory = join(HykordNative.getDirectory(), 'themes');
+export const directory = HykordNative.getAddons().getThemes().directory;
 
 export const loadQuickCss = async () => {
-  quickCss.load(
-    await readAndIfNotExistsCreate(join(Hykord.directory, 'quickCss.css'))
-  );
+  quickCss.load(await HykordNative.getAddons().getThemes().getQuickCss());
 };
 
 const load = async () => {
   // Load internal themes
   await import('../themes');
 
-  // Create themes folder if not exists
-  if (!(await exists(directory))) await mkdir(directory);
-
   if (await Hykord.Settings.get('hykord.quick-css')) await loadQuickCss();
 
-  for (const file of await readdir(directory)) {
+  for (const file of await HykordNative.getAddons().getThemes().list()) {
     try {
-      const css = await readFile(join(directory, file), {
-        encoding: 'utf-8',
-      });
+      const css = await HykordNative.getAddons().getThemes().get(file);
       // Parse metadata
       const metadata = getMetadata(css);
 

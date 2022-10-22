@@ -3,6 +3,7 @@ import { app, ipcMain, desktopCapturer } from 'electron';
 
 import './settings';
 import './updater';
+import './addons';
 
 // Custom event because DiscordNative.app.relaunch will throw exception
 ipcMain.on(HykordIpcEvents.RELAUNCH_APP, () => {
