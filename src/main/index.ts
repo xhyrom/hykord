@@ -63,9 +63,10 @@ electron.app.whenReady().then(async () => {
         'electron-devtools-installer'
       );
       electronDevToolsInstaller
-        .default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
-        .then((name) => Logger.info(`Added Extension:  ${name}`))
-        .catch((err) =>
+        // @ts-expect-error heh
+        .default.default(electronDevToolsInstaller.REACT_DEVELOPER_TOOLS)
+        .then((name: string) => Logger.info(`Added Extension:  ${name}`))
+        .catch((err: any) =>
           Logger.err(
             'An error occurred while installing React Dev Tools: ',
             err,
