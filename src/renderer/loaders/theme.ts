@@ -4,7 +4,6 @@ import { quickCss, getMetadata, BetterSet } from '@hykord/utils';
 import { patchCss, unpatchCss } from '@hykord/patcher';
 
 export const themes: BetterSet<ThemeInfo> = new BetterSet();
-export const directory = HykordNative.getAddons().getThemes().directory;
 
 export const loadQuickCss = async () => {
   quickCss.load(await HykordNative.getAddons().getThemes().getQuickCss());

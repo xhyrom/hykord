@@ -23,7 +23,7 @@ function patchPush () {
     function handlePush (chunk: WebpackChunk) {
       const modules = chunk[1];
       const { subscriptions } = Hykord.Webpack;
-      const { patches } = Hykord.Loaders.Plugins;
+      const patches = Hykord.Patcher.webpackPatches;
   
       for (const id in modules) {
         let mod = modules[id];
