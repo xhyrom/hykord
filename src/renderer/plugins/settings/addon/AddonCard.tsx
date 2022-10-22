@@ -18,12 +18,7 @@ import {
   disablePlugin,
   removePlugin,
 } from '@loader/plugin';
-import {
-  themes,
-  toggleTheme,
-  disableTheme,
-  removeTheme,
-} from '@loader/theme';
+import { themes, toggleTheme, disableTheme, removeTheme } from '@loader/theme';
 import {
   type Addon,
   PluginInfo,
@@ -273,11 +268,15 @@ export default ErrorBoundary.wrap((props: Props) => {
                               if (props.type === 'plugin') {
                                 await disablePlugin(addon as PluginInfo);
                                 await removePlugin(addon as PluginInfo);
-                                HykordNative.getAddons().getPlugins().remove(addon!.$fileName!);
+                                HykordNative.getAddons()
+                                  .getPlugins()
+                                  .remove(addon!.$fileName!);
                               } else {
                                 await disableTheme(addon as ThemeInfo);
                                 await removeTheme(addon as ThemeInfo);
-                                HykordNative.getAddons().getThemes().remove(addon!.$fileName!);
+                                HykordNative.getAddons()
+                                  .getThemes()
+                                  .remove(addon!.$fileName!);
                               }
 
                               props.forceUpdate();
